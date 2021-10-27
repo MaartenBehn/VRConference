@@ -52,7 +52,7 @@ namespace Network.Client.Code
                  {
                      Debug.Log(e);
                  });
-                 //client.Disconnect();
+                 client.Disconnect();
              }
          }
          

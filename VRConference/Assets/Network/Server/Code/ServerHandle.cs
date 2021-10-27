@@ -51,6 +51,7 @@ namespace Network.Server.Code
         {
             fromClient.updConnected = packet.ReadBool() && server.featureSettings.UPDSupport;
             Debug.Log("SERVER: [" +fromClient.id+ "] UDP connection status: "+ fromClient.updConnected);
+            fromClient.state = NetworkState.connected;
         }
     }
 }
