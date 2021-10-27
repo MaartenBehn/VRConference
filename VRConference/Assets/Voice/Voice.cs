@@ -16,7 +16,7 @@ public class Voice : MonoBehaviour
 
     private void Awake()
     {
-        agent = new InbuiltChatroomAgentFactory("ws://127.0.0.1:12776").Create();
+        agent = new InbuiltChatroomAgentFactory("ws://84.186.214.53:11002").Create();
 
         startVoiceServer.Register(StartServer);
         stopVoiceServer.Register(StopServer);
