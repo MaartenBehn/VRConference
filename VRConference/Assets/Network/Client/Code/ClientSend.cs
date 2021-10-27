@@ -55,11 +55,9 @@ namespace Network.Client.Code
         {
             client.udpOnline.value = client.featureSettings.UPDSupport && client.serverUDPSupport;
             Debug.Log("CLIENT: UDP connection status: "+ client.udpOnline.value);
-            using (Packet packet = new Packet((byte) Packets.clientUDPConnectionStatus))
-            {
-                packet.Write(client.udpOnline.value);
-                client.SendTCPData(packet);
-            }
+            using Packet packet = new Packet((byte) Packets.clientUDPConnectionStatus);
+            packet.Write(client.udpOnline.value);
+            client.SendTCPData(packet);
         }
     }
 }
