@@ -30,7 +30,7 @@ namespace Utility
                 action(state);
             }
         }
- 
+
         public static void RunOnMainThread(Action action)
         {
             lock(_backlog) {

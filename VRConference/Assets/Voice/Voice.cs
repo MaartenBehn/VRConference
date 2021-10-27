@@ -1,9 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Adrenak.UniVoice;
 using Adrenak.UniVoice.InbuiltImplementations;
 using UnityEngine;
+using Utility;
 
 public class Voice : MonoBehaviour
 {
@@ -13,8 +11,9 @@ public class Voice : MonoBehaviour
     [SerializeField] private PublicEvent stopVoiceServer;
     [SerializeField] private PublicEvent connectVoiceClient;
     [SerializeField] private PublicEvent disconnectVoiceClient;
-
-    private void Awake()
+    [SerializeField] private PublicEventBool voiceDone;
+    
+    private void Init()
     {
         agent = new InbuiltChatroomAgentFactory("ws://84.186.214.53:11002").Create();
 
@@ -25,42 +24,48 @@ public class Voice : MonoBehaviour
         
         
         agent.Network.OnCreatedChatroom += () => {
-            Debug.Log("Room created");
+            Debug.Log("VOICE: Room created");
+            voiceDone.Raise(true);
         };
 
         agent.Network.OnChatroomCreationFailed += ex => {
-            Debug.Log("Room creation failed");
+            Debug.Log("VOICE: Room creation failed");
+            voiceDone.Raise(false);
         };
 
         agent.Network.OnlosedChatroom += () => {
-            Debug.Log("Room closed");
+            Debug.Log("VOICE: Room closed");
         };
 
         // JOINING
         agent.Network.OnJoinedChatroom += id => {
-            Debug.Log("Peer "+ id + "joined");
+            Debug.Log("VOICE: Peer "+ id + " joined");
+            voiceDone.Raise(true);
         };
 
         agent.Network.OnChatroomJoinFailed += ex => {
             Debug.Log(ex);
+            voiceDone.Raise(false);
         };
 
         agent.Network.OnLeftChatroom += () => {
-            Debug.Log("Peer left");
+            Debug.Log("VOICE: Peer left");
         };
 
         // PEERS
         agent.Network.OnPeerJoinedChatroom += id => {
-            Debug.Log("Peer "+ id + "joined");
+            Debug.Log("VOICE: Peer "+ id + " joined");
         };
 
         agent.Network.OnPeerLeftChatroom += id => {
-            Debug.Log("Peer "+ id + "left");
+            Debug.Log("VOICE: Peer "+ id + " left");
         };
     }
+   
 
     private void StartServer()
     {
+        Init();
         agent.Network.HostChatroom("VRConference"); 
     }
     
@@ -71,6 +76,7 @@ public class Voice : MonoBehaviour
     
     private void ConnectClient()
     {
+        Init();
         agent.Network.JoinChatroom("VRConference");
     }
     
