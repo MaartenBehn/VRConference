@@ -26,6 +26,7 @@ namespace Network.Client.Code
         [SerializeField] private PublicEventString debugMessageEvent;
 
         public NetworkFeatureSettings featureSettings;
+        public PublicInt networkFeatureState;
 
         [HideInInspector] public bool serverUDPSupport;
         public PublicBool udpOnline;
@@ -51,6 +52,7 @@ namespace Network.Client.Code
             debugMessageEvent.Register(clientSend.DebugMessage);
 
             clientState.value = (int) NetworkState.notConnected;
+            networkFeatureState.value = (int) FeatureState.offline;
         }
 
         private void OnApplicationQuit()
@@ -122,12 +124,14 @@ namespace Network.Client.Code
             
             Debug.Log("CLIENT: Disconnecting...");
             clientState.value = (int) NetworkState.disconnecting;
-            
+            networkFeatureState.value = (int) FeatureState.stopping;
+
             tcpClient.Disconnect();
             udpClient.Disconnect();
 
             Debug.Log("CLIENT: Disconnected");
             clientState.value = (int) NetworkState.notConnected;
+            networkFeatureState.value = (int) FeatureState.offline;
         }
     }
 }

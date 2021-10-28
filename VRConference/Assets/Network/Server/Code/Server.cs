@@ -25,6 +25,7 @@ namespace Network.Server.Code
         [SerializeField] private PublicEventString debugMessageEvent;
         
         public NetworkFeatureSettings featureSettings;
+        public PublicInt networkFeatureState;
         private void Awake()
         {
             tcpServer = new TCPServer(this);
@@ -47,6 +48,7 @@ namespace Network.Server.Code
             debugMessageEvent.Register(serverSend.DebugMessage);
 
             serverState.value = (int) NetworkState.notConnected;
+            networkFeatureState.value = (int) FeatureState.offline;
         }
 
         private void OnApplicationQuit()
@@ -60,6 +62,7 @@ namespace Network.Server.Code
             
             Debug.Log("SERVER: Starting...");
             serverState.value = (int) NetworkState.connecting;
+            networkFeatureState.value = (int) FeatureState.starting;
             
             tcpServer.Start();
             if (featureSettings.UPDSupport)
@@ -69,6 +72,7 @@ namespace Network.Server.Code
 
             Debug.Log("SERVER: Started");
             serverState.value = (int) NetworkState.connected;
+            networkFeatureState.value = (int) FeatureState.online;
         }
 
         public void ConnectClient(ServerClient client)
@@ -185,6 +189,7 @@ namespace Network.Server.Code
             
             Debug.Log("SERVER: Stopping...");
             serverState.value = (int) NetworkState.disconnecting;
+            networkFeatureState.value = (int) FeatureState.stopping;
 
             foreach (ServerClient client in clients)
             {
@@ -199,6 +204,7 @@ namespace Network.Server.Code
 
             Debug.Log("SERVER: Stopped");
             serverState.value = (int) NetworkState.notConnected;
+            networkFeatureState.value = (int) FeatureState.offline;
         }
     }
 }

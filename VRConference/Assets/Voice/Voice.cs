@@ -1,7 +1,9 @@
+using System;
 using Adrenak.UniVoice;
 using Adrenak.UniVoice.InbuiltImplementations;
 using UnityEngine;
 using Utility;
+
 
 public class Voice : MonoBehaviour
 {
@@ -11,45 +13,49 @@ public class Voice : MonoBehaviour
     [SerializeField] private PublicEvent stopVoiceServer;
     [SerializeField] private PublicEvent connectVoiceClient;
     [SerializeField] private PublicEvent disconnectVoiceClient;
-    [SerializeField] private PublicEventBool voiceDone;
-    
-    private void Init()
-    {
-        agent = new InbuiltChatroomAgentFactory("ws://84.186.214.53:11002").Create();
+    [SerializeField] private PublicInt featureState;
 
+    private void Awake()
+    {
         startVoiceServer.Register(StartServer);
         stopVoiceServer.Register(StopServer);
         connectVoiceClient.Register(ConnectClient);
         disconnectVoiceClient.Register(DisconnectClient);
-        
+    }
+
+    private void Init()
+    {
+        agent = new InbuiltChatroomAgentFactory("ws://84.186.214.53:11002").Create();
         
         agent.Network.OnCreatedChatroom += () => {
             Debug.Log("VOICE: Room created");
-            voiceDone.Raise(true);
+            featureState.value = (int) FeatureState.online;
         };
 
         agent.Network.OnChatroomCreationFailed += ex => {
             Debug.Log("VOICE: Room creation failed");
-            voiceDone.Raise(false);
+            featureState.value = (int) FeatureState.failed;
         };
 
         agent.Network.OnlosedChatroom += () => {
             Debug.Log("VOICE: Room closed");
+            featureState.value = (int) FeatureState.offline;
         };
 
         // JOINING
         agent.Network.OnJoinedChatroom += id => {
-            Debug.Log("VOICE: Peer "+ id + " joined");
-            voiceDone.Raise(true);
+            Debug.Log("VOICE: Joined Chatroom "+ id);
+            featureState.value = (int) FeatureState.online;
         };
 
         agent.Network.OnChatroomJoinFailed += ex => {
             Debug.Log(ex);
-            voiceDone.Raise(false);
+            featureState.value = (int) FeatureState.failed;
         };
 
         agent.Network.OnLeftChatroom += () => {
-            Debug.Log("VOICE: Peer left");
+            Debug.Log("VOICE: Left Chatroom");
+            featureState.value = (int) FeatureState.offline;
         };
 
         // PEERS
@@ -61,27 +67,32 @@ public class Voice : MonoBehaviour
             Debug.Log("VOICE: Peer "+ id + " left");
         };
     }
-   
-
+    
     private void StartServer()
     {
+        featureState.value = (int) FeatureState.starting;
+        
         Init();
-        agent.Network.HostChatroom("VRConference"); 
+        agent.Network.HostChatroom("VRConference");
     }
     
     private void StopServer()
     {
+        featureState.value = (int) FeatureState.stopping;
         agent.Network.CloseChatroom();
     }
     
     private void ConnectClient()
     {
+        featureState.value = (int) FeatureState.starting;
+        
         Init();
         agent.Network.JoinChatroom("VRConference");
     }
     
     private void DisconnectClient()
     {
+        featureState.value = (int) FeatureState.stopping;
         agent.Network.LeaveChatroom();
     }
 }

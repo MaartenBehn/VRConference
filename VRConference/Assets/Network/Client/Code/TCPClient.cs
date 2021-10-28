@@ -34,8 +34,10 @@ namespace Network.Client.Code
 
             receiveBuffer = new byte[State.BufferSize];
             socket.BeginConnect(client.ip.value, client.serverPort.value, ConnectCallback, socket);
-            client.clientState.value = (int) NetworkState.connecting;
             
+            client.clientState.value = (int) NetworkState.connecting;
+            client.networkFeatureState.value = (int) FeatureState.starting;
+
             Threader.RunAsync(() =>
             {
                 Thread.Sleep(2000);
@@ -47,6 +49,7 @@ namespace Network.Client.Code
                     });
                     socket.Close();
                     client.clientState.value = (int) NetworkState.notConnected;
+                    client.networkFeatureState.value = (int) FeatureState.failed;
                 }
             });
         }
@@ -58,6 +61,7 @@ namespace Network.Client.Code
              if (!socket.Connected)
              {
                  client.clientState.value = (int) NetworkState.notConnected;
+                 client.networkFeatureState.value = (int) FeatureState.offline;
                  return;
              }
 
@@ -66,6 +70,7 @@ namespace Network.Client.Code
                  Debug.Log("CLIENT: Connected TCP");
              });
              client.clientState.value = (int) NetworkState.connected;
+             client.networkFeatureState.value = (int) FeatureState.online;
 
              stream = socket.GetStream();
              
