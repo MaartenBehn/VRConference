@@ -12,6 +12,9 @@
         clientUDPConnection = 5,
         serverUDPConnection = 6,
         clientUDPConnectionStatus = 7,
+        
+        // Engine
+        userStatus = 10,
     }
 
     public enum NetworkState

@@ -52,5 +52,22 @@ namespace Network.Client.Code
         {
             client.clientSend.ClientUDPConnectionStatus();
         }
+        
+        public void UserStatus(Packet packet)
+        {
+            byte user = packet.ReadByte();
+            byte status = packet.ReadByte();
+            
+            if (status == 1)
+            {
+                client.userJoined.Raise(user);
+            }
+            else if (status == 2)
+            {
+                client.userLeft.Raise(user);
+            }
+            
+            Debug.LogFormat("CLIENT: User: {0} Status: {1}", user, status);
+        }
     }
 }

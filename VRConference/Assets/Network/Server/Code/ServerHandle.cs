@@ -53,5 +53,25 @@ namespace Network.Server.Code
             Debug.Log("SERVER: [" +fromClient.id+ "] UDP connection status: "+ fromClient.updConnected);
             fromClient.state = NetworkState.connected;
         }
+        
+        public void UserStatus(ServerClient fromClient, Packet packet)
+        {
+            byte user = packet.ReadByte();
+            byte status = packet.ReadByte();
+            
+            server.serverSend.UserStatus(user, status, fromClient, false);
+
+            if (status == 1)
+            {
+                server.serverSend.UserStatus(0, 1, fromClient, true);
+                server.userJoined.Raise(user);
+            }
+            else if (status == 2)
+            {
+                server.userLeft.Raise(user);
+            }
+            
+            Debug.LogFormat("CLIENT: User: {0} Status: {1}", user, status);
+        }
     }
 }

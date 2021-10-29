@@ -68,5 +68,28 @@ namespace Network.Server.Code
                 server.SendTCPData(client, packet);
             }
         }
+        
+        public void UserStatus(byte user, byte status)
+        {
+            using Packet packet = new Packet((byte) Packets.userStatus);
+            packet.Write(user);
+            server.SendTCPDataToAll(packet);
+        }
+        
+        public void UserStatus(byte user, byte status,ServerClient client, bool only)
+        {
+            using Packet packet = new Packet((byte) Packets.userStatus);
+            packet.Write(user);
+            packet.Write(status);
+            
+            if (only)
+            {
+                server.SendTCPData(client, packet);
+            }
+            else
+            {
+                server.SendTCPDataToAll(packet, client);
+            }
+        }
     }
 }

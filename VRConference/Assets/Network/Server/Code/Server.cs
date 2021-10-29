@@ -26,6 +26,10 @@ namespace Network.Server.Code
         
         public NetworkFeatureSettings featureSettings;
         public PublicInt networkFeatureState;
+
+        public PublicEventByte userJoined;
+        public PublicEventByte userLeft;
+        
         private void Awake()
         {
             tcpServer = new TCPServer(this);
@@ -41,6 +45,8 @@ namespace Network.Server.Code
                 { (byte)Packets.clientSettings, serverHandle.ClientSettings },
                 { (byte)Packets.clientUDPConnection, serverHandle.ClientUDPConnection },
                 { (byte)Packets.clientUDPConnectionStatus, serverHandle.ClientUDPConnectionStatus },
+                
+                { (byte)Packets.userStatus, serverHandle.UserStatus },
             };
 
             startServerEvent.Register(StartServer);
@@ -102,7 +108,7 @@ namespace Network.Server.Code
             {
                 Threader.RunOnMainThread(() =>
                 {
-                    Debug.Log("CLIENT: Server ID not correct.");
+                    Debug.Log("SERVER: Server ID not correct.");
                 });
                 return;
             } 
@@ -143,6 +149,18 @@ namespace Network.Server.Code
             }
         }
         
+        public void SendTCPDataToAll(Packet packet, ServerClient eClient)
+        {
+            packet = AddHeaderToPacket(packet);
+            foreach (ServerClient client in clients)
+            {
+                if (client != null && client != eClient)
+                {
+                    tcpServer.SendData(client, packet.ToArray(), packet.Length());
+                }
+            }
+        }
+        
         public void SendUDPData(ServerClient client, Packet packet)
         {
             if (!featureSettings.UPDSupport || !client.clientUdpSupport)
@@ -160,6 +178,24 @@ namespace Network.Server.Code
             foreach (ServerClient client in clients)
             {
                 if (client != null)
+                {
+                    if (!featureSettings.UPDSupport || !client.clientUdpSupport)
+                    {
+                        SendTCPData(client, packet);
+                        continue;
+                    }
+                    
+                    udpServer.SendData(client, packet.ToArray(), packet.Length());
+                }
+            }
+        }
+        
+        public void SendUDPDataToAll(Packet packet, ServerClient eClient)
+        {
+            packet = AddHeaderToPacket(packet);
+            foreach (ServerClient client in clients)
+            {
+                if (client != null && client != eClient)
                 {
                     if (!featureSettings.UPDSupport || !client.clientUdpSupport)
                     {

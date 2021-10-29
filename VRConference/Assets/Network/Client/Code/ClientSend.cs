@@ -59,5 +59,13 @@ namespace Network.Client.Code
             packet.Write(client.udpOnline.value);
             client.SendTCPData(packet);
         }
+        
+        public void UserStatus(byte status)
+        {
+            using Packet packet = new Packet((byte) Packets.userStatus);
+            packet.Write((byte) client.clientId.value);
+            packet.Write(status);
+            client.SendTCPData(packet);
+        }
     }
 }

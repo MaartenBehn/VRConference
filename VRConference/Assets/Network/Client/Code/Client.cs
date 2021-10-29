@@ -31,6 +31,10 @@ namespace Network.Client.Code
         [HideInInspector] public bool serverUDPSupport;
         public PublicBool udpOnline;
 
+        public PublicEvent loadingDone;
+        public PublicEventByte userJoined;
+        public PublicEventByte userLeft;
+
         private void Awake()
         {
             tcpClient = new TCPClient(this);
@@ -45,11 +49,18 @@ namespace Network.Client.Code
                 { (byte)Packets.serverSettings, clientHandle.ServerSettings },
                 { (byte)Packets.serverStartUDP, clientHandle.ServerStartUDP },
                 { (byte)Packets.serverUDPConnection, clientHandle.ServerUDPConnection },
+                
+                { (byte)Packets.userStatus, clientHandle.UserStatus },
             };
 
             connectEvent.Register(tcpClient.Connect);
             disconnectEvent.Register(Disconnect);
             debugMessageEvent.Register(clientSend.DebugMessage);
+
+            loadingDone.Register(() =>
+            {
+                clientSend.UserStatus(1);
+            });
 
             clientState.value = (int) NetworkState.notConnected;
             networkFeatureState.value = (int) FeatureState.offline;
