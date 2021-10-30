@@ -10,7 +10,7 @@ namespace Network.Server.Code
         public PublicInt port;
         public PublicInt serverState;
         
-        private delegate void PacketHandler(ServerClient client, Packet packet);
+        private delegate void PacketHandler(byte userID, Packet packet);
         private static Dictionary<byte, PacketHandler> packetHandlers;
 
         public TCPServer tcpServer;
@@ -30,6 +30,8 @@ namespace Network.Server.Code
         public PublicEventByte userJoined;
         public PublicEventByte userLeft;
         
+        public PublicByte voiceID;
+        
         private void Awake()
         {
             tcpServer = new TCPServer(this);
@@ -46,7 +48,9 @@ namespace Network.Server.Code
                 { (byte)Packets.clientUDPConnection, serverHandle.ClientUDPConnection },
                 { (byte)Packets.clientUDPConnectionStatus, serverHandle.ClientUDPConnectionStatus },
                 
+                { (byte)Packets.clientSendToAllClients, serverHandle.ClientSendToAllClients },
                 { (byte)Packets.userStatus, serverHandle.UserStatus },
+                { (byte)Packets.userVoiceId, serverHandle.UserVoiceID },
             };
 
             startServerEvent.Register(StartServer);
@@ -88,7 +92,7 @@ namespace Network.Server.Code
             tcpServer.ConnectClient(client);
         }
 
-        public void HandelData(byte[] data, ServerClient client = null)
+        public void HandelData(byte[] data)
         {
             Packet packet = new Packet(data);
             packet.PrepareForRead();
@@ -103,43 +107,23 @@ namespace Network.Server.Code
                 return;
             }
             
-            byte clientId = packet.ReadByte();
-            if (clientId == 0 || client != null && client.id != clientId)
-            {
-                Threader.RunOnMainThread(() =>
-                {
-                    Debug.Log("SERVER: Server ID not correct.");
-                });
-                return;
-            } 
-            if(clientId != 0 && client == null)
-            {
-                client = clients[clientId];
-            }
-            
             byte packetId = packet.ReadByte();
+            byte userID = packet.ReadByte();
             
             Threader.RunOnMainThread(() =>
             {
-                packetHandlers[packetId](client, packet);
+                packetHandlers[packetId](userID, packet);
             });
-        }
-
-        private Packet AddHeaderToPacket(Packet packet)
-        {
-            packet.Write(0, (byte) 1);
-            packet.Write(0, packet.Length());
-            return packet;
         }
 
         public void SendTCPData(ServerClient client, Packet packet)
         {
-            packet = AddHeaderToPacket(packet);
+            packet.PrepareForSend();
             tcpServer.SendData(client, packet.ToArray(), packet.Length());
         }
         public void SendTCPDataToAll(Packet packet)
         {
-            packet = AddHeaderToPacket(packet);
+            packet.PrepareForSend();
             foreach (ServerClient client in clients)
             {
                 if (client != null)
@@ -151,7 +135,7 @@ namespace Network.Server.Code
         
         public void SendTCPDataToAll(Packet packet, ServerClient eClient)
         {
-            packet = AddHeaderToPacket(packet);
+            packet.PrepareForSend();
             foreach (ServerClient client in clients)
             {
                 if (client != null && client != eClient)
@@ -169,12 +153,12 @@ namespace Network.Server.Code
                 return;
             }
             
-            packet = AddHeaderToPacket(packet);
+            packet.PrepareForSend();
             udpServer.SendData(client, packet.ToArray(), packet.Length());
         }
         public void SendUDPDataToAll(Packet packet)
         {
-            packet = AddHeaderToPacket(packet);
+            packet.PrepareForSend();
             foreach (ServerClient client in clients)
             {
                 if (client != null)
@@ -192,7 +176,7 @@ namespace Network.Server.Code
         
         public void SendUDPDataToAll(Packet packet, ServerClient eClient)
         {
-            packet = AddHeaderToPacket(packet);
+            packet.PrepareForSend();
             foreach (ServerClient client in clients)
             {
                 if (client != null && client != eClient)

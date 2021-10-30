@@ -10,10 +10,10 @@ namespace Network.Client.Code
         public PublicString ip;
         public PublicInt clientPort;
         public PublicInt serverPort;
-        public PublicInt clientId;
+        public PublicByte clientId;
         public PublicInt clientState;
         
-        private delegate void PacketHandler(Packet packet);
+        private delegate void PacketHandler(byte userID, Packet packet);
         private static Dictionary<byte, PacketHandler> packetHandlers;
 
         public TCPClient tcpClient;
@@ -35,6 +35,8 @@ namespace Network.Client.Code
         public PublicEventByte userJoined;
         public PublicEventByte userLeft;
 
+        [SerializeField] private PublicByte voiceID;
+
         private void Awake()
         {
             tcpClient = new TCPClient(this);
@@ -42,6 +44,7 @@ namespace Network.Client.Code
             clientHandle = new ClientHandle(this);
             clientSend = new ClientSend(this);
             
+            // All Handle funcs are mapped here to the packet Type. They should have the same name.
             packetHandlers = new Dictionary<byte, PacketHandler>()
             {
                 { (byte)Packets.debugMessage, clientHandle.DebugMessage },
@@ -52,7 +55,8 @@ namespace Network.Client.Code
                 
                 { (byte)Packets.userStatus, clientHandle.UserStatus },
             };
-
+            
+            // Init all Events
             connectEvent.Register(tcpClient.Connect);
             disconnectEvent.Register(Disconnect);
             debugMessageEvent.Register(clientSend.DebugMessage);
@@ -60,8 +64,10 @@ namespace Network.Client.Code
             loadingDone.Register(() =>
             {
                 clientSend.UserStatus(1);
+                clientSend.UserVoiceID(voiceID.value);
             });
-
+            
+            // Setting state
             clientState.value = (int) NetworkState.notConnected;
             networkFeatureState.value = (int) FeatureState.offline;
         }
@@ -71,11 +77,13 @@ namespace Network.Client.Code
             Disconnect();
         }
 
+        // This funcs gets the incoming bytes and maps it to the handle func.
         public void HandleData(byte[] data)
         {
             Packet packet = new Packet(data);
             packet.PrepareForRead();
             
+            // This checks if the data has the length it should have.
             int length = packet.ReadInt32();
             if (length + 4 != data.Length)
             {
@@ -86,34 +94,18 @@ namespace Network.Client.Code
                 return;
             }
             
-            byte serverId = packet.ReadByte();
-            if (serverId != 1)
-            {
-                Threader.RunOnMainThread(() =>
-                {
-                    Debug.Log("CLIENT: Server ID not correct.");
-                });
-                return;
-            }
-            
             byte packetId = packet.ReadByte();
+            byte userID = packet.ReadByte();
 
             Threader.RunOnMainThread(() =>
             {
-                packetHandlers[packetId](packet);
+                packetHandlers[packetId](userID, packet);
             });
         }
-
-        private Packet AddHeaderToPacket(Packet packet)
-        {
-            packet.Write(0, (byte) clientId.value);
-            packet.Write(0, packet.Length());
-            return packet;
-        }
-
+        
         public void SendTCPData(Packet packet)
         {
-            packet = AddHeaderToPacket(packet);
+            packet.PrepareForSend();
             tcpClient.SendData(packet.ToArray(), packet.Length());
         }
         
@@ -125,7 +117,7 @@ namespace Network.Client.Code
                 return;
             }
             
-            packet = AddHeaderToPacket(packet);
+            packet.PrepareForSend();
             udpClient.SendData(packet.ToArray(), packet.Length());
         }
 

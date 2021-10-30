@@ -13,7 +13,7 @@ namespace Network.Client.Code
             this.client = client;
         }
         
-        public void DebugMessage(Packet packet)
+        public void DebugMessage(byte userID, Packet packet)
         {
             string message = packet.ReadString();
             Threader.RunOnMainThread(() =>
@@ -22,7 +22,7 @@ namespace Network.Client.Code
             });
         }
         
-        public void ServerSettings(Packet packet)
+        public void ServerSettings(byte userID, Packet packet)
         {
             client.clientId.value = packet.ReadByte();
             
@@ -42,18 +42,18 @@ namespace Network.Client.Code
             client.clientSend.ClientSettings();
         }
         
-        public void ServerStartUDP(Packet packet)
+        public void ServerStartUDP(byte userID, Packet packet)
         {
             client.udpClient.Connect();
             client.clientSend.ClientUDPConnection();
         }
         
-        public void ServerUDPConnection(Packet packet)
+        public void ServerUDPConnection(byte userID, Packet packet)
         {
             client.clientSend.ClientUDPConnectionStatus();
         }
         
-        public void UserStatus(Packet packet)
+        public void UserStatus(byte userID, Packet packet)
         {
             byte user = packet.ReadByte();
             byte status = packet.ReadByte();
@@ -68,6 +68,14 @@ namespace Network.Client.Code
             }
             
             Debug.LogFormat("CLIENT: User: {0} Status: {1}", user, status);
+        }
+        
+        public void UserVoiceID(byte userID, Packet packet)
+        {
+            byte user = packet.ReadByte();
+            byte voiceID = packet.ReadByte();
+
+            UserController.instance.users[user].voiceId = voiceID;
         }
     }
 }

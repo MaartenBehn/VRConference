@@ -13,8 +13,13 @@
         serverUDPConnection = 6,
         clientUDPConnectionStatus = 7,
         
+        clientSendToAllClients = 8,
+        
         // Engine
-        userStatus = 10,
+        userStatus = 10, // byte 1 = joining, 2 = left
+        
+        // Voice
+        userVoiceId = 20, // byte = VoiceID
     }
 
     public enum NetworkState

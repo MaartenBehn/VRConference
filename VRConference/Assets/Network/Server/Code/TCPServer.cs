@@ -76,7 +76,7 @@ namespace Network.Server.Code
 
                 byte[] data = new byte[byteLength];
                 Array.Copy(client.receiveBuffer, data, byteLength);
-                server.HandelData(data, client);
+                server.HandelData(data);
                 
                 client.stream.BeginRead(client.receiveBuffer, 0, State.BufferSize, ReceiveCallback, client);
             }

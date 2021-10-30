@@ -15,7 +15,7 @@ namespace Network.Both
 
         /// <summary>Creates a new packet with a given ID. Used for sending.</summary>
         /// <param name="id">The packet ID.</param>
-        public Packet(byte id)
+        public Packet(byte id, byte userID)
         {
             buffer = new List<byte>(); 
             readPos = 0;
@@ -45,9 +45,24 @@ namespace Network.Both
             return buffer.Count; // Return the length of buffer
         }
         
+        private bool readyToRead;
         public void PrepareForRead()
         {
+            if (readyToRead)
+                return;
+            
             readableBuffer = ToArray();
+            readyToRead = true;
+        }
+
+        private bool readyToSend;
+        public void PrepareForSend()
+        {
+            if(readyToSend) 
+                return;
+            
+            Write(0, Length());
+            readyToSend = true;
         }
         
         #endregion
@@ -340,7 +355,7 @@ namespace Network.Both
             }
             catch
             {
-                throw new Exception("Could not read value of type 'string'!");
+                throw new Exception("Could not read value of type 'Int32'!");
             }
         }
         public int2 ReadInt2(bool moveReadPos = true)

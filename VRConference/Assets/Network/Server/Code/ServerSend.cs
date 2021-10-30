@@ -15,7 +15,7 @@ namespace Network.Server.Code
         
         public void DebugMessage(string message)
         {
-            using Packet packet = new Packet((byte) Packets.debugMessage);
+            using Packet packet = new Packet((byte) Packets.debugMessage, 0);
             packet.Write(message);
             server.SendTCPDataToAll(packet);
         }
@@ -28,7 +28,7 @@ namespace Network.Server.Code
                   "\nUDP " + server.featureSettings.UPDSupport
             );
 
-            using Packet packet = new Packet((byte) Packets.serverSettings);
+            using Packet packet = new Packet((byte) Packets.serverSettings, 0);
             packet.Write(client.id);
                 
             packet.Write(version);
@@ -40,7 +40,7 @@ namespace Network.Server.Code
         public void ServerStartUDP(ServerClient client)
         {
             Debug.LogFormat("SERVER: [" +client.id+ "] starting udp test");
-            using (Packet packet = new Packet((byte) Packets.serverStartUDP))
+            using (Packet packet = new Packet((byte) Packets.serverStartUDP, 0))
             {
                 server.SendTCPData(client, packet);
             }
@@ -56,7 +56,7 @@ namespace Network.Server.Code
         public void ServerUDPConnection(ServerClient client, bool received)
         {
             Debug.LogFormat("SERVER: [" +client.id+ "] udp test message");
-            using Packet packet = new Packet((byte) Packets.serverUDPConnection);
+            using Packet packet = new Packet((byte) Packets.serverUDPConnection, 0);
             packet.Write(received);
 
             if (received)
@@ -71,25 +71,16 @@ namespace Network.Server.Code
         
         public void UserStatus(byte user, byte status)
         {
-            using Packet packet = new Packet((byte) Packets.userStatus);
-            packet.Write(user);
+            using Packet packet = new Packet((byte) Packets.userStatus, user);
+            packet.Write(status);
             server.SendTCPDataToAll(packet);
         }
-        
-        public void UserStatus(byte user, byte status,ServerClient client, bool only)
+
+        public void UserVoiceID(byte user, byte voiceID)
         {
-            using Packet packet = new Packet((byte) Packets.userStatus);
-            packet.Write(user);
-            packet.Write(status);
-            
-            if (only)
-            {
-                server.SendTCPData(client, packet);
-            }
-            else
-            {
-                server.SendTCPDataToAll(packet, client);
-            }
+            using Packet packet = new Packet((byte) Packets.userVoiceId, user);
+            packet.Write(voiceID);
+            server.SendTCPDataToAll(packet);
         }
     }
 }
