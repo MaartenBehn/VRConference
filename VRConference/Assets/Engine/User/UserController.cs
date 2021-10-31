@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Engine.User;
 using UnityEngine;
@@ -29,11 +27,13 @@ public class UserController : MonoBehaviour
         
         userJoined.Register(UserJoined);
         userLeft.Register(UserLeft);
+
+        users = new Dictionary<byte, User>();
     }
 
     private void UserJoined(byte id)
     {
-        User user = userPreFab.GetComponent<User>();
+        User user = Instantiate(userPreFab, transform).GetComponent<User>();
         user.id = id;
 
         users[id] = user;

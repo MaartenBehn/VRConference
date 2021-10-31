@@ -46,6 +46,16 @@ namespace Network.Both
             return buffer.Count; // Return the length of buffer
         }
         
+        public int ReadPos()
+        {
+            return readPos; // Return the readPos
+        }
+        
+        public int UnReadLength()
+        {
+            return buffer.Count - readPos; // Return the readPos
+        }
+        
         private bool readyToRead;
         public void PrepareForRead()
         {
@@ -65,7 +75,6 @@ namespace Network.Both
             Write(0, Length());
             readyToSend = true;
         }
-        
         #endregion
         
         #region Write Data

@@ -36,6 +36,7 @@ namespace Network.Client.Code
         public PublicEventByte userLeft;
 
         [SerializeField] private PublicByte voiceID;
+        [SerializeField] private PublicEventFloat3 sendPosEvent;
 
         private void Awake()
         {
@@ -54,6 +55,9 @@ namespace Network.Client.Code
                 { (byte)Packets.serverUDPConnection, clientHandle.ServerUDPConnection },
                 
                 { (byte)Packets.userStatus, clientHandle.UserStatus },
+                { (byte)Packets.userVoiceId, clientHandle.UserVoiceID },
+                
+                { (byte)Packets.userPos, clientHandle.UserPos },
             };
             
             // Init all Events
@@ -66,6 +70,8 @@ namespace Network.Client.Code
                 clientSend.UserStatus(1);
                 clientSend.UserVoiceID(voiceID.value);
             });
+
+            sendPosEvent.Register(clientSend.UserPos);
             
             // Setting state
             clientState.value = (int) NetworkState.notConnected;

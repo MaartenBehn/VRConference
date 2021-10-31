@@ -13,13 +13,15 @@
         serverUDPConnection = 6,
         clientUDPConnectionStatus = 7,
         
-        clientSendToAllClients = 8,
-        
+        // Container Packages
+        clientContainerPacket = 8, // byte = ContainerType, bool = use UDP, (byte[] userIDs)
+
         // Engine
         userStatus = 10, // byte 1 = joining, 2 = left
+        userVoiceId = 11, // byte = VoiceID
         
-        // Voice
-        userVoiceId = 20, // byte = VoiceID
+        // Movement
+        userPos = 20 // Vec3
     }
 
     public enum NetworkState
@@ -28,6 +30,14 @@
         connected = 2,
         connecting = 3,
         disconnecting = 4,
+    }
+
+    public enum ContainerType
+    {
+        all = 1,
+        allExceptOrigin = 2,
+        list = 3,
+        allExceptList = 4,
     }
 
     public static class State

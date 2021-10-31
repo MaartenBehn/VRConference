@@ -19,7 +19,8 @@ namespace Voice
         [SerializeField] private PublicEvent connectVoiceClient;
         [SerializeField] private PublicEvent disconnectVoiceClient;
         [SerializeField] private PublicInt featureState;
-        
+
+        [SerializeField] private PublicEvent loadingDone;
         [SerializeField] private PublicByte voiceID;
         
         private void Awake()
@@ -38,6 +39,10 @@ namespace Voice
             stopVoiceServer.Register(StopServer);
             connectVoiceClient.Register(ConnectClient);
             disconnectVoiceClient.Register(DisconnectClient);
+            loadingDone.Register(() =>
+            {
+                voiceID.value = (byte) agent.Network.OwnID;
+            });
         }
 
         private void Init()
@@ -84,8 +89,6 @@ namespace Voice
             agent.Network.OnPeerLeftChatroom += id => {
                 Debug.Log("VOICE: Peer "+ id + " left");
             };
-
-            voiceID.value = (byte) agent.Network.OwnID;
         }
     
         private void StartServer()

@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Network.Both;
+using Unity.Mathematics;
 using UnityEngine;
 using Utility;
 
@@ -59,27 +60,82 @@ namespace Network.Client.Code
             packet.Write(client.udpOnline.value);
             client.SendTCPData(packet);
         }
-        
-        public void ClientSendToAllClients(Packet packet)
+
+        private void SendContainer(Packet containerPacket, Packet packet, bool userUDP)
         {
-            using Packet containerPacket = new Packet((byte) Packets.clientSendToAllClients, client.clientId.value);
-            packet.PrepareForRead();
             containerPacket.Write(packet.ToArray());
-            client.SendTCPData(containerPacket);
+            if (!userUDP)
+            {
+                client.SendTCPData(containerPacket);
+            }
+            else
+            {
+                client.SendUDPData(containerPacket);
+            }
+        }
+        public void ContainerToAll(Packet packet, bool userUDP)
+        {
+            using Packet containerPacket = new Packet((byte) Packets.clientContainerPacket, client.clientId.value);
+            packet.PrepareForRead();
+            containerPacket.Write((byte) ContainerType.all);
+            containerPacket.Write(userUDP);
+
+            SendContainer(containerPacket, packet, userUDP);
+        }
+        
+        public void ContainerToAllExceptOrigin(Packet packet, bool userUDP)
+        {
+            using Packet containerPacket = new Packet((byte) Packets.clientContainerPacket, client.clientId.value);
+            packet.PrepareForRead();
+            containerPacket.Write((byte) ContainerType.allExceptOrigin);
+            containerPacket.Write(userUDP);
+            
+            SendContainer(containerPacket, packet, userUDP);
+        }
+        
+        public void ContainerToList(Packet packet, byte[] userIDs, bool userUDP)
+        {
+            using Packet containerPacket = new Packet((byte) Packets.clientContainerPacket, client.clientId.value);
+            packet.PrepareForRead();
+            containerPacket.Write((byte) ContainerType.list);
+            containerPacket.Write(userUDP);
+            containerPacket.Write(userIDs.Length);
+            containerPacket.Write(userIDs);
+            
+            SendContainer(containerPacket, packet, userUDP);
+        }
+        
+        public void ContainerToAllExceptList(Packet packet, byte[] userIDs, bool userUDP)
+        {
+            using Packet containerPacket = new Packet((byte) Packets.clientContainerPacket, client.clientId.value);
+            packet.PrepareForRead();
+            containerPacket.Write((byte) ContainerType.allExceptList);
+            containerPacket.Write(userUDP);
+            containerPacket.Write(userIDs.Length);
+            containerPacket.Write(userIDs);
+            
+            SendContainer(containerPacket, packet, userUDP);
         }
         
         public void UserStatus(byte status)
         {
             using Packet packet = new Packet((byte) Packets.userStatus, client.clientId.value);
             packet.Write(status);
-            ClientSendToAllClients(packet);
+            ContainerToAllExceptOrigin(packet, false);
         }
         
         public void UserVoiceID(byte voiceID)
         {
             using Packet packet = new Packet((byte) Packets.userVoiceId, client.clientId.value);
             packet.Write(voiceID);
-            ClientSendToAllClients(packet);
+            ContainerToAllExceptOrigin(packet, false);
+        }
+        
+        public void UserPos(float3 pos)
+        {
+            using Packet packet = new Packet((byte) Packets.userPos, client.clientId.value);
+            packet.Write(pos);
+            ContainerToAllExceptOrigin(packet, true);
         }
     }
 }

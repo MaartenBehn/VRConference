@@ -1,5 +1,7 @@
 ﻿using System.Linq;
+using Engine.User;
 using Network.Both;
+using Unity.Mathematics;
 using UnityEngine;
 using Utility;
 
@@ -73,7 +75,23 @@ namespace Network.Client.Code
         {
             byte voiceID = packet.ReadByte();
 
-            UserController.instance.users[userID].voiceId = voiceID;
+            User user = UserController.instance.users[userID];
+            if (user == null)
+            {
+                Debug.Log("Client: User not existing");
+                return;
+            }
+            user.voiceId = voiceID;
+            
+            Debug.LogFormat("CLIENT: User: {0} VoiceID: {1}", userID, voiceID);
+        }
+        
+        public void UserPos(byte userID, Packet packet)
+        {
+            float3 pos = packet.ReadFloat3();
+            UserController.instance.users[userID].transform.position = pos;
+            
+            Debug.LogFormat("CLIENT: User: {0} Pos: {1}", userID, pos);
         }
     }
 }

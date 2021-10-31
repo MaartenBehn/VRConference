@@ -1,5 +1,6 @@
 ﻿using Engine.User;
 using Network.Both;
+using Unity.Mathematics;
 using UnityEngine;
 using Utility;
 
@@ -77,16 +78,114 @@ namespace Network.Server.Code
             fromClient.state = NetworkState.connected;
         }
         
-        public void ClientSendToAllClients(byte userID, Packet containerPacket)
-        {
+        public void ClientContainerPacket(byte userID, Packet containerPacket)
+        { 
             ServerClient fromClient = GetClient(userID);
-            
-            byte[] data = containerPacket.ReadBytes(containerPacket.Length() - State.HeaderSize);
+
+            byte type = containerPacket.ReadByte();
+            bool useUDP = containerPacket.ReadBool();
+
+            byte[] userIDs = null;
+            if (type == (byte) ContainerType.list || type == (byte) ContainerType.allExceptList)
+            {
+                int length = containerPacket.ReadInt32();
+                userIDs = containerPacket.ReadBytes(length);
+            }
+
+            byte[] data = containerPacket.ReadBytes(containerPacket.UnReadLength());
             using Packet packet = new Packet(data);
+            
             packet.PrepareForSend();
             
-            server.SendTCPDataToAll(packet, fromClient);
-            server.HandelData(packet.ToArray());
+            if (type == (byte) ContainerType.all)
+            {
+                if (!useUDP)
+                {
+                    server.SendTCPDataToAll(packet);
+                }
+                else
+                {
+                    server.SendUDPDataToAll(packet);
+                }
+                
+                server.HandelData(packet.ToArray());
+            }
+            else if (type == (byte) ContainerType.allExceptOrigin)
+            {
+                if (!useUDP)
+                {
+                    server.SendTCPDataToAll(packet, fromClient);
+                }
+                else
+                {
+                    server.SendUDPDataToAll(packet, fromClient);
+                }
+                server.HandelData(packet.ToArray());
+            }
+            else if (type == (byte) ContainerType.list)
+            {
+                for (int i = 0; i < userIDs.Length; i++)
+                {
+                    if (userIDs[i] == 0)
+                    {
+                        server.HandelData(packet.ToArray());
+                    }
+                    else
+                    {
+                        if (!useUDP)
+                        {
+                            server.SendTCPData(GetClient(userIDs[i]), packet);
+                        }
+                        else
+                        {
+                            server.SendUDPData(GetClient(userIDs[i]), packet);
+                        }
+                    }
+                }
+            }
+            else if (type == (byte) ContainerType.allExceptList)
+            {
+                bool send;
+                foreach (ServerClient client in server.clients)
+                {
+                    send = true;
+                    for (int i = 0; i < userIDs.Length; i++)
+                    {
+                        if (client.id == userIDs[i])
+                        {
+                            send = false;
+                            break;
+                        }
+                    }
+
+                    if (send)
+                    {
+                        if (!useUDP)
+                        {
+                            server.SendTCPData(client, packet);
+                        }
+                        else
+                        {
+                            server.SendUDPData(client, packet);
+                        }
+                    }
+                }
+                
+                send = true;
+                for (int i = 0; i < userIDs.Length; i++)
+                {
+                    if (userIDs[i] == 0)
+                    {
+                        send = false;
+                        break;
+                    }
+                }
+                
+                if (send)
+                {
+                    server.HandelData(packet.ToArray());
+                }
+            }
         }
         
         public void UserStatus(byte userID, Packet packet)
@@ -95,7 +194,7 @@ namespace Network.Server.Code
 
             if (status == 1)
             {
-                server.serverSend.UserStatus(0,1);
+                server.serverSend.UserStatus(1);
                 server.userJoined.Raise(userID);
             }
             else if (status == 2)
@@ -103,7 +202,7 @@ namespace Network.Server.Code
                 server.userLeft.Raise(userID);
             }
             
-            Debug.LogFormat("CLIENT: User: {0} Status: {1}", userID, status);
+            Debug.LogFormat("SERVER: User: {0} Status: {1}", userID, status);
         }
         
         public void UserVoiceID(byte userID, Packet packet)
@@ -116,8 +215,19 @@ namespace Network.Server.Code
                 Debug.Log("SERVER: User not existing");
                 return;
             }
+            user.voiceId = voiceID;
             
-            server.serverSend.UserVoiceID(0, server.voiceID.value);
+            server.serverSend.UserVoiceID(server.voiceID.value);
+            
+            Debug.LogFormat("SERVER: User: {0} VoiceID: {1}", userID, voiceID);
+        }
+        
+        public void UserPos(byte userID, Packet packet)
+        {
+            float3 pos = packet.ReadFloat3();
+            UserController.instance.users[userID].transform.position = pos;
+            
+            Debug.LogFormat("SERVER: User: {0} Pos: {1}", userID, pos);
         }
     }
 }

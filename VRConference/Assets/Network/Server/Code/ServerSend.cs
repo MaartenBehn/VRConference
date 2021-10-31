@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Network.Both;
+using Unity.Mathematics;
 using UnityEngine;
 using Utility;
 
@@ -69,18 +70,25 @@ namespace Network.Server.Code
             }
         }
         
-        public void UserStatus(byte user, byte status)
+        public void UserStatus(byte status)
         {
-            using Packet packet = new Packet((byte) Packets.userStatus, user);
+            using Packet packet = new Packet((byte) Packets.userStatus, 0);
             packet.Write(status);
             server.SendTCPDataToAll(packet);
         }
 
-        public void UserVoiceID(byte user, byte voiceID)
+        public void UserVoiceID(byte voiceID)
         {
-            using Packet packet = new Packet((byte) Packets.userVoiceId, user);
+            using Packet packet = new Packet((byte) Packets.userVoiceId, 0);
             packet.Write(voiceID);
             server.SendTCPDataToAll(packet);
+        }
+        
+        public void UserPos(float3 pos)
+        {
+            using Packet packet = new Packet((byte) Packets.userPos, 0);
+            packet.Write(pos);
+            server.SendUDPDataToAll(packet);
         }
     }
 }
