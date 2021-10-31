@@ -55,27 +55,25 @@ namespace Network.Client.Code
         
         public void UserStatus(byte userID, Packet packet)
         {
-            byte user = packet.ReadByte();
             byte status = packet.ReadByte();
             
             if (status == 1)
             {
-                client.userJoined.Raise(user);
+                client.userJoined.Raise(userID);
             }
             else if (status == 2)
             {
-                client.userLeft.Raise(user);
+                client.userLeft.Raise(userID);
             }
             
-            Debug.LogFormat("CLIENT: User: {0} Status: {1}", user, status);
+            Debug.LogFormat("CLIENT: User: {0} Status: {1}", userID, status);
         }
         
         public void UserVoiceID(byte userID, Packet packet)
         {
-            byte user = packet.ReadByte();
             byte voiceID = packet.ReadByte();
 
-            UserController.instance.users[user].voiceId = voiceID;
+            UserController.instance.users[userID].voiceId = voiceID;
         }
     }
 }

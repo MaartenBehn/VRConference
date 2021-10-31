@@ -71,7 +71,6 @@ namespace Network.Client.Code
         public void UserStatus(byte status)
         {
             using Packet packet = new Packet((byte) Packets.userStatus, client.clientId.value);
-            packet.Write(client.clientId.value);
             packet.Write(status);
             ClientSendToAllClients(packet);
         }
@@ -79,7 +78,6 @@ namespace Network.Client.Code
         public void UserVoiceID(byte voiceID)
         {
             using Packet packet = new Packet((byte) Packets.userVoiceId, client.clientId.value);
-            packet.Write(client.clientId.value);
             packet.Write(voiceID);
             ClientSendToAllClients(packet);
         }

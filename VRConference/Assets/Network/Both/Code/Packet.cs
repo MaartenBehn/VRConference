@@ -20,6 +20,7 @@ namespace Network.Both
             buffer = new List<byte>(); 
             readPos = 0;
             Write(id); 
+            Write(userID);
         }
 
         /// <summary>Creates a packet from which data can be read. Used for receiving.</summary>
@@ -355,7 +356,7 @@ namespace Network.Both
             }
             catch
             {
-                throw new Exception("Could not read value of type 'Int32'!");
+                throw new Exception("Could not read value of type 'String'!");
             }
         }
         public int2 ReadInt2(bool moveReadPos = true)

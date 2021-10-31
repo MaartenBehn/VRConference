@@ -1,4 +1,5 @@
-﻿using Network.Both;
+﻿using Engine.User;
+using Network.Both;
 using UnityEngine;
 using Utility;
 
@@ -109,7 +110,12 @@ namespace Network.Server.Code
         {
             byte voiceID = packet.ReadByte();
 
-            UserController.instance.users[userID].voiceId = voiceID;
+            User user = UserController.instance.users[userID];
+            if (user == null)
+            {
+                Debug.Log("SERVER: User not existing");
+                return;
+            }
             
             server.serverSend.UserVoiceID(0, server.voiceID.value);
         }
