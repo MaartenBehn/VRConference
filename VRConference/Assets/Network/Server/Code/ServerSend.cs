@@ -18,7 +18,7 @@ namespace Network.Server.Code
         {
             using Packet packet = new Packet((byte) Packets.debugMessage, 0);
             packet.Write(message);
-            server.SendTCPDataToAll(packet);
+            SendToAll(packet, false);
         }
         
         public void ServerSettings(ServerClient client)
@@ -35,7 +35,7 @@ namespace Network.Server.Code
             packet.Write(version);
             packet.Write(server.featureSettings.UPDSupport);
 
-            server.SendTCPData(client, packet);
+            server.Send(client, packet, false);
         }
         
         public void ServerStartUDP(ServerClient client)
@@ -43,7 +43,7 @@ namespace Network.Server.Code
             Debug.LogFormat("SERVER: [" +client.id+ "] starting udp test");
             using (Packet packet = new Packet((byte) Packets.serverStartUDP, 0))
             {
-                server.SendTCPData(client, packet);
+                server.Send(client, packet, false);
             }
             
             Threader.RunAsync(() =>
@@ -60,35 +60,58 @@ namespace Network.Server.Code
             using Packet packet = new Packet((byte) Packets.serverUDPConnection, 0);
             packet.Write(received);
 
-            if (received)
-            {
-                server.SendUDPData(client, packet);
-            }
-            else
-            {
-                server.SendTCPData(client, packet);
-            }
-        }
-        
-        public void UserStatus(byte status)
-        {
-            using Packet packet = new Packet((byte) Packets.userStatus, 0);
-            packet.Write(status);
-            server.SendTCPDataToAll(packet);
+            server.Send(client, packet, received);
         }
 
-        public void UserVoiceID(byte voiceID)
+        public void SendToAll(Packet packet, bool useUDP)
         {
-            using Packet packet = new Packet((byte) Packets.userVoiceId, 0);
-            packet.Write(voiceID);
-            server.SendTCPDataToAll(packet);
+            server.HandelData(packet.ToArray());
+            SendToAllExceptOrigen(packet, useUDP);
         }
         
-        public void UserPos(float3 pos)
+        public void SendToAllExceptOrigen(Packet packet, bool useUDP)
         {
-            using Packet packet = new Packet((byte) Packets.userPos, 0);
-            packet.Write(pos);
-            server.SendUDPDataToAll(packet);
+            foreach (ServerClient client in server.clients)
+            {
+                if (client != null)
+                {
+                    server.Send(client, packet, useUDP);
+                }
+            }
+        }
+        
+        public void SendToList(Packet packet, byte[] userIDs, bool useUDP)
+        {
+            for (int i = 0; i < userIDs.Length; i++)
+            {
+                server.Send(server.GetClient(userIDs[i]), packet, useUDP);
+            }
+        }
+
+        public void SendToAllExceptList(Packet packet, byte[] userIDs, bool useUDP)
+        {
+            foreach (ServerClient client in server.clients)
+            {
+                if (client == null)
+                {
+                    continue;
+                }
+                
+                bool send = true;
+                for (int i = 0; i < userIDs.Length; i++)
+                {
+                    if (client.id == userIDs[i])
+                    {
+                        send = false;
+                        break;
+                    }
+                }
+
+                if (send)
+                {
+                    server.Send(client, packet, useUDP);
+                }
+            }
         }
     }
 }

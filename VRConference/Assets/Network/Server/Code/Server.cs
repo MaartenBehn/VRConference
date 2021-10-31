@@ -9,6 +9,7 @@ namespace Network.Server.Code
     {
         public PublicInt port;
         public PublicInt serverState;
+        public PublicByte userId;
         
         private delegate void PacketHandler(byte userID, Packet packet);
         private static Dictionary<byte, PacketHandler> packetHandlers;
@@ -30,9 +31,9 @@ namespace Network.Server.Code
         public PublicEventByte userJoined;
         public PublicEventByte userLeft;
         
-        public PublicByte voiceID;
-        [SerializeField] private PublicEventFloat3 sendPosEvent;
-        
+        public NetworkSend networkSend;
+        public NetworkHandle networkHandle;
+
         private void Awake()
         {
             tcpServer = new TCPServer(this);
@@ -40,6 +41,7 @@ namespace Network.Server.Code
             serverHandle = new ServerHandle(this);
             serverSend = new ServerSend(this);
             clients = new ServerClient[State.MaxClients + 1];
+            userId.value = 0;
             
             packetHandlers = new Dictionary<byte, PacketHandler>()
             {
@@ -50,16 +52,15 @@ namespace Network.Server.Code
                 { (byte)Packets.clientUDPConnectionStatus, serverHandle.ClientUDPConnectionStatus },
                 
                 { (byte)Packets.clientContainerPacket, serverHandle.ClientContainerPacket },
-                { (byte)Packets.userStatus, serverHandle.UserStatus },
-                { (byte)Packets.userVoiceId, serverHandle.UserVoiceID },
+                { (byte)Packets.userStatus, networkHandle.UserStatus },
+                { (byte)Packets.userVoiceId, networkHandle.UserVoiceID },
                 
-                { (byte)Packets.userPos, serverHandle.UserPos },
+                { (byte)Packets.userPos, networkHandle.UserPos },
             };
 
             startServerEvent.Register(StartServer);
             stopServerEvent.Register(StopServer);
             debugMessageEvent.Register(serverSend.DebugMessage);
-            sendPosEvent.Register(serverSend.UserPos);
 
             serverState.value = (int) NetworkState.notConnected;
             networkFeatureState.value = (int) FeatureState.offline;
@@ -96,6 +97,21 @@ namespace Network.Server.Code
             tcpServer.ConnectClient(client);
         }
 
+        public ServerClient GetClient(byte userID)
+        {
+            if (userID != 0)
+            {
+                return clients[userID];
+            }
+            
+            Threader.RunOnMainThread(() =>
+            {
+                Debug.Log("SERVER: Cant get Client from Message with Server or wrong ID. What the fuck are you doing?");
+            });
+
+            return null;
+        }
+
         public void HandelData(byte[] data)
         {
             Packet packet = new Packet(data);
@@ -120,79 +136,16 @@ namespace Network.Server.Code
             });
         }
 
-        public void SendTCPData(ServerClient client, Packet packet)
+        public void Send(ServerClient client, Packet packet, bool useUDP)
         {
             packet.PrepareForSend();
-            tcpServer.SendData(client, packet.ToArray(), packet.Length());
-        }
-        public void SendTCPDataToAll(Packet packet)
-        {
-            packet.PrepareForSend();
-            foreach (ServerClient client in clients)
+            if (!useUDP || !featureSettings.UPDSupport || !client.clientUdpSupport)
             {
-                if (client != null)
-                {
-                    tcpServer.SendData(client, packet.ToArray(), packet.Length());
-                }
+                tcpServer.SendData(client, packet.ToArray(), packet.Length());
             }
-        }
-        
-        public void SendTCPDataToAll(Packet packet, ServerClient eClient)
-        {
-            packet.PrepareForSend();
-            foreach (ServerClient client in clients)
+            else
             {
-                if (client != null && client != eClient)
-                {
-                    tcpServer.SendData(client, packet.ToArray(), packet.Length());
-                }
-            }
-        }
-        
-        public void SendUDPData(ServerClient client, Packet packet)
-        {
-            if (!featureSettings.UPDSupport || !client.clientUdpSupport)
-            {
-                SendTCPData(client, packet);
-                return;
-            }
-            
-            packet.PrepareForSend();
-            udpServer.SendData(client, packet.ToArray(), packet.Length());
-        }
-        public void SendUDPDataToAll(Packet packet)
-        {
-            packet.PrepareForSend();
-            foreach (ServerClient client in clients)
-            {
-                if (client != null)
-                {
-                    if (!featureSettings.UPDSupport || !client.clientUdpSupport)
-                    {
-                        SendTCPData(client, packet);
-                        continue;
-                    }
-                    
-                    udpServer.SendData(client, packet.ToArray(), packet.Length());
-                }
-            }
-        }
-        
-        public void SendUDPDataToAll(Packet packet, ServerClient eClient)
-        {
-            packet.PrepareForSend();
-            foreach (ServerClient client in clients)
-            {
-                if (client != null && client != eClient)
-                {
-                    if (!featureSettings.UPDSupport || !client.clientUdpSupport)
-                    {
-                        SendTCPData(client, packet);
-                        continue;
-                    }
-                    
-                    udpServer.SendData(client, packet.ToArray(), packet.Length());
-                }
+                tcpServer.SendData(client, packet.ToArray(), packet.Length());
             }
         }
         

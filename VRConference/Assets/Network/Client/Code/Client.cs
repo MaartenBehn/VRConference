@@ -32,11 +32,9 @@ namespace Network.Client.Code
         public PublicBool udpOnline;
 
         public PublicEvent loadingDone;
-        public PublicEventByte userJoined;
-        public PublicEventByte userLeft;
 
-        [SerializeField] private PublicByte voiceID;
-        [SerializeField] private PublicEventFloat3 sendPosEvent;
+        [SerializeField] private NetworkSend networkSend;
+        [SerializeField] private NetworkHandle networkHandle;
 
         private void Awake()
         {
@@ -54,10 +52,10 @@ namespace Network.Client.Code
                 { (byte)Packets.serverStartUDP, clientHandle.ServerStartUDP },
                 { (byte)Packets.serverUDPConnection, clientHandle.ServerUDPConnection },
                 
-                { (byte)Packets.userStatus, clientHandle.UserStatus },
-                { (byte)Packets.userVoiceId, clientHandle.UserVoiceID },
+                { (byte)Packets.userStatus, networkHandle.UserStatus },
+                { (byte)Packets.userVoiceId, networkHandle.UserVoiceID },
                 
-                { (byte)Packets.userPos, clientHandle.UserPos },
+                { (byte)Packets.userPos, networkHandle.UserPos },
             };
             
             // Init all Events
@@ -67,12 +65,10 @@ namespace Network.Client.Code
 
             loadingDone.Register(() =>
             {
-                clientSend.UserStatus(1);
-                clientSend.UserVoiceID(voiceID.value);
+                networkSend.UserStatus(1);
+                networkSend.UserVoiceID();
             });
 
-            sendPosEvent.Register(clientSend.UserPos);
-            
             // Setting state
             clientState.value = (int) NetworkState.notConnected;
             networkFeatureState.value = (int) FeatureState.offline;
@@ -108,25 +104,21 @@ namespace Network.Client.Code
                 packetHandlers[packetId](userID, packet);
             });
         }
-        
-        public void SendTCPData(Packet packet)
-        {
-            packet.PrepareForSend();
-            tcpClient.SendData(packet.ToArray(), packet.Length());
-        }
-        
-        public void SendUDPData(Packet packet)
-        {
-            if (!featureSettings.UPDSupport || !serverUDPSupport)
-            {
-                SendTCPData(packet);
-                return;
-            }
-            
-            packet.PrepareForSend();
-            udpClient.SendData(packet.ToArray(), packet.Length());
-        }
 
+        public void Send(Packet packet, bool userUDP)
+        {
+            packet.PrepareForSend();
+            
+            if (!userUDP || !featureSettings.UPDSupport || !serverUDPSupport)
+            {
+                tcpClient.SendData(packet.ToArray(), packet.Length());
+            }
+            else
+            {
+                udpClient.SendData(packet.ToArray(), packet.Length());
+            }
+        }
+        
         public void Disconnect()
         {
             if (clientState.value != (int) NetworkState.connected) {return;}
