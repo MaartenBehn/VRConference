@@ -1,4 +1,6 @@
-﻿using Engine.User;
+﻿using System;
+using System.Collections.Generic;
+using Engine.User;
 using Unity.Mathematics;
 using UnityEngine;
 using Utility;
@@ -7,11 +9,25 @@ namespace Network.Both
 {
     public class NetworkHandle : MonoBehaviour
     {
+        public delegate void PacketHandler(byte userID, Packet packet);
+        public Dictionary<byte, PacketHandler> packetHandlers;
+        
         [SerializeField] private NetworkSend networkSend;
         [SerializeField] private PublicBool isServer;
         
         public PublicEventByte userJoined;
         public PublicEventByte userLeft;
+        
+        private void Awake()
+        {
+            packetHandlers = new Dictionary<byte, PacketHandler>()
+            {
+                { (byte)Packets.userStatus, UserStatus },
+                { (byte)Packets.userVoiceId, UserVoiceID },
+                { (byte)Packets.userPos, UserPos },
+            };
+            
+        }
 
         public void UserStatus(byte userID, Packet packet)
         {

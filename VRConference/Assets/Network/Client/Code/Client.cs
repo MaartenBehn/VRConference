@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Network.Both;
 using UnityEngine;
 using Utility;
@@ -13,8 +14,8 @@ namespace Network.Client.Code
         public PublicByte clientId;
         public PublicInt clientState;
         
-        private delegate void PacketHandler(byte userID, Packet packet);
-        private static Dictionary<byte, PacketHandler> packetHandlers;
+        
+        private static Dictionary<byte, NetworkHandle.PacketHandler> packetHandlers;
 
         public TCPClient tcpClient;
         public UDPClient udpClient;
@@ -44,18 +45,13 @@ namespace Network.Client.Code
             clientSend = new ClientSend(this);
             
             // All Handle funcs are mapped here to the packet Type. They should have the same name.
-            packetHandlers = new Dictionary<byte, PacketHandler>()
+            packetHandlers = new Dictionary<byte, NetworkHandle.PacketHandler>()
             {
                 { (byte)Packets.debugMessage, clientHandle.DebugMessage },
                 
                 { (byte)Packets.serverSettings, clientHandle.ServerSettings },
                 { (byte)Packets.serverStartUDP, clientHandle.ServerStartUDP },
                 { (byte)Packets.serverUDPConnection, clientHandle.ServerUDPConnection },
-                
-                { (byte)Packets.userStatus, networkHandle.UserStatus },
-                { (byte)Packets.userVoiceId, networkHandle.UserVoiceID },
-                
-                { (byte)Packets.userPos, networkHandle.UserPos },
             };
             
             // Init all Events
@@ -72,6 +68,14 @@ namespace Network.Client.Code
             // Setting state
             clientState.value = (int) NetworkState.notConnected;
             networkFeatureState.value = (int) FeatureState.offline;
+        }
+
+        private void Start()
+        {
+            foreach (KeyValuePair<byte, NetworkHandle.PacketHandler> pair in networkHandle.packetHandlers)
+            {
+                packetHandlers.Add(pair.Key, pair.Value);
+            }
         }
 
         private void OnApplicationQuit()

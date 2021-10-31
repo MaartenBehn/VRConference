@@ -11,8 +11,7 @@ namespace Network.Server.Code
         public PublicInt serverState;
         public PublicByte userId;
         
-        private delegate void PacketHandler(byte userID, Packet packet);
-        private static Dictionary<byte, PacketHandler> packetHandlers;
+        private static Dictionary<byte, NetworkHandle.PacketHandler> packetHandlers;
 
         public TCPServer tcpServer;
         public UDPServer udpServer;
@@ -43,7 +42,7 @@ namespace Network.Server.Code
             clients = new ServerClient[State.MaxClients + 1];
             userId.value = 0;
             
-            packetHandlers = new Dictionary<byte, PacketHandler>()
+            packetHandlers = new Dictionary<byte, NetworkHandle.PacketHandler>()
             {
                 { (byte)Packets.debugMessage, serverHandle.DebugMessage },
                 
@@ -64,6 +63,14 @@ namespace Network.Server.Code
 
             serverState.value = (int) NetworkState.notConnected;
             networkFeatureState.value = (int) FeatureState.offline;
+        }
+        
+        private void Start()
+        {
+            foreach (KeyValuePair<byte, NetworkHandle.PacketHandler> pair in networkHandle.packetHandlers)
+            {
+                packetHandlers.Add(pair.Key, pair.Value);
+            }
         }
 
         private void OnApplicationQuit()
