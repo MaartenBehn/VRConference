@@ -2858,7 +2858,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.000015258789}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1534255515
@@ -4041,7 +4041,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1867233960}
   - component: {fileID: 1867233959}
-  - component: {fileID: 1867233958}
   - component: {fileID: 1867233961}
   m_Layer: 0
   m_Name: Main Camera
@@ -4050,14 +4049,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1867233958
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1867233957}
-  m_Enabled: 1
 --- !u!20 &1867233959
 Camera:
   m_ObjectHideFlags: 0
@@ -4430,6 +4421,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1966706684}
   - component: {fileID: 1966706685}
+  - component: {fileID: 1966706686}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -4465,6 +4457,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnBounds: 100
   updatePosEvent: {fileID: 11400000, guid: 859224ccf53a0544c837daf3853bed50, type: 2}
+  loadingDone: {fileID: 11400000, guid: 2682efdee6ca3fc48be1ab305a77b640, type: 2}
+  speed: 1
+--- !u!81 &1966706686
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1966706683}
+  m_Enabled: 1
 --- !u!1 &2053989529
 GameObject:
   m_ObjectHideFlags: 0

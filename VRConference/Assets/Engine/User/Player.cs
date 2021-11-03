@@ -11,10 +11,24 @@ namespace Engine.User
         [SerializeField] private float spawnBounds;
 
         [SerializeField] private PublicEventFloat3 updatePosEvent;
+        [SerializeField] private PublicEvent loadingDone;
+        [SerializeField] private float speed;
 
         private void Awake()
         {
-            updatePosEvent.Raise(new float3(Random.value * spawnBounds, 0, Random.value * spawnBounds));
+            loadingDone.Register(init);
+            gameObject.SetActive(false);
+        }
+
+        void init()
+        {
+            gameObject.SetActive(true);
+            updatePosEvent.Raise(new float3(10, 0, 0));
+        }
+
+        private void Update()
+        {
+            transform.Rotate(Vector3.up, Time.deltaTime * speed);
         }
     }
 }
