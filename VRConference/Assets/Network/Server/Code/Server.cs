@@ -50,11 +50,7 @@ namespace Network.Server.Code
                 { (byte)Packets.clientUDPConnection, serverHandle.ClientUDPConnection },
                 { (byte)Packets.clientUDPConnectionStatus, serverHandle.ClientUDPConnectionStatus },
                 
-                { (byte)Packets.clientContainerPacket, serverHandle.ClientContainerPacket },
-                { (byte)Packets.userStatus, networkHandle.UserStatus },
-                { (byte)Packets.userVoiceId, networkHandle.UserVoiceID },
-                
-                { (byte)Packets.userPos, networkHandle.UserPos },
+                { (byte)Packets.clientContainerPacket, serverHandle.ClientContainerPacket }
             };
 
             startServerEvent.Register(StartServer);

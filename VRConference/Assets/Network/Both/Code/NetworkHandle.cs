@@ -59,7 +59,8 @@ namespace Network.Both
                 Debug.Log("NETWORK: User not existing");
                 return;
             }
-            user.voiceId = vID;
+
+            user.SetVoiceId(vID);
 
             if (isServer.value)
             {
