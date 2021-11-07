@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using Utility;
+﻿using UnityEngine;
 
 namespace Engine.User
 {
@@ -19,5 +17,4 @@ namespace Engine.User
             voiceAudioSource.minDistance = 10;
         }
     }
-    
 }
