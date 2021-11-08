@@ -23,6 +23,8 @@ namespace Voice
         [SerializeField] private PublicEvent loadingDone;
         [SerializeField] private PublicByte voiceID;
         
+        [SerializeField] private PublicEvent updateVoiceList;
+        
         private void Awake()
         {
             if (instance == null)

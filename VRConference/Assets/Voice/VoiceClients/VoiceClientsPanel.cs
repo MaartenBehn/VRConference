@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Adrenak.UniVoice;
 using Adrenak.UniVoice.InbuiltImplementations;
 using Adrenak.UniVoice.Samples;
 using UnityEngine;
-using Utility;
+
 
 namespace Voice.VoiceClients
 {
@@ -16,15 +17,9 @@ namespace Voice.VoiceClients
         public Transform peerViewContainer;
         public PeerView peerViewPreFab;
 
-        [SerializeField] private PublicEventByte userJoined;
-        [SerializeField] private PublicEventByte userLeft;
-
         private void Awake()
         {
             agent = VoiceConnection.instance.agent;
-
-            userJoined.Register((id) => { UpdateList(); });
-            userLeft.Register((id) => { UpdateList(); });
 
             UpdateList();
         }
@@ -50,9 +45,8 @@ namespace Voice.VoiceClients
             view.SetPeerID(agent.Network.OwnID);
             peerViews.Add(agent.Network.OwnID, view);
 
-            foreach (var agentPeerOutput in agent.PeerOutputs)
+            foreach (var id in  agent.Network.PeerIDs)
             {
-                short id = agentPeerOutput.Key;
                 view = Instantiate(peerViewPreFab, peerViewContainer);
                 view.IncomingAudio = !agent.PeerSettings[id].muteThem;
                 view.OutgoingAudio = !agent.PeerSettings[id].muteSelf;
@@ -67,9 +61,16 @@ namespace Voice.VoiceClients
                 peerViews.Add(id, view);
             }
         }
-
+        
+        private int useres = 0;
         private void Update()
         {
+            if (useres != agent.Network.PeerIDs.Count)
+            {
+                UpdateList();
+                useres = agent.Network.PeerIDs.Count;
+            }
+            
             foreach (KeyValuePair<short,PeerView> keyValuePair in peerViews)
             {
                 PeerView view = keyValuePair.Value;
@@ -78,13 +79,15 @@ namespace Voice.VoiceClients
                 
                 if (key == agent.Network.OwnID)
                 {
-                   
+                    
                 }
                 else
                 {
-                    audioSource = (agent.PeerOutputs[key] 
+                    if (!agent.PeerOutputs.ContainsKey(key)) continue;
+                    audioSource = (agent.PeerOutputs[key]
                         as InbuiltAudioOutput)?.AudioSource;
                     updateSpectrum(view, audioSource);
+
                 }
             }
         }

@@ -20,7 +20,7 @@ namespace Adrenak.UniVoice {
         /// Source of outgoing audio that can be 
         /// transmitted over the network to peers
         /// </summary>
-        public IAudioInput AudioInput { get; private set; }
+        public IAudioInput AudioInput { get; set; }
 
         /// <summary>
         /// A factory that returns an <see cref="IAudioOutput"/> 

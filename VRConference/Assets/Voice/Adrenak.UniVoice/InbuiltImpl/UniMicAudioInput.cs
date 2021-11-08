@@ -10,21 +10,30 @@ namespace Adrenak.UniVoice.InbuiltImplementations {
     public class UniMicAudioInput : IAudioInput {
         public event Action<int, float[]> OnSegmentReady;
 
-        public int Frequency => mic.Frequency;
+        public int Frequency
+        {
+            get => mic.Frequency;
+            set => mic.Frequency = value;
+        }
+        
+        public Delegate[] getInvationList()
+        {
+            return OnSegmentReady.GetInvocationList();
+        }
 
         public int ChannelCount => 
         mic.AudioClip == null ? 0 : mic.AudioClip.channels;
 
         public int SegmentRate => 1000 / mic.SampleDurationMS;
 
-        readonly Mic mic;
+        public readonly Mic mic;
 
         public UniMicAudioInput(Mic mic) {
             this.mic = mic;
             mic.OnSampleReady += Mic_OnSampleReady;
         }
 
-        void Mic_OnSampleReady(int segmentIndex, float[] samples) {
+        public void Mic_OnSampleReady(int segmentIndex, float[] samples) {
             OnSegmentReady?.Invoke(segmentIndex, samples);
         }
 

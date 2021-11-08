@@ -11,7 +11,20 @@ namespace Engine.User
         public void SetVoiceId(byte id)
         {
             voiceId = id;
-            voiceAudioSource = GameObject.Find("UniVoice Peer #" + id).GetComponent<AudioSource>();
+        }
+
+        private void Update()
+        {
+            if (voiceAudioSource == null)
+            {
+                tryFindAudioScource();
+            }
+        }
+
+        void tryFindAudioScource()
+        {
+            voiceAudioSource = GameObject.Find("UniVoice Peer #" + voiceId).GetComponent<AudioSource>();
+            if (voiceAudioSource == null) return;
             voiceAudioSource.transform.SetParent(transform);
             voiceAudioSource.spatialBlend = 1;
             voiceAudioSource.minDistance = 10;

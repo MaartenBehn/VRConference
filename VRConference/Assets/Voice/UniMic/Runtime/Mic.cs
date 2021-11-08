@@ -17,7 +17,7 @@ namespace Adrenak.UniMic {
         /// <summary>
         /// The frequency at which the mic is operating
         /// </summary>
-        public int Frequency { get; private set; }
+        public int Frequency { get; set; }
 
         /// <summary>
         /// Last populated audio sample

@@ -16,7 +16,7 @@ namespace Adrenak.UniVoice {
         /// <summary>
         /// The sampling frequency of the audio
         /// </summary>
-        int Frequency { get; }
+        int Frequency { get; set; }
 
         /// <summary>
         /// The number of channels in the audio
