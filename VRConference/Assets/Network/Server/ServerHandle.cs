@@ -1,0 +1,120 @@
+﻿using Network.Both;
+using UnityEngine;
+
+namespace Network.Server
+{
+    public class ServerHandle
+    {
+        private readonly Server server;
+        public ServerHandle(Server server)
+        {
+            this.server = server;
+        }
+        
+        public void DebugMessage(byte userID, Packet packet)
+        {
+            string message = packet.ReadString();
+            Debug.Log("SERVER: [" +userID+ "] Debug: " + message);
+        }
+        
+        public void ClientStartUDP(byte userID, Packet packet)
+        {
+            ServerClient fromClient = server.GetClient(userID);
+            
+            server.serverSend.ServerUDPConnection(fromClient, true);
+        }
+        
+        public void ClientUDPConnection(byte userID, Packet packet)
+        {
+            bool updOnline = packet.ReadBool();
+            UserController.instance.users[userID].features["UDP"] = updOnline;
+        }
+        
+        
+        public void ClientContainerPacket(byte userID, Packet containerPacket)
+        {
+            byte type = containerPacket.ReadByte();
+            bool useUDP = containerPacket.ReadBool();
+
+            byte[] userIDs = null;
+            if (type == (byte) ContainerType.list || type == (byte) ContainerType.allExceptList)
+            {
+                int length = containerPacket.ReadInt32();
+                userIDs = containerPacket.ReadBytes(length);
+            }
+
+            byte[] data = containerPacket.ReadBytes(containerPacket.UnReadLength());
+            using Packet packet = new Packet(data);
+            
+            packet.PrepareForSend();
+            
+            if (type == (byte) ContainerType.all)
+            {
+                server.serverSend.SendToAll(packet, useUDP);
+                server.HandelData(packet.ToArray());
+            }
+            else if (type == (byte) ContainerType.allExceptOrigin)
+            {
+                server.serverSend.SendToAllExceptList(packet, new []{userID}, useUDP);
+                server.HandelData(packet.ToArray());
+            }
+            else if (type == (byte) ContainerType.list)
+            {
+                for (int i = 0; i < userIDs.Length; i++)
+                {
+                    if (userIDs[i] == 0)
+                    {
+                        server.HandelData(packet.ToArray());
+                    }
+                    else
+                    {
+                        server.Send(server.GetClient(userIDs[i]), packet, useUDP);
+                    }
+                }
+            }
+            else if (type == (byte) ContainerType.allExceptList)
+            {
+                bool send;
+                foreach (ServerClient client in server.clients)
+                {
+                    if (client == null)
+                    {
+                        continue;
+                    }
+                    
+                    send = true;
+                    for (int i = 0; i < userIDs.Length; i++)
+                    {
+                        if (client.id == userIDs[i])
+                        {
+                            send = false;
+                            break;
+                        }
+                    }
+
+                    if (send)
+                    {
+                        server.Send(client, packet, useUDP);
+                    }
+                }
+                
+                send = true;
+                for (int i = 0; i < userIDs.Length; i++)
+                {
+                    if (userIDs[i] == 0)
+                    {
+                        send = false;
+                        break;
+                    }
+                }
+                
+                if (send)
+                {
+                    server.HandelData(packet.ToArray());
+                }
+            }
+        }
+        
+        
+    }
+}

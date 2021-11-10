@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Utility;
 
 namespace UI
 {
@@ -9,15 +10,16 @@ namespace UI
         [SerializeField] private GameObject loadScreen;
         [SerializeField] private GameObject inGameScreen;
 
-        [SerializeField] private PublicEvent loadServer;
-        [SerializeField] private PublicEvent loadClient;
+        [SerializeField] private PublicEventBool load;
         [SerializeField] private PublicEvent loadingDone;
         [SerializeField] private PublicEvent loadingFailed;
         
         private void Awake()
         {
-            loadServer.Register(SetLoadScreen);
-            loadClient.Register(SetLoadScreen);
+            load.Register((bool b) =>
+            {
+                SetLoadScreen();
+            });
             loadingDone.Register(SetInGameScreen);
             loadingFailed.Register(SetStartScreen);
             

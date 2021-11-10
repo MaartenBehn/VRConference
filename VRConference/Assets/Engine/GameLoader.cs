@@ -1,4 +1,7 @@
+using System;
 using System.Threading;
+using Engine;
+using Network.Both;
 using UnityEngine;
 using Utility;
 
@@ -20,78 +23,69 @@ public class GameLoader : MonoBehaviour
         if (instance == null) { instance = this; }
         else { Destroy(gameObject); return; }
 
-        loadServerEvent.Register(() =>
-        {
-            isServer.value = true;
-            Load();
-        });
-        loadClientEvent.Register(() =>
-        {
-            isServer.value = false;
-            Load();
-        });
-        
+        loadEvent.Register(Load);
         unloadEvent.Register(Unload);
     }
 
-    [SerializeField] private PublicEvent loadServerEvent;
-    [SerializeField] private PublicEvent loadClientEvent;
+    [SerializeField] private PublicEventBool loadEvent;
     [SerializeField] private PublicEvent unloadEvent;
-    [SerializeField] private PublicBool isServer;
+    [SerializeField] private PublicBool isHost;
     
-    // Network
-    [SerializeField] private PublicEvent startServerEvent;
-    [SerializeField] private PublicEvent stopServerEvent;
-    [SerializeField] private PublicEvent connectClientEvent;
-    [SerializeField] private PublicEvent disconnectClientEvent;
-    [SerializeField] private PublicInt networkFeatureState;
-
-    // Voice
-    [SerializeField] private PublicEvent startVoiceServerEvent;
-    [SerializeField] private PublicEvent stopVoiceServerEvent;
-    [SerializeField] private PublicEvent connectVoiceClientEvent;
-    [SerializeField] private PublicEvent disconnectVoiceClientEvent;
-    [SerializeField] private PublicInt voiceFeatureState;
-
     [SerializeField] private PublicEvent loadingDone;
     [SerializeField] private float timeOutLength = 30;
     [SerializeField] private PublicEvent loadingFailed;
+    public FeatureSettings featureSettings;
 
-    private void Load()
+    
+    private void Load(bool b)
     {
-        Threader.RunAsync(() =>
+        isHost.value = b;
+        Debug.Log("Loading");
+        
+        foreach (FeatureSettings.Feature feature in featureSettings.features)
         {
-            if (isServer.value)
+            if (!feature.active){continue;}
+            
+            Threader.RunAsync(() =>
             {
-                startServerEvent.Raise();
-                startVoiceServerEvent.Raise();
-            }
-            else
-            {
-                connectClientEvent.Raise();
-                connectVoiceClientEvent.Raise();
-            }
-        });
+                WaitForDependencies(feature);
+                Threader.RunOnMainThread(() =>
+                {
+                    feature.startEvent.Raise();
+                });
+            });
+        }
+
         WaitForLoading();
     }
     
+    private void WaitForDependencies(FeatureSettings.Feature feature)
+    {
+        bool waiting = true;
+        while (waiting)
+        {
+            waiting = false;
+            foreach (string dependicy in feature.dependicies)
+            {
+                if (featureSettings.Get(dependicy).featureState.value != (int) FeatureState.online)
+                {
+                    waiting = true;
+                }
+            }
+            Thread.Sleep(100);
+        }
+    }
+    
+    
     private void Unload()
     {
-        Threader.RunAsync(() =>
+        Debug.Log("Unloading");
+        foreach (FeatureSettings.Feature feature in featureSettings.features)
         {
-            if (isServer.value)
-            {
-                stopVoiceServerEvent.Raise();
-                stopServerEvent.Raise();
-            }
-            else
-            {
-                disconnectClientEvent.Raise();
-                disconnectVoiceClientEvent.Raise();
-            }
-        });
+            feature.stopEvent.Raise();
+        }
     }
-
+    
     private void WaitForLoading()
     {
         float startTime = Time.time;
@@ -102,10 +96,17 @@ public class GameLoader : MonoBehaviour
             {
                 Threader.RunOnMainThread(() =>
                 {
-                    Debug.Log("Loading");
-                    
-                    if (networkFeatureState.value == (int) FeatureState.online &&
-                        voiceFeatureState.value == (int) FeatureState.online)
+                    bool done = true;
+
+                    foreach (FeatureSettings.Feature feature in featureSettings.features)
+                    {
+                        if (feature.featureState.value != (int) FeatureState.online)
+                        {
+                            done = false;
+                        }
+                    }
+
+                    if (done)
                     {
                         loadingDone.Raise();
                         loading = false;

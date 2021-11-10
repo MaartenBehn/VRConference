@@ -14,17 +14,14 @@ namespace Voice
         [SerializeField] private PublicString signalServerIP;
         [SerializeField] private PublicInt signalServerPort;
 
-        [SerializeField] private PublicEvent startVoiceServer;
-        [SerializeField] private PublicEvent stopVoiceServer;
-        [SerializeField] private PublicEvent connectVoiceClient;
-        [SerializeField] private PublicEvent disconnectVoiceClient;
+        [SerializeField] private PublicBool isHost;
+        [SerializeField] private PublicEvent startEvent;
+        [SerializeField] private PublicEvent stopEvent;
         [SerializeField] private PublicInt featureState;
 
         [SerializeField] private PublicEvent loadingDone;
         [SerializeField] private PublicByte voiceID;
-        
-        [SerializeField] private PublicEvent updateVoiceList;
-        
+
         private void Awake()
         {
             if (instance == null)
@@ -37,10 +34,8 @@ namespace Voice
                 return;
             }
             
-            startVoiceServer.Register(StartServer);
-            stopVoiceServer.Register(StopServer);
-            connectVoiceClient.Register(ConnectClient);
-            disconnectVoiceClient.Register(DisconnectClient);
+            startEvent.Register(StartServer);
+            stopEvent.Register(StopServer);
             loadingDone.Register(() =>
             {
                 voiceID.value = (byte) agent.Network.OwnID;
@@ -95,43 +90,32 @@ namespace Voice
     
         private void StartServer()
         {
-            Threader.RunOnMainThread(() =>
-            {
-                featureState.value = (int) FeatureState.starting;
+            featureState.value = (int) FeatureState.starting;
         
-                Init();
+            Init();
+
+            if (isHost.value)
+            {
                 agent.Network.HostChatroom("VRConference");
-            });
+            }
+            else
+            {
+                agent.Network.JoinChatroom("VRConference");
+            }
         }
     
         private void StopServer()
         {
-            Threader.RunOnMainThread(() =>
+            featureState.value = (int) FeatureState.stopping;
+            if (isHost.value)
             {
-                featureState.value = (int) FeatureState.stopping;
                 agent.Network.CloseChatroom();
-            });
-            
-        }
-    
-        private void ConnectClient()
-        {
-            Threader.RunOnMainThread(() =>
+            }
+            else
             {
-                featureState.value = (int) FeatureState.starting;
-        
-                Init();
-                agent.Network.JoinChatroom("VRConference");
-            });
-        }
-    
-        private void DisconnectClient()
-        {
-            Threader.RunOnMainThread(() =>
-            {
-                featureState.value = (int) FeatureState.stopping;
                 agent.Network.LeaveChatroom();
-            });
+            }
+            
         }
     }
 }

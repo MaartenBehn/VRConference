@@ -12,6 +12,10 @@ namespace Engine
         // Network
         private FeatureSymbol networkFeatureSymbol;
         [SerializeField] private PublicInt networkFeatureState;
+        
+        // Network
+        private FeatureSymbol udpFeatureSymbol;
+        [SerializeField] private PublicInt udpFeatureState;
 
         // Voice 
         private FeatureSymbol voiceFeatureSymbol;
@@ -22,6 +26,10 @@ namespace Engine
             networkFeatureSymbol = Instantiate(featureSybolPreFab, transform).GetComponent<FeatureSymbol>();
             networkFeatureSymbol.SetText("Network");
             networkFeatureSymbol.SetFeatureState(networkFeatureState);
+            
+            udpFeatureSymbol = Instantiate(featureSybolPreFab, transform).GetComponent<FeatureSymbol>();
+            udpFeatureSymbol.SetText("UDP");
+            udpFeatureSymbol.SetFeatureState(udpFeatureState);
 
             voiceFeatureSymbol = Instantiate(featureSybolPreFab, transform).GetComponent<FeatureSymbol>();
             voiceFeatureSymbol.SetText("Voice");
