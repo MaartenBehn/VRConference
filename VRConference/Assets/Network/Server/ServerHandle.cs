@@ -30,7 +30,6 @@ namespace Network.Server
             UserController.instance.users[userID].features["UDP"] = updOnline;
         }
         
-        
         public void ClientContainerPacket(byte userID, Packet containerPacket)
         {
             byte type = containerPacket.ReadByte();

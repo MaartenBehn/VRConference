@@ -75,16 +75,23 @@ namespace Network
             }
         }
         
-        public void UserStatus(byte status)
+        public void UserStatusToAll(byte status)
         {
             using Packet packet = new Packet((byte) Packets.userStatus, network.userId.value);
             packet.Write(status);
             SendToAllExceptOrigen(packet, false);
         }
         
-        public void FeatureSettings()
+        public void UserStatus(byte status, byte toUser)
         {
-            String log = "Sending Feature Settings:\n";
+            using Packet packet = new Packet((byte) Packets.userStatus, network.userId.value);
+            packet.Write(status);
+            Send(packet, toUser, false);
+        }
+        
+        public void FeatureSettings(byte toUser)
+        {
+            String log = "NETWORK: Sending Feature Settings:\n";
             
             using Packet packet = new Packet((byte) Packets.featureSettings, network.userId.value);
 
@@ -96,7 +103,7 @@ namespace Network
                 packet.Write(feature.active);
             }
             
-            SendToAllExceptOrigen(packet, false);
+            Send(packet, toUser, false);
             Debug.Log(log);
         }
         

@@ -27,6 +27,7 @@ namespace Network
         public NetworkSend networkSend;
         
         public FeatureSettings featureSettings;
+        public PublicInt networkFeatureState;
         
         private void Awake()
         {

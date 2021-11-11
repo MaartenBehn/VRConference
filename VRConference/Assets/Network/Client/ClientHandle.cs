@@ -25,7 +25,9 @@ namespace Network.Client
         public void ServerClientId(byte userID, Packet packet)
         {
             client.clientId.value = packet.ReadByte();
-            client.networkFeatureState.value = (int) FeatureState.online;
+            client.networkSend.UserStatusToAll(1);
+            
+            //client.networkFeatureState.value = (int) FeatureState.online;
         }
 
         public void ServerUDPConnection(byte userID, Packet packet)

@@ -57,7 +57,7 @@ namespace Network.Server.Code
             client.receiveBuffer = new byte[State.BufferSize];
             client.stream.BeginRead(client.receiveBuffer, 0, State.BufferSize, ReceiveCallback, client);
             
-            server.networkSend.UserStatus(1);
+            // Sending new Client its id.
             server.serverSend.ServerClientId(client);
         }
         

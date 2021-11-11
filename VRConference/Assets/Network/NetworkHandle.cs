@@ -33,11 +33,16 @@ namespace Network
             
             if (status == 1)
             {
-                if (network.isServer.value)
-                {
-                    network.networkSend.UserStatus(1);
-                }
                 network.userJoined.Raise(userID);
+
+                if (network.networkFeatureState.value == (int) FeatureState.online)
+                {
+                    network.networkSend.UserStatus(1, userID);
+                }
+                else
+                {
+                    network.networkSend.FeatureSettings(userID);
+                }
             }
             else if (status == 2)
             {
@@ -49,10 +54,15 @@ namespace Network
         
         public void FeatureSettings(byte userID, Packet packet)
         {
-            String log = "Received Feature Settings from "+ userID +":\n";
+            String log = "NETWORK: Received Feature Settings from "+ userID +":\n";
             
             User user = UserController.instance.users[userID];
 
+            if (user != null && user.loaded)
+            {
+                return;
+            }
+            
             int lenght = packet.ReadInt32();
             for (int i = 0; i < lenght; i++)
             {
@@ -61,6 +71,27 @@ namespace Network
                 
                 log += name + " " + value + "\n";
                 user.features[name] = value;
+            }
+            
+            if (network.networkFeatureState.value == (int) FeatureState.online)
+            {
+                network.networkSend.FeatureSettings(userID);
+            }
+            else
+            {
+                bool allLoaded = false;
+                foreach (KeyValuePair<byte,User> pair in UserController.instance.users)
+                {
+                    if (!pair.Value.loaded)
+                    {
+                        allLoaded = true;
+                    }
+                }
+
+                if (allLoaded)
+                {
+                    network.networkFeatureState.value = (int) FeatureState.online;
+                }
             }
         }
         

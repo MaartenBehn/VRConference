@@ -76,7 +76,6 @@ public class GameLoader : MonoBehaviour
         }
     }
     
-    
     private void Unload()
     {
         Debug.Log("Unloading");

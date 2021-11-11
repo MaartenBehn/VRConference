@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Utility;
 
 namespace Engine.User
 {
@@ -9,11 +8,12 @@ namespace Engine.User
     {
         public byte id;
         
-        public Dictionary<String, bool> features;
-        
+        public Dictionary<String, bool> features = new Dictionary<string, bool>();
+        public bool loaded;
+
         public byte voiceId;
         public AudioSource voiceAudioSource;
-
+        
         private void Update()
         {
             if (voiceAudioSource == null)

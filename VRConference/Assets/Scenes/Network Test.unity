@@ -876,6 +876,7 @@ MonoBehaviour:
   server: {fileID: 0}
   client: {fileID: 0}
   featureSettings: {fileID: 11400000, guid: 66d8548e6f84c93409c2cf5c9bc7211c, type: 2}
+  networkFeatureState: {fileID: 11400000, guid: f5661bbe5332f964cae269016ed6abc3, type: 2}
   userJoined: {fileID: 11400000, guid: 9f7ce8e65268a9141a1c61fcd32c9068, type: 2}
   userLeft: {fileID: 11400000, guid: d6985522e7c14da45bc3affe6734fad5, type: 2}
   voiceId: {fileID: 11400000, guid: ba124b58568799a4f816bafaa892f829, type: 2}
