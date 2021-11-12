@@ -115,7 +115,6 @@ namespace Voice
             {
                 agent.Network.LeaveChatroom();
             }
-            
         }
     }
 }

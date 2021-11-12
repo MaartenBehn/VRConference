@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Engine;
 using Network.Both;
 using UnityEngine;
 using Utility;
@@ -13,8 +12,7 @@ namespace Network.Client
         public PublicInt serverPort;
         
         public PublicByte clientId;
-        public NetworkState clientState;
-        
+
         private static Dictionary<byte, NetworkHandle.PacketHandler> packetHandlers;
 
         public TCPClient tcpClient;
@@ -27,6 +25,8 @@ namespace Network.Client
 
         public NetworkSend networkSend;
         public NetworkHandle networkHandle;
+        
+        [SerializeField] private PublicEvent unloadEvent;
 
         private void Awake()
         {
@@ -39,15 +39,20 @@ namespace Network.Client
             packetHandlers = new Dictionary<byte, NetworkHandle.PacketHandler>()
             {
                 { (byte)Packets.debugMessage, clientHandle.DebugMessage },
-                { (byte)Packets.serverClientId, clientHandle.ServerClientId },
+                { (byte)Packets.serverInit, clientHandle.ServerInit },
+                { (byte)Packets.serverUserJoined, clientHandle.ServerUserJoined },
+                { (byte)Packets.serverUserLeft, clientHandle.ServerUserLeft },
                 { (byte)Packets.serverUDPConnection, clientHandle.ServerUDPConnection },
             };
-            
-            clientState = NetworkState.notConnected;
+
+            networkFeatureState.value = (int) FeatureState.offline;
         }
 
         public void Connect()
         {
+            if (networkFeatureState.value != (int) FeatureState.offline) {return;}
+            
+            networkFeatureState.value = (int) FeatureState.starting;
             tcpClient.Connect();
         }
 
@@ -101,18 +106,21 @@ namespace Network.Client
         
         public void Disconnect()
         {
-            if (clientState != NetworkState.connected) {return;}
+            if (networkFeatureState.value != (int) FeatureState.online) {return;}
             
             Debug.Log("CLIENT: Disconnecting...");
-            clientState = NetworkState.disconnecting;
             networkFeatureState.value = (int) FeatureState.stopping;
 
             tcpClient.Disconnect();
             udpClient.Disconnect();
 
             Debug.Log("CLIENT: Disconnected");
-            clientState = NetworkState.notConnected;
             networkFeatureState.value = (int) FeatureState.offline;
+            
+            Threader.RunOnMainThread(() =>
+            {
+                unloadEvent.Raise();
+            });
         }
     }
 }

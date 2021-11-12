@@ -19,9 +19,7 @@ namespace Network.Server
         
         public void ClientStartUDP(byte userID, Packet packet)
         {
-            ServerClient fromClient = server.GetClient(userID);
-            
-            server.serverSend.ServerUDPConnection(fromClient, true);
+            server.serverSend.ServerUDPConnection(userID, true);
         }
         
         public void ClientUDPConnection(byte userID, Packet packet)
@@ -67,24 +65,19 @@ namespace Network.Server
                     }
                     else
                     {
-                        server.Send(server.GetClient(userIDs[i]), packet, useUDP);
+                        server.Send(userIDs[i], packet, useUDP);
                     }
                 }
             }
             else if (type == (byte) ContainerType.allExceptList)
             {
                 bool send;
-                foreach (ServerClient client in server.clients)
+                foreach (byte id in UserController.instance.users.Keys)
                 {
-                    if (client == null)
-                    {
-                        continue;
-                    }
-                    
                     send = true;
                     for (int i = 0; i < userIDs.Length; i++)
                     {
-                        if (client.id == userIDs[i])
+                        if (id == userIDs[i])
                         {
                             send = false;
                             break;
@@ -93,7 +86,7 @@ namespace Network.Server
 
                     if (send)
                     {
-                        server.Send(client, packet, useUDP);
+                        server.Send(id, packet, useUDP);
                     }
                 }
                 

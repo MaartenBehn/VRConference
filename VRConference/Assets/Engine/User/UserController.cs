@@ -12,6 +12,7 @@ public class UserController : MonoBehaviour
     [SerializeField] private GameObject userPreFab;
     [SerializeField] private PublicEventByte userJoined;
     [SerializeField] private PublicEventByte userLeft;
+    [SerializeField] private PublicEvent unloadEvent;
 
     private void Awake()
     {
@@ -24,24 +25,36 @@ public class UserController : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        
-        userJoined.Register(UserJoined);
-        userLeft.Register(UserLeft);
 
         users = new Dictionary<byte, User>();
+
+        unloadEvent.Register(() =>
+        {
+            byte[] keys = new byte[users.Keys.Count]; 
+            users.Keys.CopyTo(keys, 0);
+            
+            foreach (byte id in keys)
+            {
+                UserLeft(id);
+            }
+        });
     }
 
-    private void UserJoined(byte id)
+    public void UserJoined(byte id)
     {
         User user = Instantiate(userPreFab, transform).GetComponent<User>();
         user.id = id;
 
         users[id] = user;
+        
+        userJoined.Raise(id);
     }
     
-    private void UserLeft(byte id)
+    public void UserLeft(byte id)
     {
-        Destroy(users[id]);
+        userLeft.Raise(id);
+        
+        Destroy(users[id].gameObject);
         users.Remove(id);
     }
 }

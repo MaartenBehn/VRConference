@@ -10,7 +10,6 @@ namespace Network.Server
     public class Server : MonoBehaviour
     {
         public PublicInt port;
-        public NetworkState serverState;
 
         private static Dictionary<byte, NetworkHandle.PacketHandler> packetHandlers;
 
@@ -18,9 +17,7 @@ namespace Network.Server
         public UDPServer udpServer;
         public ServerHandle serverHandle;
         public ServerSend serverSend;
-        
-        public ServerClient[] clients;
-        
+
         public PublicInt networkFeatureState;
         public PublicInt udpFeatureState;
         
@@ -33,7 +30,6 @@ namespace Network.Server
             udpServer = new UDPServer(this);
             serverHandle = new ServerHandle(this);
             serverSend = new ServerSend(this);
-            clients = new ServerClient[State.MaxClients + 1];
 
             packetHandlers = new Dictionary<byte, NetworkHandle.PacketHandler>()
             {
@@ -43,7 +39,6 @@ namespace Network.Server
                 { (byte)Packets.clientUDPConnection, serverHandle.ClientUDPConnection },
             };
             
-            serverState = NetworkState.notConnected;
             networkFeatureState.value = (int) FeatureState.offline;
         }
         
@@ -62,40 +57,17 @@ namespace Network.Server
 
         public void StartServer()
         {
-            if (serverState != NetworkState.notConnected) { return; }
+            if (networkFeatureState.value != (int) FeatureState.offline) { return; }
             
             Debug.Log("SERVER: Starting...");
-            serverState = NetworkState.connecting;
             networkFeatureState.value = (int) FeatureState.starting;
             
             tcpServer.Start();
 
             Debug.Log("SERVER: Started");
-            serverState = NetworkState.connected;
             networkFeatureState.value = (int) FeatureState.online;
         }
-
-        public void ConnectClient(ServerClient client)
-        {
-            Debug.Log($"SERVER: Connecting Client " + client.id + "...");
-            client.state = NetworkState.connecting;
-            tcpServer.ConnectClient(client);
-        }
-
-        public ServerClient GetClient(byte userID)
-        {
-            if (userID != 0)
-            {
-                return clients[userID];
-            }
-            
-            Threader.RunOnMainThread(() =>
-            {
-                Debug.Log("SERVER: Cant get Client from Message with Server or wrong ID. What the fuck are you doing?");
-            });
-
-            return null;
-        }
+        
 
         public void HandelData(byte[] data)
         {
@@ -121,51 +93,58 @@ namespace Network.Server
             });
         }
 
-        public void Send(ServerClient client, Packet packet, bool useUDP)
+        public void Send(byte userId, Packet packet, bool useUDP)
         {
             packet.PrepareForSend();
             if (!useUDP)
             {
-                tcpServer.SendData(client, packet.ToArray(), packet.Length());
+                tcpServer.SendData(userId, packet.ToArray(), packet.Length());
             }
             else
             {
-                tcpServer.SendData(client, packet.ToArray(), packet.Length());
+                tcpServer.SendData(userId, packet.ToArray(), packet.Length());
             }
         }
         
-        public void DisconnectClient(ServerClient client)
+        public void DisconnectClient(byte userId)
         {
-            client.state = NetworkState.disconnecting;
+            if (!UserController.instance.users.ContainsKey(userId)) {return;}
             
-            tcpServer.DisconnectClient(client);
-            udpServer.DisconnectClient(client);
-            clients[client.id] = null;
+            tcpServer.DisconnectClient(userId);
+            udpServer.DisconnectClient(userId);
             
-            Debug.Log("SERVER: Client " + client.id + " disconnected.");
+            Threader.RunOnMainThread(() =>
+            {
+                Debug.Log("SERVER: Client " + userId + " disconnected.");
+
+                foreach (byte id in UserController.instance.users.Keys)
+                {
+                    if (id != userId)
+                    {
+                        serverSend.ServerUserLeft(id, userId);
+                    }
+                }
+                
+                UserController.instance.UserLeft(userId);
+            });
         }
 
         public void StopServer()
         {
-            if (serverState != NetworkState.connected) { return; }
+            if (networkFeatureState.value != (int) FeatureState.online) { return; }
             
             Debug.Log("SERVER: Stopping...");
-            serverState = NetworkState.disconnecting;
             networkFeatureState.value = (int) FeatureState.stopping;
 
-            foreach (ServerClient client in clients)
+            foreach (byte id in UserController.instance.users.Keys)
             {
-                if (client != null)
-                {
-                    DisconnectClient(client);
-                }
+                DisconnectClient(id);
             }
             
             tcpServer.Stop();
             udpServer.Stop();
 
             Debug.Log("SERVER: Stopped");
-            serverState = NetworkState.notConnected;
             networkFeatureState.value = (int) FeatureState.offline;
         }
     }

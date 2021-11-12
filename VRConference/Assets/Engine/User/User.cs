@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
+using Network.Server;
 using UnityEngine;
+using Utility;
 
 namespace Engine.User
 {
@@ -8,12 +12,19 @@ namespace Engine.User
     {
         public byte id;
         
+        // Only needed when Server
+        public TcpClient socket;
+        public NetworkStream stream;
+        public byte[] receiveBuffer;
+        public string ip;
+        public IPEndPoint endPoint;
+        
         public Dictionary<String, bool> features = new Dictionary<string, bool>();
         public bool loaded;
 
         public byte voiceId;
         public AudioSource voiceAudioSource;
-        
+
         private void Update()
         {
             if (voiceAudioSource == null)

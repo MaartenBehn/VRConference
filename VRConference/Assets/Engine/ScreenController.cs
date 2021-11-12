@@ -13,6 +13,7 @@ namespace UI
         [SerializeField] private PublicEventBool load;
         [SerializeField] private PublicEvent loadingDone;
         [SerializeField] private PublicEvent loadingFailed;
+        [SerializeField] private PublicEvent unload;
         
         private void Awake()
         {
@@ -22,6 +23,7 @@ namespace UI
             });
             loadingDone.Register(SetInGameScreen);
             loadingFailed.Register(SetStartScreen);
+            unload.Register(SetStartScreen);
             
             inGameScreen.SetActive(false);
             loadScreen.SetActive(false);

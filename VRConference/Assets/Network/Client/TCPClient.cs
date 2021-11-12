@@ -22,8 +22,6 @@ namespace Network.Client
         
          public void Connect()
          {
-             if (client.clientState != NetworkState.notConnected) { return; }
-             
              Debug.Log("CLIENT: Connecting TCP...");
              
              socket = new TcpClient
@@ -35,20 +33,18 @@ namespace Network.Client
             receiveBuffer = new byte[State.BufferSize];
             socket.BeginConnect(client.ip.value, client.serverPort.value, ConnectCallback, socket);
             
-            client.clientState = NetworkState.connecting;
             client.networkFeatureState.value = (int) FeatureState.starting;
 
             Threader.RunAsync(() =>
             {
                 Thread.Sleep(2000);
-                if (client.clientState == NetworkState.connecting)
+                if (client.networkFeatureState.value == (int) FeatureState.starting)
                 {
                     Threader.RunOnMainThread(() =>
                     {
                         Debug.Log("CLIENT: Connect Timeout");
                     });
                     socket.Close();
-                    client.clientState = NetworkState.notConnected;
                     client.networkFeatureState.value = (int) FeatureState.failed;
                 }
             });
@@ -60,7 +56,6 @@ namespace Network.Client
 
              if (!socket.Connected)
              {
-                 client.clientState = NetworkState.notConnected;
                  client.networkFeatureState.value = (int) FeatureState.offline;
                  return;
              }
@@ -69,7 +64,6 @@ namespace Network.Client
              {
                  Debug.Log("CLIENT: Connected TCP");
              });
-             client.clientState = NetworkState.connected;
 
              stream = socket.GetStream();
              
@@ -78,8 +72,6 @@ namespace Network.Client
          
           private void ReceiveCallback(IAsyncResult result)
          {
-             if (client.clientState != NetworkState.connected) { return; }
-             
              try
              {
                  int byteLength = stream.EndRead(result);
@@ -103,7 +95,6 @@ namespace Network.Client
          
          public void SendData(byte[] data, int length)
          {
-             if (client.clientState != NetworkState.connected) { return; }
              try
              {
                  if (socket != null)

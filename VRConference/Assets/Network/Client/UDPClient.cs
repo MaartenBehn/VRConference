@@ -22,8 +22,18 @@ namespace Network.Client
          public void Connect()
          {
              client.udpFeatureState.value = (int) FeatureState.starting;
+
+             try
+             {
+                 socket = new UdpClient(client.clientPort.value);
+             }
+             catch (Exception e)
+             {
+                 Debug.Log(e);
+                 client.udpFeatureState.value = (int) FeatureState.failed;
+                 return;
+             }
              
-             socket = new UdpClient(client.clientPort.value);
              endPoint = new IPEndPoint(IPAddress.Parse(client.ip.value), client.serverPort.value);
 
              socket.Connect(endPoint);
@@ -36,8 +46,8 @@ namespace Network.Client
          
          private void ReceiveCallback(IAsyncResult result)
          {
-             if (client.clientState != NetworkState.connected) { return; }
-                
+             if (client.networkFeatureState.value != (int) FeatureState.online) {return;}
+             
              try
              {
                  byte[] data = socket.EndReceive(result, ref endPoint);
@@ -62,7 +72,7 @@ namespace Network.Client
          
          public void SendData(byte[] data, int length)
          {
-             if (client.clientState != NetworkState.connected) { return; }
+             if (client.networkFeatureState.value != (int) FeatureState.online) {return;}
              
              try
              {

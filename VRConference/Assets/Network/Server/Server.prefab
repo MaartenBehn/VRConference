@@ -47,3 +47,4 @@ MonoBehaviour:
   serverState: 1
   networkFeatureState: {fileID: 11400000, guid: f5661bbe5332f964cae269016ed6abc3, type: 2}
   udpFeatureState: {fileID: 11400000, guid: 33d45b7ea4b76154a923e7ff3a3bad68, type: 2}
+  userJoined: {fileID: 11400000, guid: 9f7ce8e65268a9141a1c61fcd32c9068, type: 2}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using Engine.User;
 using Network.Both;
 using UnityEngine;
 using Utility;
@@ -29,8 +30,6 @@ namespace Network.Server
         
         private void UdpReceiveCallback(IAsyncResult result)
         {
-            if (server.serverState != NetworkState.connected) { return; }
-            
             try
             {
                 IPEndPoint clientEndPoint = new IPEndPoint(IPAddress.Any, 0);
@@ -46,13 +45,13 @@ namespace Network.Server
                     return;
                 }
 
-                foreach (ServerClient serverClient in server.clients)
+                foreach (User user in UserController.instance.users.Values)
                 {
-                    if (serverClient == null || serverClient.ip != clientEndPoint.Address.ToString()) continue;
+                    if (user.ip != clientEndPoint.Address.ToString()) continue;
 
-                    if (!UserController.instance.users[serverClient.id].features["UDP"])
+                    if (!user.features["UDP"])
                     {
-                        serverClient.endPoint = clientEndPoint;
+                        user.endPoint = clientEndPoint;
                     }
                 }
 
@@ -64,26 +63,27 @@ namespace Network.Server
             }
         }
 
-        public void SendData(ServerClient client, byte[] data, int length)
+        public void SendData(byte userId, byte[] data, int length)
         {
-            if (server.serverState != NetworkState.connected) { return; }
+            User user = UserController.instance.users[userId];
             
             try
             {
-                if (client.endPoint != null)
+                if (user.endPoint != null)
                 {
-                    udpListener.BeginSend(data, length, client.endPoint, null, null);
+                    udpListener.BeginSend(data, length, user.endPoint, null, null);
                 }
             }
             catch (Exception ex)
             {
-                Debug.Log($"SERVER: Error sending data to {client.endPoint} via UDP: {ex}");
+                Debug.Log($"SERVER: Error sending data to {user.endPoint} via UDP: {ex}");
             }
         }
 
-        public void DisconnectClient(ServerClient client)
+        public void DisconnectClient(byte userId)
         {
-            client.endPoint = null;
+            User user = UserController.instance.users[userId];
+            user.endPoint = null;
         }
 
         public void Stop()

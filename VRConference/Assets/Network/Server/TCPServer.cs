@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using Engine.User;
 using Network.Both;
 using UnityEngine;
+using Utility;
 
 namespace Network.Server.Code
 {
@@ -18,7 +21,7 @@ namespace Network.Server.Code
 
         public void Start()
         {
-            if (server.serverState != NetworkState.connecting) { return; }
+            if (server.networkFeatureState.value != (int) FeatureState.starting) { return; }
             
             tcpListener = new TcpListener(IPAddress.Any, server.port.value);
             tcpListener.Start();
@@ -34,82 +37,96 @@ namespace Network.Server.Code
 
             for (byte i = 1; i <= State.MaxClients; i++)
             {
-                if (server.clients[i] != null) continue;
-
-                ServerClient client = new ServerClient(i, tcpClient);
-                server.clients[i] = client;
-                server.ConnectClient(client);
+                if (UserController.instance.users.ContainsKey(i)) continue;
+                
+                Threader.RunOnMainThread(() =>
+                {
+                    UserController.instance.UserJoined(i);
+                    
+                    User user = UserController.instance.users[i];
+                    user.socket = tcpClient;
+                    
+                    ConnectClient(user);
+                });
                 return;
             }
 
             Debug.Log($"SERVER: {tcpClient.Client.RemoteEndPoint} failed to connect: Server full!");
         }
 
-        public void ConnectClient(ServerClient client)
+        public void ConnectClient(User user)
         {
-            if (server.serverState != NetworkState.connected) { return; }
+            if (server.networkFeatureState.value != (int) FeatureState.online) { return; }
+            Debug.Log($"SERVER: Connecting Client " + user.id + "...");
             
-            client.socket.ReceiveBufferSize = State.BufferSize;
-            client.socket.SendBufferSize = State.BufferSize;
-            client.stream = client.socket.GetStream();
-            client.ip =  client.socket.Client.RemoteEndPoint.ToString().Split(':')[0];
+            user.socket.ReceiveBufferSize = State.BufferSize;
+            user.socket.SendBufferSize = State.BufferSize;
+            user.stream = user.socket.GetStream();
+            user.ip =  user.socket.Client.RemoteEndPoint.ToString().Split(':')[0];
 
-            client.receiveBuffer = new byte[State.BufferSize];
-            client.stream.BeginRead(client.receiveBuffer, 0, State.BufferSize, ReceiveCallback, client);
+            user.receiveBuffer = new byte[State.BufferSize];
+            user.stream.BeginRead(user.receiveBuffer, 0, State.BufferSize, ReceiveCallback, user);
+            
+            foreach (byte id in UserController.instance.users.Keys)
+            {
+                if (id == user.id) {continue;}
+                server.serverSend.ServerUserJoined(id, user.id);
+            }
             
             // Sending new Client its id.
-            server.serverSend.ServerClientId(client);
+            server.serverSend.ServerInit(user.id);
         }
         
         private void ReceiveCallback(IAsyncResult result)
         {
-            if (server.serverState != NetworkState.connected) { return; }
+            if (server.networkFeatureState.value != (int) FeatureState.online) { return; }
 
-            ServerClient client = (ServerClient) result.AsyncState;
+            User user = (User) result.AsyncState;
             try
             {
-                int byteLength = client.stream.EndRead(result);
+                int byteLength = user.stream.EndRead(result);
                 if (byteLength < State.HeaderSize)
                 {
-                    server.DisconnectClient(client);
+                    server.DisconnectClient(user.id);
                     return;
                 }
 
                 byte[] data = new byte[byteLength];
-                Array.Copy(client.receiveBuffer, data, byteLength);
+                Array.Copy(user.receiveBuffer, data, byteLength);
                 server.HandelData(data);
                 
-                client.stream.BeginRead(client.receiveBuffer, 0, State.BufferSize, ReceiveCallback, client);
+                user.stream.BeginRead(user.receiveBuffer, 0, State.BufferSize, ReceiveCallback, user);
             }
             catch
             {
-                server.DisconnectClient(client);
+                server.DisconnectClient(user.id);
             }
         }
         
-        public void SendData(ServerClient client, byte[] data, int length)
+        public void SendData(byte userId, byte[] data, int length)
         {
-            if (server.serverState != NetworkState.connected) { return; }
+            if (server.networkFeatureState.value != (int) FeatureState.online) { return; }
 
             try
             {
-                client.stream.BeginWrite(data, 0, length, null, null);
+                UserController.instance.users[userId].stream.BeginWrite(data, 0, length, null, null);
             }
             catch (Exception ex)
             {
-                Debug.Log($"SERVER: Error sending data to player {client.id} via TCP: {ex}");
+                Debug.Log($"SERVER: Error sending data to player {userId} via TCP: {ex}");
             }
         }
 
-        public void DisconnectClient(ServerClient client)
+        public void DisconnectClient(byte userId)
         {
-            if (client.socket != null)
+            User user = UserController.instance.users[userId];
+            if (user.socket != null)
             {
-                client.socket.Close();
+                user.socket.Close();
             }
-            client.stream = null;
-            client.receiveBuffer = null;
-            client.socket = null;
+            user.stream = null;
+            user.receiveBuffer = null;
+            user.socket = null;
         }
 
         public void Stop()

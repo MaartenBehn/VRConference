@@ -9,7 +9,7 @@ namespace Network
 {
     public class NetworkHandle
     {
-        private NetworkController network;
+        private readonly NetworkController network;
 
         public NetworkHandle(NetworkController network)
         {
@@ -17,7 +17,6 @@ namespace Network
             
             packetHandlers = new Dictionary<byte, PacketHandler>()
             {
-                { (byte)Packets.userStatus, UserStatus },
                 { (byte)Packets.featureSettings, FeatureSettings },
                 { (byte)Packets.userVoiceId, UserVoiceID },
                 { (byte)Packets.userPos, UserPos },
@@ -27,41 +26,13 @@ namespace Network
         public delegate void PacketHandler(byte userID, Packet packet);
         public Dictionary<byte, PacketHandler> packetHandlers;
 
-        public void UserStatus(byte userID, Packet packet)
-        {
-            byte status = packet.ReadByte();
-            
-            if (status == 1)
-            {
-                network.userJoined.Raise(userID);
-
-                if (network.networkFeatureState.value == (int) FeatureState.online)
-                {
-                    network.networkSend.UserStatus(1, userID);
-                }
-                else
-                {
-                    network.networkSend.FeatureSettings(userID);
-                }
-            }
-            else if (status == 2)
-            {
-                network.userLeft.Raise(userID);
-            }
-            
-            Debug.LogFormat("NETWORK: User: {0} Status: {1}", userID, status);
-        }
-        
         public void FeatureSettings(byte userID, Packet packet)
         {
             String log = "NETWORK: Received Feature Settings from "+ userID +":\n";
             
             User user = UserController.instance.users[userID];
 
-            if (user != null && user.loaded)
-            {
-                return;
-            }
+            bool needToReply = packet.ReadBool();
             
             int lenght = packet.ReadInt32();
             for (int i = 0; i < lenght; i++)
@@ -73,23 +44,25 @@ namespace Network
                 user.features[name] = value;
             }
             
-            if (network.networkFeatureState.value == (int) FeatureState.online)
+            if (needToReply)
             {
-                network.networkSend.FeatureSettings(userID);
+                network.networkSend.FeatureSettings(userID, false);
             }
-            else
+            
+            if (network.networkFeatureState.value != (int) FeatureState.online)
             {
-                bool allLoaded = false;
-                foreach (KeyValuePair<byte,User> pair in UserController.instance.users)
+                bool allLoaded = true;
+                foreach (User otherUser in UserController.instance.users.Values)
                 {
-                    if (!pair.Value.loaded)
+                    if (!otherUser.features.ContainsKey("Network"))
                     {
-                        allLoaded = true;
+                        allLoaded = false;
                     }
                 }
 
                 if (allLoaded)
                 {
+                    Debug.Log("Network: online");
                     network.networkFeatureState.value = (int) FeatureState.online;
                 }
             }

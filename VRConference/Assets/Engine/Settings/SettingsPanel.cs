@@ -39,7 +39,7 @@ namespace UI
             serverPort.value = Int32.Parse(serverPortField.text);
             clientPort.value = Int32.Parse(clientPortField.text);
             signalServerIP.value = signalServerIPField.text;
-            siganlServerPort.value = Int32.Parse(serverPortField.text);
+            siganlServerPort.value = Int32.Parse(signalServerPortField.text);
         }
     }
 }

@@ -20,21 +20,46 @@ namespace Network.Server
             SendToAll(packet, false);
         }
         
-        public void ServerClientId(ServerClient client)
+        public void ServerInit(byte userId)
         {
-            using Packet packet = new Packet((byte) Packets.serverClientId, 0);
-            packet.Write(client.id);
+            using Packet packet = new Packet((byte) Packets.serverInit, 0);
+            packet.Write(userId);
+
+            packet.Write(UserController.instance.users.Count);
+            packet.Write((byte)0);
             
-            server.Send(client, packet, false);
+            foreach (byte id in UserController.instance.users.Keys)
+            {
+                if (id == userId) {continue;}
+                packet.Write(id);
+            }
+
+            server.Send(userId, packet, false);
+        }
+            
+        public void ServerUserJoined(byte userId, byte joinedUser)
+        {
+            using Packet packet = new Packet((byte) Packets.serverUserJoined, 0);
+            packet.Write(joinedUser);
+
+            server.Send(userId, packet, false);
         }
         
-        public void ServerUDPConnection(ServerClient client, bool received)
+        public void ServerUserLeft(byte userId, byte leftUser)
         {
-            Debug.LogFormat("SERVER: [" +client.id+ "] udp test message");
+            using Packet packet = new Packet((byte) Packets.serverUserJoined, 0);
+            packet.Write(leftUser);
+
+            server.Send(userId, packet, false);
+        }
+        
+        public void ServerUDPConnection(byte userId, bool received)
+        {
+            Debug.LogFormat("SERVER: [" +userId+ "] udp test message");
             using Packet packet = new Packet((byte) Packets.serverUDPConnection, 0);
             packet.Write(received);
 
-            server.Send(client, packet, received);
+            server.Send(userId, packet, received);
         }
 
         public void SendToAll(Packet packet, bool useUDP)
@@ -45,12 +70,9 @@ namespace Network.Server
         
         public void SendToAllExceptOrigen(Packet packet, bool useUDP)
         {
-            foreach (ServerClient client in server.clients)
+            foreach (byte id in UserController.instance.users.Keys)
             {
-                if (client != null)
-                {
-                    server.Send(client, packet, useUDP);
-                }
+                server.Send(id, packet, useUDP);
             }
         }
         
@@ -58,23 +80,18 @@ namespace Network.Server
         {
             for (int i = 0; i < userIDs.Length; i++)
             {
-                server.Send(server.GetClient(userIDs[i]), packet, useUDP);
+                server.Send(userIDs[i], packet, useUDP);
             }
         }
 
         public void SendToAllExceptList(Packet packet, byte[] userIDs, bool useUDP)
         {
-            foreach (ServerClient client in server.clients)
+            foreach (byte id in UserController.instance.users.Keys)
             {
-                if (client == null)
-                {
-                    continue;
-                }
-                
                 bool send = true;
                 for (int i = 0; i < userIDs.Length; i++)
                 {
-                    if (client.id == userIDs[i])
+                    if (id == userIDs[i])
                     {
                         send = false;
                         break;
@@ -83,7 +100,7 @@ namespace Network.Server
 
                 if (send)
                 {
-                    server.Send(client, packet, useUDP);
+                    server.Send(id, packet, useUDP);
                 }
             }
         }

@@ -47,6 +47,6 @@ MonoBehaviour:
   clientPort: {fileID: 11400000, guid: 4613fe06d580d484680012cd8dc8b461, type: 2}
   serverPort: {fileID: 11400000, guid: b92aa15f29ea460ba019d210b9cdb937, type: 2}
   clientId: {fileID: 11400000, guid: 7bf2212ce6cd452aaf583dbf94cfffbb, type: 2}
-  clientState: 1
   networkFeatureState: {fileID: 11400000, guid: f5661bbe5332f964cae269016ed6abc3, type: 2}
   udpFeatureState: {fileID: 11400000, guid: 33d45b7ea4b76154a923e7ff3a3bad68, type: 2}
+  unloadEvent: {fileID: 11400000, guid: 6619df8abdd916b43bb262b6ba936884, type: 2}

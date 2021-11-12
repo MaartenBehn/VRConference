@@ -22,12 +22,38 @@ namespace Network.Client
             });
         }
 
-        public void ServerClientId(byte userID, Packet packet)
+        public void ServerInit(byte userID, Packet packet)
         {
-            client.clientId.value = packet.ReadByte();
-            client.networkSend.UserStatusToAll(1);
+            Debug.Log("CLIENT: Server init");
             
-            //client.networkFeatureState.value = (int) FeatureState.online;
+            client.clientId.value = packet.ReadByte();
+
+            int clientLength = packet.ReadInt32();
+            for (int i = 0; i < clientLength; i++)
+            {
+                byte userId = packet.ReadByte();
+                UserController.instance.UserJoined(userId);
+
+                client.networkSend.FeatureSettings(userId, true);
+            }
+        }
+        
+        public void ServerUserJoined(byte userID, Packet packet)
+        {
+            byte id = packet.ReadByte();
+            
+            Debug.Log("CLIENT: User " +id+ " joined.");
+            
+            UserController.instance.UserJoined(id);
+        }
+        
+        public void ServerUserLeft(byte userID, Packet packet)
+        {
+            byte id = packet.ReadByte();
+            
+            Debug.Log("CLIENT: User " +id+ " left.");
+            
+            UserController.instance.UserLeft(id);
         }
 
         public void ServerUDPConnection(byte userID, Packet packet)

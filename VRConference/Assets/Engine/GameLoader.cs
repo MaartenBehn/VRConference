@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using Engine;
+using Engine.Player;
 using Network.Both;
 using UnityEngine;
 using Utility;
@@ -35,7 +36,6 @@ public class GameLoader : MonoBehaviour
     [SerializeField] private float timeOutLength = 30;
     [SerializeField] private PublicEvent loadingFailed;
     public FeatureSettings featureSettings;
-
     
     private void Load(bool b)
     {

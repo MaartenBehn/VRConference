@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 using Utility;
 
-namespace Engine
+namespace Engine.Player
 {
     
     

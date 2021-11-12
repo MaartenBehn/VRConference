@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Engine;
+using Engine.Player;
 using UnityEngine;
 using Utility;
 
@@ -59,10 +60,12 @@ namespace Network
                 if (isServer.value)
                 {
                     server.StopServer();
+                    Destroy(server.gameObject);
                 }
                 else
                 {
                     client.Disconnect();
+                    Destroy(client.gameObject);
                 }
             });
 
@@ -93,8 +96,6 @@ namespace Network
             sendPosEvent.Register(networkSend.UserPos);
         }
         
-        public PublicEventByte userJoined;
-        public PublicEventByte userLeft;
         public PublicByte voiceId;
         
         public PublicEventFloat3 sendPosEvent;

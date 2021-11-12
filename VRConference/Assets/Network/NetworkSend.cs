@@ -7,8 +7,7 @@ namespace Network
 {
     public class NetworkSend
     {
-        
-        private NetworkController network;
+        private readonly NetworkController network;
 
         public NetworkSend(NetworkController network)
         {
@@ -19,11 +18,11 @@ namespace Network
         {
             if (network.isServer.value)
             {
-                network.server.Send(network.server.GetClient(userID), packet, useUDP);
+                network.server.Send(userID, packet, useUDP);
             }
             else
             {
-                network.client.Send(packet, useUDP);
+                SendToList(packet, new[] {userID}, useUDP);
             }
         }
 
@@ -75,25 +74,13 @@ namespace Network
             }
         }
         
-        public void UserStatusToAll(byte status)
+        public void FeatureSettings(byte toUser, bool getResponse)
         {
-            using Packet packet = new Packet((byte) Packets.userStatus, network.userId.value);
-            packet.Write(status);
-            SendToAllExceptOrigen(packet, false);
-        }
-        
-        public void UserStatus(byte status, byte toUser)
-        {
-            using Packet packet = new Packet((byte) Packets.userStatus, network.userId.value);
-            packet.Write(status);
-            Send(packet, toUser, false);
-        }
-        
-        public void FeatureSettings(byte toUser)
-        {
-            String log = "NETWORK: Sending Feature Settings:\n";
+            String log = "NETWORK: Sending Feature Settings :\n";
+            log += "User " + toUser + "\n";
             
             using Packet packet = new Packet((byte) Packets.featureSettings, network.userId.value);
+            packet.Write(getResponse);
 
             packet.Write(network.featureSettings.features.Length);
             foreach (var feature in network.featureSettings.features)
