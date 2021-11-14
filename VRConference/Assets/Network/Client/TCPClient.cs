@@ -72,6 +72,7 @@ namespace Network.Client
          
           private void ReceiveCallback(IAsyncResult result)
          {
+             if (client.networkFeatureState.value != (int) FeatureState.online && client.networkFeatureState.value != (int) FeatureState.starting) { return; }
              try
              {
                  int byteLength = stream.EndRead(result);
@@ -95,6 +96,7 @@ namespace Network.Client
          
          public void SendData(byte[] data, int length)
          {
+             if (client.networkFeatureState.value != (int) FeatureState.online && client.networkFeatureState.value != (int) FeatureState.starting) { return; }
              try
              {
                  if (socket != null)

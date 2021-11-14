@@ -2,7 +2,6 @@
 using System.Net;
 using System.Net.Sockets;
 using Engine.User;
-using Network.Both;
 using UnityEngine;
 using Utility;
 
@@ -30,6 +29,8 @@ namespace Network.Server
         
         private void UdpReceiveCallback(IAsyncResult result)
         {
+            if (server.udpFeatureState.value != (int) FeatureState.online && server.udpFeatureState.value != (int) FeatureState.starting) {return;}
+            
             try
             {
                 IPEndPoint clientEndPoint = new IPEndPoint(IPAddress.Any, 0);
@@ -65,6 +66,8 @@ namespace Network.Server
 
         public void SendData(byte userId, byte[] data, int length)
         {
+            if (server.udpFeatureState.value != (int) FeatureState.online && server.udpFeatureState.value != (int) FeatureState.starting) {return;}
+            
             User user = UserController.instance.users[userId];
             
             try

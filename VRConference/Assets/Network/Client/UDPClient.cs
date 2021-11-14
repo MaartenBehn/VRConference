@@ -46,7 +46,7 @@ namespace Network.Client
          
          private void ReceiveCallback(IAsyncResult result)
          {
-             if (client.networkFeatureState.value != (int) FeatureState.online) {return;}
+             if (client.udpFeatureState.value != (int) FeatureState.online && client.udpFeatureState.value != (int) FeatureState.starting) {return;}
              
              try
              {
@@ -72,7 +72,7 @@ namespace Network.Client
          
          public void SendData(byte[] data, int length)
          {
-             if (client.networkFeatureState.value != (int) FeatureState.online) {return;}
+             if (client.udpFeatureState.value != (int) FeatureState.online && client.udpFeatureState.value != (int) FeatureState.starting) {return;}
              
              try
              {

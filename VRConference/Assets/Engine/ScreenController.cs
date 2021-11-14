@@ -9,12 +9,12 @@ namespace UI
         [SerializeField] private GameObject startScreen;
         [SerializeField] private GameObject loadScreen;
         [SerializeField] private GameObject inGameScreen;
-
+        
         [SerializeField] private PublicEventBool load;
         [SerializeField] private PublicEvent loadingDone;
         [SerializeField] private PublicEvent loadingFailed;
         [SerializeField] private PublicEvent unload;
-        
+
         private void Awake()
         {
             load.Register((bool b) =>

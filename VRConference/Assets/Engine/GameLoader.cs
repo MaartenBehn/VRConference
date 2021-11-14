@@ -1,8 +1,5 @@
-using System;
 using System.Threading;
-using Engine;
 using Engine.Player;
-using Network.Both;
 using UnityEngine;
 using Utility;
 
@@ -31,15 +28,19 @@ public class GameLoader : MonoBehaviour
     [SerializeField] private PublicEventBool loadEvent;
     [SerializeField] private PublicEvent unloadEvent;
     [SerializeField] private PublicBool isHost;
+    [SerializeField] private PublicByte userId;
     
     [SerializeField] private PublicEvent loadingDone;
     [SerializeField] private float timeOutLength = 30;
     [SerializeField] private PublicEvent loadingFailed;
     public FeatureSettings featureSettings;
     
+   
+    
     private void Load(bool b)
     {
         isHost.value = b;
+        userId.value = b ? (byte)0 : (byte)1;
         Debug.Log("Loading");
         
         foreach (FeatureSettings.Feature feature in featureSettings.features)
@@ -95,6 +96,7 @@ public class GameLoader : MonoBehaviour
             {
                 Threader.RunOnMainThread(() =>
                 {
+                    bool failed = false;
                     bool done = true;
 
                     foreach (FeatureSettings.Feature feature in featureSettings.features)
@@ -102,6 +104,11 @@ public class GameLoader : MonoBehaviour
                         if (feature.featureState.value != (int) FeatureState.online)
                         {
                             done = false;
+                        }
+                        
+                        if (feature.featureState.value == (int) FeatureState.failed)
+                        {
+                            failed = true;
                         }
                     }
 
@@ -111,7 +118,7 @@ public class GameLoader : MonoBehaviour
                         loading = false;
                     }
                     
-                    if (Time.time >= startTime + timeOutLength)
+                    if (failed || Time.time >= startTime + timeOutLength)
                     {
                         Unload();
                         loadingFailed.Raise();

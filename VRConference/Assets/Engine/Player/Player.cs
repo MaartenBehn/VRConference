@@ -30,9 +30,16 @@ namespace Engine.User
             mic.transform.SetParent(transform);
         }
 
+        private float3 lastPos;
         private void FixedUpdate()
         {
-            //updatePosEvent.Raise(transform.position);
+            float3 pos = transform.position;
+            if (lastPos.x != pos.x || lastPos.y != pos.y || lastPos.z != pos.z)
+            {
+                updatePosEvent.Raise(pos);
+                lastPos = pos;
+            }
+            
         }
     }
 }

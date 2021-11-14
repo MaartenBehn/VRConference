@@ -1,5 +1,6 @@
 using Cinemachine;
 using UnityEngine;
+using Utility;
 
 namespace Engine.FirstPerson
 {

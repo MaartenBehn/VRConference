@@ -79,7 +79,7 @@ namespace Network.Server.Code
         
         private void ReceiveCallback(IAsyncResult result)
         {
-            if (server.networkFeatureState.value != (int) FeatureState.online) { return; }
+            if (server.networkFeatureState.value != (int) FeatureState.online && server.networkFeatureState.value != (int) FeatureState.starting) { return; }
 
             User user = (User) result.AsyncState;
             try
@@ -105,7 +105,7 @@ namespace Network.Server.Code
         
         public void SendData(byte userId, byte[] data, int length)
         {
-            if (server.networkFeatureState.value != (int) FeatureState.online) { return; }
+            if (server.networkFeatureState.value != (int) FeatureState.online && server.networkFeatureState.value != (int) FeatureState.starting) { return; }
 
             try
             {
