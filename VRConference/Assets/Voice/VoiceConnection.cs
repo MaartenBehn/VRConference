@@ -21,6 +21,8 @@ namespace Voice
 
         [SerializeField] private PublicEvent loadingDone;
         [SerializeField] private PublicByte voiceID;
+        
+        public PublicEvent sendVoiceId;
 
         private void Awake()
         {
@@ -39,6 +41,7 @@ namespace Voice
             loadingDone.Register(() =>
             {
                 voiceID.value = (byte) agent.Network.OwnID;
+                sendVoiceId.Raise();
             });
         }
 
@@ -116,5 +119,22 @@ namespace Voice
                 agent?.Network.LeaveChatroom();
             }
         }
+        
+        public static void SetAudioSourceSettings(AudioSource audioSource)
+        {
+            audioSource.spatialBlend = 1f;
+            audioSource.minDistance = 20;
+            audioSource.maxDistance = 50;
+            audioSource.spread = 70;
+            audioSource.rolloffMode = AudioRolloffMode.Custom;
+            
+            AnimationCurve curve = new AnimationCurve();
+            curve.AddKey(0, 1);
+            curve.AddKey(20, 0.9f);
+            curve.AddKey(50, 0);
+            audioSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, curve);
+        }
     }
 }
+
+

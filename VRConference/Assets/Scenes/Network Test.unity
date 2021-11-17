@@ -315,6 +315,7 @@ MonoBehaviour:
   featureState: {fileID: 11400000, guid: ef86a588a6fb31e4682c99e901de5e73, type: 2}
   loadingDone: {fileID: 11400000, guid: 2682efdee6ca3fc48be1ab305a77b640, type: 2}
   voiceID: {fileID: 11400000, guid: ba124b58568799a4f816bafaa892f829, type: 2}
+  sendVoiceId: {fileID: 11400000, guid: 58a0387b2e34c364da69047bf9a820d7, type: 2}
 --- !u!4 &22612420
 Transform:
   m_ObjectHideFlags: 0
@@ -1169,6 +1170,7 @@ MonoBehaviour:
   client: {fileID: 0}
   featureSettings: {fileID: 11400000, guid: 66d8548e6f84c93409c2cf5c9bc7211c, type: 2}
   networkFeatureState: {fileID: 11400000, guid: f5661bbe5332f964cae269016ed6abc3, type: 2}
+  sendVoiceId: {fileID: 11400000, guid: 58a0387b2e34c364da69047bf9a820d7, type: 2}
   voiceId: {fileID: 11400000, guid: ba124b58568799a4f816bafaa892f829, type: 2}
   sendPosEvent: {fileID: 11400000, guid: 859224ccf53a0544c837daf3853bed50, type: 2}
 --- !u!1 &376196972
@@ -3290,7 +3292,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1172986314
 Transform:
   m_ObjectHideFlags: 0
@@ -3315,6 +3317,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1222452288}
+  - component: {fileID: 1222452289}
   m_Layer: 0
   m_Name: Utility
   m_TagString: Untagged
@@ -3343,6 +3346,102 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1222452289
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1222452287}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 3e71f4df5acd4204db96865cafef3124, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1222991473
 GameObject:
   m_ObjectHideFlags: 0
@@ -3966,7 +4065,7 @@ MonoBehaviour:
   signalServerIP: {fileID: 11400000, guid: a78291d2be30dc844ad2eb825bf9d92e, type: 2}
   siganlServerPort: {fileID: 11400000, guid: 10756e24ea97fa74494553406425d6cf, type: 2}
   isFirstPerson: {fileID: 11400000, guid: e2f3cac74b72edb40a30f6b3c814b48a, type: 2}
-  isVR: {fileID: 11400000, guid: 0fe98cb9d29b43818a18795f0d1083c7, type: 2}
+  isVR: {fileID: 11400000, guid: c163166035945c9469c475e6a56d005d, type: 2}
 --- !u!1 &1407073487
 GameObject:
   m_ObjectHideFlags: 0

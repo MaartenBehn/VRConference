@@ -19,8 +19,6 @@
         // Container Packages
         clientContainerPacket = 8, // byte = ContainerType, bool = use UDP, (byte[] userIDs)
         
-        
-
         // Engine
         userVoiceId = 11, // byte = VoiceID
         

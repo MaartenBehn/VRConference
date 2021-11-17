@@ -25,7 +25,7 @@ namespace Network
         
         public delegate void PacketHandler(byte userID, Packet packet);
         public Dictionary<byte, PacketHandler> packetHandlers;
-
+        
         public void FeatureSettings(byte userID, Packet packet)
         {
             String log = "NETWORK: Received Feature Settings from "+ userID +":\n";
@@ -71,6 +71,7 @@ namespace Network
         public void UserVoiceID(byte userID, Packet packet)
         {
             byte vID = packet.ReadByte();
+            bool reply = packet.ReadBool();
 
             User user = UserController.instance.users[userID];
             if (user == null)
@@ -78,12 +79,12 @@ namespace Network
                 Debug.Log("NETWORK: User not existing");
                 return;
             }
-
+            
             user.voiceId = vID;
-
-            if (network.isServer.value)
+            
+            if (reply)
             {
-                network.networkSend.UserVoiceID();
+                network.networkSend.UserVoiceID(false);
             }
             
             Debug.LogFormat("NETWORK: User: {0} VoiceID: {1}", userID, vID);

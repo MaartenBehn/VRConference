@@ -17,7 +17,7 @@ namespace Engine.User
         [HideInInspector] public Mic mic;
         
         [HideInInspector] public AudioSource voiceAudioSource;
-        public PublicBool voiceSpecialBlend;
+        public PublicFloat voiceSpecialBlend;
         public PublicInt voicemaxDist;
         public PublicInt voiceminDist;
 
@@ -34,7 +34,7 @@ namespace Engine.User
             mic = GameObject.Find("UniMic.Mic").GetComponent<Mic>();
             mic.transform.SetParent(transform);
             voiceAudioSource = mic.GetComponent<AudioSource>();
-            voiceAudioSource.spatialBlend = voiceSpecialBlend.value ? 1.0f : 0.0f;
+            voiceAudioSource.spatialBlend = voiceSpecialBlend.value;
             voiceAudioSource.minDistance = voiceminDist.value;
             voiceAudioSource.maxDistance = voicemaxDist.value;
         }

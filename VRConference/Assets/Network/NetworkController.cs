@@ -20,10 +20,10 @@ namespace Network
 
         [SerializeField] private GameObject serverPreFab;
         [SerializeField] private GameObject clientPreFab;
-
+        
         [HideInInspector] public Server.Server server;
         [HideInInspector] public Client.Client client;
-
+        
         public NetworkHandle networkHandle;
         public NetworkSend networkSend;
         
@@ -94,10 +94,14 @@ namespace Network
             });
 
             sendPosEvent.Register(networkSend.UserPos);
+            sendVoiceId.Register(() =>
+            {
+                networkSend.UserVoiceID(true);
+            });
         }
-        
+
+        public PublicEvent sendVoiceId;
         public PublicByte voiceId;
-        
         public PublicEventFloat3 sendPosEvent;
     }
 }

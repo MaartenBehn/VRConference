@@ -94,10 +94,11 @@ namespace Network
             Debug.Log(log);
         }
         
-        public void UserVoiceID()
+        public void UserVoiceID(bool wantRelpy)
         {
             using Packet packet = new Packet((byte) Packets.userVoiceId, network.userId.value);
             packet.Write(network.voiceId.value);
+            packet.Write(wantRelpy);
             SendToAllExceptOrigen(packet, false);
         }
         

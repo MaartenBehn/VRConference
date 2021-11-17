@@ -34,7 +34,5 @@ namespace Engine.Player
             return features[0];
         }
     }
-    
-   
 }
 
