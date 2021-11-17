@@ -45,8 +45,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  receiveBuffer: 
+  ip: 
+  loaded: 0
   voiceId: 0
   voiceAudioSource: {fileID: 0}
+  voiceSpecialBlend: {fileID: 11400000, guid: 2535daeb2278b26448bdcd62ab1e0dfb, type: 2}
+  voicemaxDist: {fileID: 11400000, guid: 41090a1d79b2fb74d98a49c10a127fac, type: 2}
+  voiceminDist: {fileID: 11400000, guid: 780dd517af914874dbee3e846aa55d50, type: 2}
 --- !u!1 &3794661515990710536
 GameObject:
   m_ObjectHideFlags: 0

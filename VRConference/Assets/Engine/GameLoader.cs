@@ -35,8 +35,6 @@ public class GameLoader : MonoBehaviour
     [SerializeField] private PublicEvent loadingFailed;
     public FeatureSettings featureSettings;
     
-   
-    
     private void Load(bool b)
     {
         isHost.value = b;

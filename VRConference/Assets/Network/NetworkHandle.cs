@@ -93,8 +93,6 @@ namespace Network
         {
             float3 pos = packet.ReadFloat3();
             UserController.instance.users[userID].transform.position = pos;
-            
-            Debug.LogFormat("NETWORK: User: {0} Pos: {1}", userID, pos);
         }
     }
 }

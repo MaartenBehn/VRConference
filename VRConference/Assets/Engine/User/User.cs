@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using Network.Server;
 using UnityEngine;
 using Utility;
 
@@ -23,8 +22,11 @@ namespace Engine.User
         public bool loaded;
 
         public byte voiceId;
-        public AudioSource voiceAudioSource;
-
+        [HideInInspector] public AudioSource voiceAudioSource;
+        public PublicBool voiceSpecialBlend;
+        public PublicInt voicemaxDist;
+        public PublicInt voiceminDist;
+        
         private void Update()
         {
             if (voiceAudioSource == null)
@@ -39,8 +41,9 @@ namespace Engine.User
             if (g == null) return;
             voiceAudioSource = g.GetComponent<AudioSource>();
             voiceAudioSource.transform.SetParent(transform);
-            voiceAudioSource.spatialBlend = 1;
-            voiceAudioSource.minDistance = 10;
+            voiceAudioSource.spatialBlend = voiceSpecialBlend.value ? 1.0f : 0.0f;
+            voiceAudioSource.minDistance = voiceminDist.value;
+            voiceAudioSource.maxDistance = voicemaxDist.value;
         }
     }
 }

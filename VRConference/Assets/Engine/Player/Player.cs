@@ -15,6 +15,11 @@ namespace Engine.User
         [SerializeField] private PublicEventFloat3 updatePosEvent;
 
         [HideInInspector] public Mic mic;
+        
+        [HideInInspector] public AudioSource voiceAudioSource;
+        public PublicBool voiceSpecialBlend;
+        public PublicInt voicemaxDist;
+        public PublicInt voiceminDist;
 
         private void Awake()
         {
@@ -28,6 +33,10 @@ namespace Engine.User
         {
             mic = GameObject.Find("UniMic.Mic").GetComponent<Mic>();
             mic.transform.SetParent(transform);
+            voiceAudioSource = mic.GetComponent<AudioSource>();
+            voiceAudioSource.spatialBlend = voiceSpecialBlend.value ? 1.0f : 0.0f;
+            voiceAudioSource.minDistance = voiceminDist.value;
+            voiceAudioSource.maxDistance = voicemaxDist.value;
         }
 
         private float3 lastPos;

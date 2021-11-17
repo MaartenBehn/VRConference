@@ -113,7 +113,7 @@ namespace Voice
             }
             else
             {
-                agent.Network.LeaveChatroom();
+                agent?.Network.LeaveChatroom();
             }
         }
     }
