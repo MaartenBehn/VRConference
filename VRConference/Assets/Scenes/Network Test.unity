@@ -804,6 +804,7 @@ MonoBehaviour:
   loadEvent: {fileID: 11400000, guid: 7e40980d30b0b5f4c8846a4a1ba5db53, type: 2}
   unloadEvent: {fileID: 11400000, guid: 6619df8abdd916b43bb262b6ba936884, type: 2}
   isHost: {fileID: 11400000, guid: 0fe98cb9d29b43818a18795f0d1083c7, type: 2}
+  userId: {fileID: 11400000, guid: 7bf2212ce6cd452aaf583dbf94cfffbb, type: 2}
   loadingDone: {fileID: 11400000, guid: 2682efdee6ca3fc48be1ab305a77b640, type: 2}
   timeOutLength: 30
   loadingFailed: {fileID: 11400000, guid: cd6ba6590bb92e94786d191c3f0c5cd5, type: 2}
@@ -1703,7 +1704,6 @@ MonoBehaviour:
   loadingDone: {fileID: 11400000, guid: 2682efdee6ca3fc48be1ab305a77b640, type: 2}
   loadingFailed: {fileID: 11400000, guid: cd6ba6590bb92e94786d191c3f0c5cd5, type: 2}
   unload: {fileID: 11400000, guid: 6619df8abdd916b43bb262b6ba936884, type: 2}
-  userId: {fileID: 0}
 --- !u!1 &793952217
 GameObject:
   m_ObjectHideFlags: 0
