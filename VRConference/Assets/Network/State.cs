@@ -23,7 +23,14 @@
         userVoiceId = 11, // byte = VoiceID
         
         // Movement
-        userPos = 20 // Vec3
+        userPos = 20, // Vec3
+        
+        // FileShare
+        userGetListOfLocalFiles = 30,
+        userListOfLocalFiles = 31,
+        
+        userGetFile = 32,
+        userFile = 33,
     }
 
     public enum ContainerType

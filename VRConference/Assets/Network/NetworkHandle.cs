@@ -20,6 +20,8 @@ namespace Network
                 { (byte)Packets.featureSettings, FeatureSettings },
                 { (byte)Packets.userVoiceId, UserVoiceID },
                 { (byte)Packets.userPos, UserPos },
+                { (byte)Packets.userGetListOfLocalFiles, GetListOfLocalFiles },
+                { (byte)Packets.userListOfLocalFiles, ListOfLocalFiles },
             };
         }
         
@@ -94,6 +96,33 @@ namespace Network
         {
             float3 pos = packet.ReadFloat3();
             UserController.instance.users[userID].transform.position = pos;
+        }
+
+        public void GetListOfLocalFiles(byte userID, Packet packet)
+        {
+            List<string> fileNames = new List<string>();
+            var fileEntries = FileShare.FileShare.instance.fileEntries;
+
+            foreach (FileShare.FileShare.FileEntry fileEntry in fileEntries)
+            {
+                if (fileEntry.localPath != "")
+                {
+                    fileNames.Add(fileEntry.fileName);
+                }
+            }
+            
+            network.networkSend.ListOfLocalFiles(userID, fileNames.ToArray());
+        }
+        
+        public void ListOfLocalFiles(byte userID, Packet packet)
+        {
+            int length = packet.ReadInt32();
+
+            for (int i = 0; i < length; i++)
+            {
+                string name = packet.ReadString();
+                FileShare.FileShare.instance.AddFileEntry(userID, name);
+            }
         }
     }
 }

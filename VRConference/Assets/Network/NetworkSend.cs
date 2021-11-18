@@ -108,5 +108,24 @@ namespace Network
             packet.Write(pos);
             SendToAllExceptOrigen(packet, true);
         }
+
+        public void GetListOfLocalFiles()
+        {
+            using Packet packet = new Packet((byte) Packets.userGetListOfLocalFiles, network.userId.value);
+            SendToAllExceptOrigen(packet, false);
+        }
+        
+        public void ListOfLocalFiles(byte toUser, string[] fileNames)
+        {
+            using Packet packet = new Packet((byte) Packets.userListOfLocalFiles, network.userId.value);
+            
+            packet.Write(fileNames.Length);
+            foreach (string filename in fileNames)
+            {
+                packet.Write(filename);
+            }
+            
+            Send(packet, toUser,false);
+        }
     }
 }
