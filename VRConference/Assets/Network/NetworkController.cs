@@ -8,6 +8,8 @@ namespace Network
 {
     public class NetworkController : MonoBehaviour
     {
+        public static NetworkController instance;
+        
         [SerializeField] public PublicBool isServer;
 
         [SerializeField] private PublicEvent startNetworkEvent;
@@ -32,6 +34,15 @@ namespace Network
         
         private void Awake()
         {
+            if (instance == null)
+            {
+                instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+            
             networkHandle = new NetworkHandle(this);
             networkSend = new NetworkSend(this);
             
@@ -98,10 +109,14 @@ namespace Network
             {
                 networkSend.UserVoiceID(true);
             });
+            
+            syncFilesEvent.Register(networkSend.GetListOfLocalFiles);
         }
 
         public PublicEvent sendVoiceId;
         public PublicByte voiceId;
         public PublicEventFloat3 sendPosEvent;
+        
+        [SerializeField] private PublicEvent syncFilesEvent;
     }
 }

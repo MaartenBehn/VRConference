@@ -9,7 +9,7 @@ namespace FileShare
         public bool multibleFiles;
         public string[] allowedEndings;
         [SerializeField] private PublicEventString uploadEvent;
-        
+
         public void SelectFile()
         {
             FileBrowser.ShowLoadDialog((string[] paths) =>

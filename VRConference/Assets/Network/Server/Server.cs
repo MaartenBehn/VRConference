@@ -67,7 +67,6 @@ namespace Network.Server
             Debug.Log("SERVER: Started");
             networkFeatureState.value = (int) FeatureState.online;
         }
-        
 
         public void HandelData(byte[] data)
         {
@@ -87,10 +86,8 @@ namespace Network.Server
             byte packetId = packet.ReadByte();
             byte userID = packet.ReadByte();
             
-            Threader.RunOnMainThread(() =>
-            {
-                packetHandlers[packetId](userID, packet);
-            });
+            // TODO figure out how the fuck to run this on the main thread
+            packetHandlers[packetId](userID, packet);
         }
 
         public void Send(byte userId, Packet packet, bool useUDP)

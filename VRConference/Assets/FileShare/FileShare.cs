@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Network;
 using UnityEngine;
 using Utility;
 
@@ -22,8 +23,9 @@ namespace FileShare
         
         [SerializeField] private PublicEventString uploadEvent;
         [SerializeField] private PublicEvent syncEvent;
-        [SerializeField] private PublicEventStringArray addFilenames;
 
+        [SerializeField] private bool autoSyncFiles;
+        
         public List<FileEntry> fileEntries;
 
         private void Awake()
@@ -42,19 +44,28 @@ namespace FileShare
                 var parts = path.Split(new char[] {'/','\\'});
                 AddFileEntry(userId.value, parts.Last(), path);
             });
+
+            
         }
 
-        public void AddFileEntry(byte userId, string name, string path = null)
+        public void AddFileEntry(byte userId, string name, string path = "")
         {
             bool found = false;
-            foreach (FileEntry entry in fileEntries)
+            for (var i = 0; i < fileEntries.Count; i++)
             {
+                FileEntry entry = fileEntries[i];
                 if (entry.fileName == name)
                 {
+                    if (path != null)
+                    {
+                        entry.localPath = path;
+                    }
+
                     if (!entry.userHowHaveTheFile.Contains(userId))
                     {
                         entry.userHowHaveTheFile.Add(userId);
                     }
+
                     found = true;
                 }
             }
@@ -69,6 +80,41 @@ namespace FileShare
                 fileEntries.Add(fileEntry);
             }
         }
-        
+
+        public void SyncFile(FileEntry fileEntry)
+        {
+            if (fileEntry.localPath != "" || fileEntry.userHowHaveTheFile.Count == 0)
+            {
+                return;
+            }
+
+            if (fileEntry.userHowHaveTheFile.Contains(0))
+            {
+                NetworkController.instance.networkSend
+                    .GetFile(fileEntry.fileName, 0);
+            }
+            else
+            {
+                NetworkController.instance.networkSend
+                    .GetFile(fileEntry.fileName, fileEntry.userHowHaveTheFile[0]);
+            }
+        }
+
+        private void Update()
+        {
+            if (!autoSyncFiles)
+            {
+                return;
+            }
+            
+            foreach (FileEntry fileEntry in fileEntries)
+            {
+                if (fileEntry.localPath == "")
+                {
+                    SyncFile(fileEntry);
+                    break;
+                }
+            }
+        }
     }
 }

@@ -113,6 +113,8 @@ namespace Network
         {
             using Packet packet = new Packet((byte) Packets.userGetListOfLocalFiles, network.userId.value);
             SendToAllExceptOrigen(packet, false);
+            
+            Debug.Log("NETWORK: GetListOfLocalFiles");
         }
         
         public void ListOfLocalFiles(byte toUser, string[] fileNames)
@@ -126,6 +128,28 @@ namespace Network
             }
             
             Send(packet, toUser,false);
+            
+            Debug.Log("NETWORK: ListOfLocalFiles");
+        }
+
+        public void GetFile(string filename, byte toUser)
+        {
+            using Packet packet = new Packet((byte) Packets.userGetFile, network.userId.value);
+            packet.Write(filename);
+            Send(packet, toUser, false);
+            
+            Debug.Log("NETWORK: GetFile");
+        }
+        
+        public void File(string filename, byte[] bytes, byte toUser)
+        {
+            using Packet packet = new Packet((byte) Packets.userFile, network.userId.value);
+            packet.Write(filename);
+            packet.Write(bytes.Length);
+            packet.Write(bytes);
+            Send(packet, toUser, true);
+            
+            Debug.LogFormat("NETWORK: Send File {filename}");
         }
     }
 }

@@ -83,11 +83,9 @@ namespace Network.Client
             
             byte packetId = packet.ReadByte();
             byte userID = packet.ReadByte();
-
-            Threader.RunOnMainThread(() =>
-            {
-                packetHandlers[packetId](userID, packet);
-            });
+            
+            // TODO figure out how the fuck to run this on the main thread
+            packetHandlers[packetId](userID, packet);
         }
 
         public void Send(Packet packet, bool userUDP)

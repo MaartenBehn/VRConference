@@ -24,9 +24,6 @@ namespace Engine.User
 
         public byte voiceId;
         [HideInInspector] public AudioSource voiceAudioSource;
-        public PublicFloat voiceSpecialBlend;
-        public PublicInt voicemaxDist;
-        public PublicInt voiceminDist;
 
         private void Update()
         {

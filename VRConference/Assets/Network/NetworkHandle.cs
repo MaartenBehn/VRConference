@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Engine.User;
 using Network.Both;
 using Unity.Mathematics;
 using UnityEngine;
+using Utility;
 
 namespace Network
 {
@@ -20,8 +22,11 @@ namespace Network
                 { (byte)Packets.featureSettings, FeatureSettings },
                 { (byte)Packets.userVoiceId, UserVoiceID },
                 { (byte)Packets.userPos, UserPos },
+                
                 { (byte)Packets.userGetListOfLocalFiles, GetListOfLocalFiles },
                 { (byte)Packets.userListOfLocalFiles, ListOfLocalFiles },
+                { (byte)Packets.userGetFile, GetFile },
+                { (byte)Packets.userFile, FileRecived },
             };
         }
         
@@ -123,6 +128,40 @@ namespace Network
                 string name = packet.ReadString();
                 FileShare.FileShare.instance.AddFileEntry(userID, name);
             }
+        }
+        
+        public void GetFile(byte userID, Packet packet)
+        {
+            string filename = packet.ReadString();
+
+            FileShare.FileShare.FileEntry fileEntry = FileShare.FileShare.instance.fileEntries.Find(
+                file => file.fileName == filename);
+            
+            if (File.Exists(fileEntry.localPath))
+            {
+                byte[] data = File.ReadAllBytes(fileEntry.localPath);
+                network.networkSend.File(filename, data, userID);
+            }
+            
+            Threader.RunOnMainThread(() =>
+            {
+                Debug.LogFormat("File Not Found {filename}");
+            });
+        }
+        
+        public void FileRecived(byte userID, Packet packet)
+        {
+            string filename = packet.ReadString();
+            int length = packet.ReadInt32();
+            byte[] data = packet.ReadBytes(length);
+
+            string path = "D:\\" + filename;
+            FileStream oFileStream = null;
+            oFileStream = new FileStream(path, FileMode.Create);
+            oFileStream.Write(data, 0, data.Length);
+            oFileStream.Close();
+            
+            FileShare.FileShare.instance.AddFileEntry(userID, filename, path);
         }
     }
 }
