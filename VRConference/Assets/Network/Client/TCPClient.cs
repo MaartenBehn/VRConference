@@ -40,10 +40,7 @@ namespace Network.Client
                 Thread.Sleep(2000);
                 if (client.networkFeatureState.value == (int) FeatureState.starting)
                 {
-                    Threader.RunOnMainThread(() =>
-                    {
-                        Debug.Log("CLIENT: Connect Timeout");
-                    });
+                    Debug.Log("CLIENT: Connect Timeout");
                     socket.Close();
                     client.networkFeatureState.value = (int) FeatureState.failed;
                 }
@@ -70,6 +67,7 @@ namespace Network.Client
              stream.BeginRead(receiveBuffer, 0, State.BufferSize, ReceiveCallback, null);
          }
          
+         // Async
           private void ReceiveCallback(IAsyncResult result)
          {
              if (client.networkFeatureState.value != (int) FeatureState.online && client.networkFeatureState.value != (int) FeatureState.starting) { return; }
@@ -78,19 +76,30 @@ namespace Network.Client
                  int byteLength = stream.EndRead(result);
                  if (byteLength < State.HeaderSize)
                  {
-                     client.Disconnect();
+                     Threader.RunOnMainThread(client.Disconnect);
                      return;
                  }
 
                  byte[] data = new byte[byteLength];
                  Array.Copy(receiveBuffer, data, byteLength);
 
-                 client.HandleData(data);
+                 if (BitConverter.ToBoolean(data, 0))
+                 {
+                     client.HandleData(data);
+                 }
+                 else
+                 {
+                     Threader.RunOnMainThread(() =>
+                     {
+                         client.HandleData(data);
+                     });
+                 }
+                 
                  stream.BeginRead(receiveBuffer, 0, State.BufferSize, ReceiveCallback, null);
              }
              catch
              {
-                 client.Disconnect();
+                 Threader.RunOnMainThread(client.Disconnect);
              }
          }
          

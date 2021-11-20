@@ -39,10 +39,7 @@ namespace Network.Server
 
                 if (data.Length < 6)
                 {
-                    Threader.RunOnMainThread(() =>
-                    {
-                        Debug.Log("SERVER no correct UDP packet size");
-                    });
+                    Debug.Log("SERVER no correct UDP packet size");
                     return;
                 }
 
@@ -55,8 +52,18 @@ namespace Network.Server
                         user.endPoint = clientEndPoint;
                     }
                 }
-
-                server.HandelData(data);
+                
+                if (BitConverter.ToBoolean(data, 0))
+                {
+                    server.HandelData(data);
+                }
+                else
+                {
+                    Threader.RunOnMainThread(() =>
+                    {
+                        server.HandelData(data);
+                    });
+                }
             }
             catch (Exception ex)
             {

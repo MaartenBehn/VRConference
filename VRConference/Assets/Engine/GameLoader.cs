@@ -48,10 +48,7 @@ public class GameLoader : MonoBehaviour
             Threader.RunAsync(() =>
             {
                 WaitForDependencies(feature);
-                Threader.RunOnMainThread(() =>
-                {
-                    feature.startEvent.Raise();
-                });
+                Threader.RunOnMainThread(feature.startEvent.Raise);
             });
         }
 

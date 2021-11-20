@@ -55,18 +55,27 @@ namespace Network.Client
 
                  if (data.Length < State.HeaderSize)
                  {
-                     client.Disconnect();
+                     Threader.RunOnMainThread(client.Disconnect);
                      return;
                  }
-                 client.HandleData(data);
+
+                 if (BitConverter.ToBoolean(data, 0))
+                 {
+                     client.HandleData(data);
+                 }
+                 else
+                 {
+                     Threader.RunOnMainThread(() =>
+                     {
+                         client.HandleData(data);
+                     });
+                 }
+
              }
              catch (Exception e)
              {
-                 Threader.RunOnMainThread(() =>
-                 {
-                     Debug.Log(e);
-                 });
-                 client.Disconnect();
+                 Debug.Log(e);
+                 Threader.RunOnMainThread(client.Disconnect);
              }
          }
          

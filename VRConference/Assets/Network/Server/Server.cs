@@ -68,31 +68,29 @@ namespace Network.Server
             networkFeatureState.value = (int) FeatureState.online;
         }
 
+        // Main Thread
         public void HandelData(byte[] data)
         {
             Packet packet = new Packet(data);
             packet.PrepareForRead();
-            
+
+            bool async = packet.ReadBool();
             int length = packet.ReadInt32();
-            if (length + 4 != data.Length)
+            if (length + 5 != data.Length)
             {
-                Threader.RunOnMainThread(() =>
-                {
-                    Debug.Log("SERVER: Packet size not correct.");
-                });
+                Debug.Log("SERVER: Packet size not correct.");
                 return;
             }
             
             byte packetId = packet.ReadByte();
             byte userID = packet.ReadByte();
             
-            // TODO figure out how the fuck to run this on the main thread
             packetHandlers[packetId](userID, packet);
         }
 
-        public void Send(byte userId, Packet packet, bool useUDP)
+        public void Send(byte userId, Packet packet, bool useUDP, bool async)
         {
-            packet.PrepareForSend();
+            packet.PrepareForSend(async);
             if (!useUDP)
             {
                 tcpServer.SendData(userId, packet.ToArray(), packet.Length());
@@ -103,6 +101,7 @@ namespace Network.Server
             }
         }
         
+        // MainThread
         public void DisconnectClient(byte userId)
         {
             if (!UserController.instance.users.ContainsKey(userId)) {return;}
@@ -110,20 +109,17 @@ namespace Network.Server
             tcpServer.DisconnectClient(userId);
             udpServer.DisconnectClient(userId);
             
-            Threader.RunOnMainThread(() =>
-            {
-                Debug.Log("SERVER: Client " + userId + " disconnected.");
+            Debug.Log("SERVER: Client " + userId + " disconnected.");
 
-                foreach (byte id in UserController.instance.users.Keys)
+            foreach (byte id in UserController.instance.users.Keys)
+            {
+                if (id != userId)
                 {
-                    if (id != userId)
-                    {
-                        serverSend.ServerUserLeft(id, userId);
-                    }
+                    serverSend.ServerUserLeft(id, userId);
                 }
+            }
                 
-                UserController.instance.UserLeft(userId);
-            });
+            UserController.instance.UserLeft(userId);
         }
 
         public void StopServer()

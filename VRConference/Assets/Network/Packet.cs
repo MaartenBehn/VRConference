@@ -67,12 +67,13 @@ namespace Network.Both
         }
 
         private bool readyToSend;
-        public void PrepareForSend()
+        public void PrepareForSend(bool async)
         {
             if(readyToSend) 
                 return;
             
             Write(0, Length());
+            Write(0, async);
             readyToSend = true;
         }
         #endregion
@@ -85,6 +86,11 @@ namespace Network.Both
         public void Write(int pos, byte value)
         {
             buffer.Insert(pos, value);
+        }
+        
+        public void Write(int pos, bool value)
+        {
+            buffer.InsertRange(pos,BitConverter.GetBytes(value));
         }
         
         public void Write(byte[] value)

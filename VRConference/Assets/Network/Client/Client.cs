@@ -65,34 +65,33 @@ namespace Network.Client
         }
 
         // This funcs gets the incoming bytes and maps it to the handle func.
+        // Main Thread
         public void HandleData(byte[] data)
         {
             Packet packet = new Packet(data);
             packet.PrepareForRead();
             
+            bool async = packet.ReadBool();
             // This checks if the data has the length it should have.
             int length = packet.ReadInt32();
-            if (length + 4 != data.Length)
+            if (length + 5 != data.Length)
             {
-                Threader.RunOnMainThread(() =>
-                {
-                    Debug.Log("CLIENT: Packet size not correct.");
-                });
+                Debug.Log("CLIENT: Packet size not correct.");
                 return;
             }
             
             byte packetId = packet.ReadByte();
             byte userID = packet.ReadByte();
             
-            // TODO figure out how the fuck to run this on the main thread
             packetHandlers[packetId](userID, packet);
         }
-
-        public void Send(Packet packet, bool userUDP)
+        
+        // Async
+        public void Send(Packet packet, bool useUDP, bool async)
         {
-            packet.PrepareForSend();
+            packet.PrepareForSend(async);
             
-            if (!userUDP || udpFeatureState.value != (int) FeatureState.online)
+            if (!useUDP || udpFeatureState.value != (int) FeatureState.online)
             {
                 tcpClient.SendData(packet.ToArray(), packet.Length());
             }
@@ -102,6 +101,7 @@ namespace Network.Client
             }
         }
         
+        // Main Thread
         public void Disconnect()
         {
             if (networkFeatureState.value != (int) FeatureState.online) {return;}
@@ -115,10 +115,7 @@ namespace Network.Client
             Debug.Log("CLIENT: Disconnected");
             networkFeatureState.value = (int) FeatureState.offline;
             
-            Threader.RunOnMainThread(() =>
-            {
-                unloadEvent.Raise();
-            });
+            unloadEvent.Raise();
         }
     }
 }

@@ -997,6 +997,19 @@ MonoBehaviour:
   syncEvent: {fileID: 11400000, guid: 8dca4137e837c5e48bb00bd4e6836027, type: 2}
   autoSyncFiles: 1
   fileEntries: []
+  syncIntervall: 5
+  syncingFile: 0
+  fileSyncConfig:
+    fileEntry:
+      fileName: 
+      userHowHaveTheFile: 
+      localPath: 
+    partAmmount: 0
+    currentPart: 0
+    length: 0
+    user: 0
+    data: 
+  partSize: 2024
 --- !u!1 &292745780
 GameObject:
   m_ObjectHideFlags: 0
@@ -1454,6 +1467,7 @@ MonoBehaviour:
   lookSpeed: 2
   lookXLimit: 45
   canMove: 1
+  lockDelay: 1
 --- !u!143 &446170381
 CharacterController:
   m_ObjectHideFlags: 0
@@ -3528,7 +3542,7 @@ GameObject:
   - component: {fileID: 1100291395}
   - component: {fileID: 1100291394}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: File
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4929,7 +4943,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7764705, y: 1}
+    m_SensorSize: {x: 1.7775666, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0

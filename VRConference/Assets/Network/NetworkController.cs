@@ -48,23 +48,20 @@ namespace Network
             
             startNetworkEvent.Register(() =>
             {
-                Threader.RunOnMainThread(() =>
+                if (isServer.value)
                 {
-                    if (isServer.value)
-                    {
-                        server = Instantiate(serverPreFab, transform).GetComponent<Server.Server>();
-                        server.networkHandle = networkHandle;
-                        server.networkSend = networkSend;
-                        server.StartServer();
-                    }
-                    else
-                    {
-                        client = Instantiate(clientPreFab, transform).GetComponent<Client.Client>();
-                        client.networkHandle = networkHandle;
-                        client.networkSend = networkSend;
-                        client.Connect();
-                    }
-                });
+                    server = Instantiate(serverPreFab, transform).GetComponent<Server.Server>();
+                    server.networkHandle = networkHandle;
+                    server.networkSend = networkSend;
+                    server.StartServer();
+                }
+                else
+                {
+                    client = Instantiate(clientPreFab, transform).GetComponent<Client.Client>();
+                    client.networkHandle = networkHandle;
+                    client.networkSend = networkSend;
+                    client.Connect();
+                }
             });
             stopNetworkEvent.Register(() =>
             {

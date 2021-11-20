@@ -30,7 +30,10 @@
         userListOfLocalFiles = 31,
         
         userGetFile = 32,
-        userFile = 33,
+        userFileSyncConfig = 33,
+        userGetFilePart= 34,
+        userFilePart = 35,
+        
     }
 
     public enum ContainerType
@@ -45,6 +48,6 @@
     {
         public const int BufferSize = 4096;
         public const int MaxClients = 255;
-        public const int HeaderSize = 6;
+        public const int HeaderSize = 7;
     }
 }

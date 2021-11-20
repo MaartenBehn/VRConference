@@ -16,10 +16,7 @@ namespace Network.Client
         public void DebugMessage(byte userID, Packet packet)
         {
             string message = packet.ReadString();
-            Threader.RunOnMainThread(() =>
-            {
-                Debug.Log("CLIENT: Debug: "+ message);
-            });
+            Debug.Log("CLIENT: Debug: "+ message);
         }
 
         public void ServerInit(byte userID, Packet packet)

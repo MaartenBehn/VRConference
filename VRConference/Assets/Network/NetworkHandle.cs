@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Engine.User;
 using Network.Both;
 using Unity.Mathematics;
@@ -26,7 +25,9 @@ namespace Network
                 { (byte)Packets.userGetListOfLocalFiles, GetListOfLocalFiles },
                 { (byte)Packets.userListOfLocalFiles, ListOfLocalFiles },
                 { (byte)Packets.userGetFile, GetFile },
-                { (byte)Packets.userFile, FileRecived },
+                { (byte)Packets.userFileSyncConfig, FileSyncConfig },
+                { (byte)Packets.userGetFilePart, GetFilePart },
+                { (byte)Packets.userFilePart, FilePart },
             };
         }
         
@@ -99,8 +100,11 @@ namespace Network
 
         public void UserPos(byte userID, Packet packet)
         {
-            float3 pos = packet.ReadFloat3();
-            UserController.instance.users[userID].transform.position = pos;
+            Threader.RunOnMainThread(() =>
+            {
+                float3 pos = packet.ReadFloat3();
+                UserController.instance.users[userID].transform.position = pos;
+            });
         }
 
         public void GetListOfLocalFiles(byte userID, Packet packet)
@@ -108,7 +112,7 @@ namespace Network
             List<string> fileNames = new List<string>();
             var fileEntries = FileShare.FileShare.instance.fileEntries;
 
-            foreach (FileShare.FileShare.FileEntry fileEntry in fileEntries)
+            foreach (FileShare.FileEntry fileEntry in fileEntries)
             {
                 if (fileEntry.localPath != "")
                 {
@@ -133,35 +137,37 @@ namespace Network
         public void GetFile(byte userID, Packet packet)
         {
             string filename = packet.ReadString();
-
-            FileShare.FileShare.FileEntry fileEntry = FileShare.FileShare.instance.fileEntries.Find(
-                file => file.fileName == filename);
             
-            if (File.Exists(fileEntry.localPath))
-            {
-                byte[] data = File.ReadAllBytes(fileEntry.localPath);
-                network.networkSend.File(filename, data, userID);
-            }
-            
-            Threader.RunOnMainThread(() =>
-            {
-                Debug.LogFormat("File Not Found {filename}");
-            });
+            FileShare.FileShare.instance.HandleGetFile(filename, userID);
+            Debug.Log("NETWORK: Get File request. " +filename);
         }
         
-        public void FileRecived(byte userID, Packet packet)
+        public void FileSyncConfig(byte userID, Packet packet)
         {
             string filename = packet.ReadString();
             int length = packet.ReadInt32();
+            int parts = packet.ReadInt32();
+
+            FileShare.FileShare.instance.HandleFileSyncConfig(filename, userID, length, parts);
+            Debug.Log("NETWORK: File Sync Config received. " +filename);
+        }
+        
+        public void GetFilePart(byte userID, Packet packet)
+        {
+            string filename = packet.ReadString();
+            int part = packet.ReadInt32();
+
+            FileShare.FileShare.instance.HandleGetFilePart(filename, userID, part);
+        }
+        
+        public void FilePart(byte userID, Packet packet)
+        {
+            string filename = packet.ReadString();
+            int part = packet.ReadInt32();
+            int length = packet.ReadInt32();
             byte[] data = packet.ReadBytes(length);
 
-            string path = "D:\\" + filename;
-            FileStream oFileStream = null;
-            oFileStream = new FileStream(path, FileMode.Create);
-            oFileStream.Write(data, 0, data.Length);
-            oFileStream.Close();
-            
-            FileShare.FileShare.instance.AddFileEntry(userID, filename, path);
+            FileShare.FileShare.instance.HandleFilePart(filename, userID, part, data);
         }
     }
 }

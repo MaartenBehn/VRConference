@@ -32,6 +32,7 @@ namespace Network.Server
         {
             byte type = containerPacket.ReadByte();
             bool useUDP = containerPacket.ReadBool();
+            bool async = containerPacket.ReadBool();
 
             byte[] userIDs = null;
             if (type == (byte) ContainerType.list || type == (byte) ContainerType.allExceptList)
@@ -42,17 +43,16 @@ namespace Network.Server
 
             byte[] data = containerPacket.ReadBytes(containerPacket.UnReadLength());
             using Packet packet = new Packet(data);
-            
-            packet.PrepareForSend();
-            
+            packet.PrepareForSend(async);
+
             if (type == (byte) ContainerType.all)
             {
-                server.serverSend.SendToAll(packet, useUDP);
+                server.serverSend.SendToAll(packet, useUDP, async);
                 server.HandelData(packet.ToArray());
             }
             else if (type == (byte) ContainerType.allExceptOrigin)
             {
-                server.serverSend.SendToAllExceptList(packet, new []{userID}, useUDP);
+                server.serverSend.SendToAllExceptList(packet, new []{userID}, useUDP, async);
                 server.HandelData(packet.ToArray());
             }
             else if (type == (byte) ContainerType.list)
@@ -65,7 +65,7 @@ namespace Network.Server
                     }
                     else
                     {
-                        server.Send(userIDs[i], packet, useUDP);
+                        server.Send(userIDs[i], packet, useUDP, async);
                     }
                 }
             }
@@ -86,7 +86,7 @@ namespace Network.Server
 
                     if (send)
                     {
-                        server.Send(id, packet, useUDP);
+                        server.Send(id, packet, useUDP, async);
                     }
                 }
                 

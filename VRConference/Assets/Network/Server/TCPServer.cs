@@ -87,19 +87,36 @@ namespace Network.Server.Code
                 int byteLength = user.stream.EndRead(result);
                 if (byteLength < State.HeaderSize)
                 {
-                    server.DisconnectClient(user.id);
+                    Threader.RunOnMainThread(() =>
+                    {
+                        server.DisconnectClient(user.id);
+                    });
                     return;
                 }
 
                 byte[] data = new byte[byteLength];
                 Array.Copy(user.receiveBuffer, data, byteLength);
-                server.HandelData(data);
-                
+
+                if (BitConverter.ToBoolean(data, 0))
+                {
+                    server.HandelData(data);
+                }
+                else
+                {
+                    Threader.RunOnMainThread(() =>
+                    {
+                        server.HandelData(data);
+                    });
+                }
+
                 user.stream.BeginRead(user.receiveBuffer, 0, State.BufferSize, ReceiveCallback, user);
             }
             catch
             {
-                server.DisconnectClient(user.id);
+                Threader.RunOnMainThread(() =>
+                {
+                    server.DisconnectClient(user.id);
+                });
             }
         }
         
