@@ -27,19 +27,10 @@ namespace Engine.FirstPerson
             characterController = GetComponent<CharacterController>();
         }
 
-        private bool locked;
-        [SerializeField] private float lockDelay = 1;
-        private float lastLockTime;
+        [SerializeField] private PublicBool pause;
         void Update()
         {
-            
-            if (lastLockTime + lockDelay < Time.time && Input.GetKey(KeyCode.Escape))
-            {
-                locked = !locked;
-                Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
-                lastLockTime = Time.time;
-            }
-            if (!locked) { return; }
+            if (pause.value) { return; }
             
             // We are grounded, so recalculate move direction based on axes
             Vector3 forward = transform.TransformDirection(Vector3.forward);

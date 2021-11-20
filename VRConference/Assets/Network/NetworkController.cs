@@ -106,14 +106,12 @@ namespace Network
             {
                 networkSend.UserVoiceID(true);
             });
-            
-            syncFilesEvent.Register(networkSend.GetListOfLocalFiles);
         }
 
         public PublicEvent sendVoiceId;
         public PublicByte voiceId;
         public PublicEventFloat3 sendPosEvent;
         
-        [SerializeField] private PublicEvent syncFilesEvent;
+        
     }
 }

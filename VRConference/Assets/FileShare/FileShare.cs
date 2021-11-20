@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Network;
+using SimpleFileBrowser;
 using UnityEngine;
 using Utility;
-using WebSocketSharpUnityMod;
 
 namespace FileShare
 {
@@ -46,6 +46,10 @@ namespace FileShare
 
         [SerializeField] private float syncIntervall = 5f;
 
+        [SerializeField] private PublicString savePath;
+        
+        [SerializeField] private PublicEvent syncFilesEvent;
+
         private void Awake()
         {
             if (instance == null)
@@ -62,7 +66,26 @@ namespace FileShare
                 var parts = path.Split(new char[] {'/','\\'});
                 AddFileEntry(userId.value, parts.Last(), path);
             });
+
+            syncFilesEvent.Register(SyncFiles);
         }
+
+        private void SyncFiles()
+        {
+            if (savePath.value == "")
+            {
+                FileBrowser.ShowSaveDialog(paths =>
+                {
+                    savePath.value = paths[0] + "\\";
+                    NetworkController.instance.networkSend.GetListOfLocalFiles();
+                }, () => { }, FileBrowser.PickMode.Folders);
+            }
+            else
+            {
+                NetworkController.instance.networkSend.GetListOfLocalFiles();
+            }
+        }
+        
         public void AddFileEntry(byte userId, string name, string path = "")
         {
             bool found = false;
@@ -71,7 +94,7 @@ namespace FileShare
                 FileEntry entry = fileEntries[i];
                 if (entry.fileName == name)
                 {
-                    if (path != null)
+                    if (path != "")
                     {
                         entry.localPath = path;
                     }
@@ -127,7 +150,7 @@ namespace FileShare
             fileSyncConfig = new FileSyncConfig();
             fileSyncConfig.fileEntry = fileEntry;
             
-            fileSyncConfig.fileEntry.localPath = "D:\\" + fileEntry.fileName;
+            fileSyncConfig.fileEntry.localPath = savePath.value + fileEntry.fileName;
             fileSyncConfig.fileStream = new FileStream(fileSyncConfig.fileEntry.localPath, FileMode.Create);
 
             fileSyncConfig.user = fileEntry.userHowHaveTheFile.Contains(0) ? (byte) 0 : fileEntry.userHowHaveTheFile[0];
@@ -265,9 +288,9 @@ namespace FileShare
             lastSpeedPart = fileSyncConfig.currentPart;
             float speed = (delta  * partSize) / updateSpeed;
             float percent = ((float) fileSyncConfig.currentPart / fileSyncConfig.partAmmount) * 100f;
-            float time = fileSyncConfig.length / speed;
+            float time = (fileSyncConfig.length - fileSyncConfig.currentPart * partSize) / speed;
             
-            Debug.LogFormat("FILE: Stats: {0} byts/sec {1}% {2}sec remaining.", speed, percent, time);
+            Debug.LogFormat("FILE: Stats: {0} byts/sec {1}% {2} sec remaining.", speed, percent, time);
         }
     }
 }
