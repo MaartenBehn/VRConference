@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 483561b2e4f30ab438b2bc33322b2d26, type: 3}
-  m_Name: ClientPort
+  m_Script: {fileID: 11500000, guid: 7416e9c0009e58e40a509d555979a45c, type: 3}
+  m_Name: ConsoleMessageInternalEvent
   m_EditorClassIdentifier: 
-  value: 11001
-  initalValue: 11001
   description: 

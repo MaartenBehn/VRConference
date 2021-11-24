@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 483561b2e4f30ab438b2bc33322b2d26, type: 3}
   m_Name: SignalServerPort
   m_EditorClassIdentifier: 
-  value: 11002
-  initalValue: 11002
+  value: 11010
+  initalValue: 11010
   description: 

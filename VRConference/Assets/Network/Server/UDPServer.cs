@@ -21,7 +21,7 @@ namespace Network.Server
         {
             server.udpFeatureState.value = (int) FeatureState.starting;
         
-            udpListener = new UdpClient(server.port.value);
+            udpListener = new UdpClient(server.serverUDPPort.value);
             udpListener.BeginReceive(UdpReceiveCallback, null);
             
             server.udpFeatureState.value = (int) FeatureState.online;

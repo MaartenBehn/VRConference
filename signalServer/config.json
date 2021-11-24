@@ -1,7 +1,7 @@
 {
     "httpConfig":
     {
-        "port": 11002
+        "port": 11010
     },
     "maxPayload": 
         16777216,

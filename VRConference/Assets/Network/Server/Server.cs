@@ -9,7 +9,8 @@ namespace Network.Server
 {
     public class Server : MonoBehaviour
     {
-        public PublicInt port;
+        public PublicInt serverTCPPort;
+        public PublicInt serverUDPPort;
 
         private static Dictionary<byte, NetworkHandle.PacketHandler> packetHandlers;
 

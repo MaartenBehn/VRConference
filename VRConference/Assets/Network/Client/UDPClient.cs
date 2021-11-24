@@ -25,7 +25,7 @@ namespace Network.Client
 
              try
              {
-                 socket = new UdpClient(client.clientPort.value);
+                 socket = new UdpClient(client.clientUDPPort.value);
              }
              catch (Exception e)
              {
@@ -34,7 +34,7 @@ namespace Network.Client
                  return;
              }
              
-             endPoint = new IPEndPoint(IPAddress.Parse(client.ip.value), client.serverPort.value);
+             endPoint = new IPEndPoint(IPAddress.Parse(client.ip.value), client.serverUDPPort.value);
 
              socket.Connect(endPoint);
              socket.BeginReceive(ReceiveCallback, null);

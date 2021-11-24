@@ -8,8 +8,10 @@ namespace Network.Client
     public class Client : MonoBehaviour
     {
         public PublicString ip;
-        public PublicInt clientPort;
-        public PublicInt serverPort;
+        public PublicInt clientTCPPort;
+        public PublicInt clientUDPPort;
+        public PublicInt serverTCPPort;
+        public PublicInt serverUDPPort;
         
         public PublicByte clientId;
 

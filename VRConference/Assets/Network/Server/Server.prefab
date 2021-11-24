@@ -43,8 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d8486b3c4947279384708924b0f7eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  port: {fileID: 11400000, guid: b92aa15f29ea460ba019d210b9cdb937, type: 2}
-  serverState: 1
+  serverTCPPort: {fileID: 11400000, guid: b92aa15f29ea460ba019d210b9cdb937, type: 2}
+  serverUDPPort: {fileID: 11400000, guid: 0c351dfb3c11b5049a833ac139056be8, type: 2}
   networkFeatureState: {fileID: 11400000, guid: f5661bbe5332f964cae269016ed6abc3, type: 2}
   udpFeatureState: {fileID: 11400000, guid: 33d45b7ea4b76154a923e7ff3a3bad68, type: 2}
-  userJoined: {fileID: 11400000, guid: 9f7ce8e65268a9141a1c61fcd32c9068, type: 2}

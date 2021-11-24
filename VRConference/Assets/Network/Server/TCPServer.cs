@@ -23,7 +23,7 @@ namespace Network.Server.Code
         {
             if (server.networkFeatureState.value != (int) FeatureState.starting) { return; }
             
-            tcpListener = new TcpListener(IPAddress.Any, server.port.value);
+            tcpListener = new TcpListener(IPAddress.Any, server.serverTCPPort.value);
             tcpListener.Start();
             tcpListener.BeginAcceptTcpClient(TcpConnectCallback, null);
         }

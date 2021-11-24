@@ -31,7 +31,7 @@ namespace Network.Client
             };
 
             receiveBuffer = new byte[State.BufferSize];
-            socket.BeginConnect(client.ip.value, client.serverPort.value, ConnectCallback, socket);
+            socket.BeginConnect(client.ip.value, client.serverTCPPort.value, ConnectCallback, socket);
             
             client.networkFeatureState.value = (int) FeatureState.starting;
 

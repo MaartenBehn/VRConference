@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 483561b2e4f30ab438b2bc33322b2d26, type: 3}
-  m_Name: ServerPort
+  m_Name: ServerTCPPort
   m_EditorClassIdentifier: 
   value: 11000
   initalValue: 11000

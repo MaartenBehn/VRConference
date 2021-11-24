@@ -44,8 +44,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ip: {fileID: 11400000, guid: 1360380b118047f6a50d9b3be3a6e949, type: 2}
-  clientPort: {fileID: 11400000, guid: 4613fe06d580d484680012cd8dc8b461, type: 2}
-  serverPort: {fileID: 11400000, guid: b92aa15f29ea460ba019d210b9cdb937, type: 2}
+  clientTCPPort: {fileID: 11400000, guid: 4613fe06d580d484680012cd8dc8b461, type: 2}
+  clientUDPPort: {fileID: 11400000, guid: 37b5cfcf85132f24db257dc4114e2765, type: 2}
+  serverTCPPort: {fileID: 11400000, guid: b92aa15f29ea460ba019d210b9cdb937, type: 2}
+  serverUDPPort: {fileID: 11400000, guid: 0c351dfb3c11b5049a833ac139056be8, type: 2}
   clientId: {fileID: 11400000, guid: 7bf2212ce6cd452aaf583dbf94cfffbb, type: 2}
   networkFeatureState: {fileID: 11400000, guid: f5661bbe5332f964cae269016ed6abc3, type: 2}
   udpFeatureState: {fileID: 11400000, guid: 33d45b7ea4b76154a923e7ff3a3bad68, type: 2}
