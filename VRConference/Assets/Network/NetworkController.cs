@@ -102,13 +102,8 @@ namespace Network
             });
 
             sendPosEvent.Register(networkSend.UserPos);
-            sendVoiceId.Register(() =>
-            {
-                networkSend.UserVoiceID(true);
-            });
         }
-
-        public PublicEvent sendVoiceId;
+        
         public PublicByte voiceId;
         public PublicEventFloat3 sendPosEvent;
         

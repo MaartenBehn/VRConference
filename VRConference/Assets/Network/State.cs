@@ -7,25 +7,25 @@
         
         serverInit = 2, // user Id, int 
         serverUserJoined = 3,
-        serverUserLeft = 9,
+        serverUserLeft = 4,
 
-        featureSettings = 4,
+        featureSettings = 5,
 
         // 4 - 9 UDP
-        clientStartUDP = 5,
-        serverUDPConnection = 6,
-        clientUDPConnection = 7,
+        clientStartUDP = 6,
+        serverUDPConnection = 7,
+        clientUDPConnection = 8,
 
         // Container Packages
-        clientContainerPacket = 8, // byte = ContainerType, bool = use UDP, (byte[] userIDs)
+        clientContainerPacket = 9, // byte = ContainerType, bool = use UDP, (byte[] userIDs)
         
-        // Engine
+        // 10 Engine
         userVoiceId = 11, // byte = VoiceID
         
-        // Movement
+        // 20 Movement
         userPos = 20, // Vec3
         
-        // FileShare
+        // 30 FileShare
         userGetListOfLocalFiles = 30,
         userListOfLocalFiles = 31,
         
@@ -33,6 +33,9 @@
         userFileSyncConfig = 33,
         userGetFilePart= 34,
         userFilePart = 35,
+        
+        // 40 Spawn
+        userSpawnAudioSpeaker = 40,
         
     }
 

@@ -1,5 +1,6 @@
 using Adrenak.UniVoice;
 using Adrenak.UniVoice.InbuiltImplementations;
+using Network;
 using UnityEngine;
 using Utility;
 
@@ -21,8 +22,6 @@ namespace Voice
 
         [SerializeField] private PublicEvent loadingDone;
         [SerializeField] private PublicByte voiceID;
-        
-        public PublicEvent sendVoiceId;
 
         private void Awake()
         {
@@ -41,7 +40,7 @@ namespace Voice
             loadingDone.Register(() =>
             {
                 voiceID.value = (byte) agent.Network.OwnID;
-                sendVoiceId.Raise();
+                NetworkController.instance.networkSend.UserVoiceID(true);
             });
         }
 
