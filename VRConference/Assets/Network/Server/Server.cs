@@ -136,8 +136,12 @@ namespace Network.Server
             }
             
             tcpServer.Stop();
-            udpServer.Stop();
 
+            if (udpFeatureState.value == (int) FeatureState.online)
+            {
+                udpServer.Stop();
+            }
+            
             Debug.Log("SERVER: Stopped");
             networkFeatureState.value = (int) FeatureState.offline;
         }

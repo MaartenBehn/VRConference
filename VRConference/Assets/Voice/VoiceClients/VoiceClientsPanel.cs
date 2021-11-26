@@ -5,6 +5,7 @@ using Adrenak.UniVoice;
 using Adrenak.UniVoice.InbuiltImplementations;
 using Adrenak.UniVoice.Samples;
 using UnityEngine;
+using Utility;
 
 
 namespace Voice.VoiceClients
@@ -16,9 +17,12 @@ namespace Voice.VoiceClients
         Dictionary<short, PeerView> peerViews = new Dictionary<short, PeerView>();
         public Transform peerViewContainer;
         public PeerView peerViewPreFab;
+        [SerializeField] private PublicInt featureState;
 
         private void Awake()
         {
+            if (featureState.value != (int) FeatureState.online) { return; }
+            
             agent = VoiceConnection.instance.agent;
 
             UpdateList();
@@ -65,6 +69,8 @@ namespace Voice.VoiceClients
         private int useres = 0;
         private void Update()
         {
+            if (featureState.value != (int) FeatureState.online) { return; }
+            
             if (useres != agent.Network.PeerIDs.Count)
             {
                 UpdateList();

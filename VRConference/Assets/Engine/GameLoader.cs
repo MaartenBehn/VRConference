@@ -40,22 +40,34 @@ public class GameLoader : MonoBehaviour
         isHost.value = b;
         userId.value = b ? (byte)0 : (byte)1;
         Debug.Log("Loading");
-        
-        foreach (FeatureSettings.Feature feature in featureSettings.features)
+
+        for (var i = 0; i < featureSettings.features.Length; i++)
         {
-            if (!feature.active){continue;}
-            
+            FeatureSettings.Feature feature = featureSettings.features[i];
+            if (!feature.active)
+            {
+                featureSettings.features[i].featureState.value = (int) FeatureState.failed;
+                continue;
+            }
+
+            var i1 = i;
             Threader.RunAsync(() =>
             {
-                WaitForDependencies(feature);
-                Threader.RunOnMainThread(feature.startEvent.Raise);
+                if (WaitForDependencies(feature))
+                {
+                    Threader.RunOnMainThread(feature.startEvent.Raise);
+                }
+                else
+                {
+                    featureSettings.features[i1].featureState.value = (int) FeatureState.failed;
+                }
             });
         }
 
         WaitForLoading();
     }
     
-    private void WaitForDependencies(FeatureSettings.Feature feature)
+    private bool WaitForDependencies(FeatureSettings.Feature feature)
     {
         bool waiting = true;
         while (waiting)
@@ -67,9 +79,14 @@ public class GameLoader : MonoBehaviour
                 {
                     waiting = true;
                 }
+                else if (featureSettings.Get(dependicy).featureState.value == (int) FeatureState.failed)
+                {
+                    return false;
+                }
             }
             Thread.Sleep(100);
         }
+        return true;
     }
     
     private void Unload()
@@ -83,7 +100,6 @@ public class GameLoader : MonoBehaviour
     
     private void WaitForLoading()
     {
-        float startTime = Time.time;
         Threader.RunAsync(() =>
         {
             bool loading = true;
@@ -96,27 +112,36 @@ public class GameLoader : MonoBehaviour
 
                     foreach (FeatureSettings.Feature feature in featureSettings.features)
                     {
-                        if (feature.featureState.value != (int) FeatureState.online)
+                        // Set feature to failed if still loading wehn over timeout time.
+                        if (feature.featureState.value == (int) FeatureState.starting && 
+                            feature.startTime + feature.TimeOutTime >= Time.time)
+                        {
+                            feature.featureState.value = (int) FeatureState.failed;
+                        }
+
+                        // Set done if all features = online or failed
+                        if (feature.featureState.value != (int) FeatureState.online && 
+                            feature.featureState.value != (int) FeatureState.failed)
                         {
                             done = false;
                         }
                         
-                        if (feature.featureState.value == (int) FeatureState.failed)
+                        // Set failed if an essential Feature failed
+                        if (feature.featureState.value == (int) FeatureState.failed &&
+                            feature.essential)
                         {
                             failed = true;
                         }
                     }
 
-                    if (done)
-                    {
-                        loadingDone.Raise();
-                        loading = false;
-                    }
-                    
-                    if (failed || Time.time >= startTime + timeOutLength)
+                    if (failed)
                     {
                         Unload();
                         loadingFailed.Raise();
+                        loading = false;
+                    }else if (done)
+                    {
+                        loadingDone.Raise();
                         loading = false;
                     }
                 });

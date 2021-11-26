@@ -18,6 +18,9 @@ namespace Engine.Player
             public PublicEvent stopEvent;
             public PublicInt featureState;
             public String[] dependicies;
+            public float TimeOutTime;
+            [HideInInspector] public float startTime;
+            public bool essential;
         }
         public Feature[] features;
         

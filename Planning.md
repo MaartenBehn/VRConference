@@ -7,8 +7,8 @@
 - Man hört nur Clients in seiner Nähe.          Done
 - VR Clients.                                   
 - Win Clients First Person.                     Done
-- 3D auf Tisch landen.                          
-- File system Win zum Laden der Modelle.        Done
+- 3D auf Tisch landen.                               
+- File system Win zum Laden der Modelle.        Done 
 
 ## Damit wir es vorstellen können:
 - Camera Clients
@@ -25,7 +25,10 @@
 - Dinge bewegen
 
 ## Milensteine:
-- Server, Client kram und Audio     Done
+- Server, Client kram und Audio                 Done
+- Wegen Yesenia fragen
+- Projekt name und Projekt beschreibung
+- working without features                      Done
 - VR  
     - Auswahl im Start menue
     - VR Player spawnen
@@ -35,9 +38,9 @@
     - Sync                             
 - 3D Modelle laden 
     - OBJ
-    - Tisch syncen
+    - Tisch syncen 
 
-- Game Engine 
+
 
 
 ## Links:

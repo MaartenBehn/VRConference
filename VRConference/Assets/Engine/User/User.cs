@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
-using Utility;
 using Voice;
 
 namespace Engine.User
@@ -20,7 +19,6 @@ namespace Engine.User
         public IPEndPoint endPoint;
 
         public Dictionary<String, bool> features = new Dictionary<string, bool>();
-        public bool loaded;
 
         public byte voiceId;
         [HideInInspector] public AudioSource voiceAudioSource;

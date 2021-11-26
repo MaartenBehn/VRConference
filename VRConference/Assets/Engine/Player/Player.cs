@@ -29,8 +29,12 @@ namespace Engine.User
             }
         }
 
+        [SerializeField] private PublicInt voicefeatureState;
+        
         private void Start()
         {
+            if (voicefeatureState.value != (int) FeatureState.online) { return; }
+            
             mic = GameObject.Find("UniMic.Mic").GetComponent<Mic>();
             mic.transform.SetParent(transform);
             voiceAudioSource = mic.GetComponent<AudioSource>();

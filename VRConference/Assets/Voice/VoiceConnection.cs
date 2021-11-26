@@ -1,5 +1,6 @@
 using Adrenak.UniVoice;
 using Adrenak.UniVoice.InbuiltImplementations;
+using Engine.Player;
 using Network;
 using UnityEngine;
 using Utility;
@@ -39,6 +40,8 @@ namespace Voice
             stopEvent.Register(StopServer);
             loadingDone.Register(() =>
             {
+                if (featureState.value != (int) FeatureState.online) { return; }
+                
                 voiceID.value = (byte) agent.Network.OwnID;
                 NetworkController.instance.networkSend.UserVoiceID(true);
             });
@@ -108,6 +111,7 @@ namespace Voice
     
         private void StopServer()
         {
+            if (featureState.value != (int) FeatureState.online) {return;}
             featureState.value = (int) FeatureState.stopping;
             if (isHost.value)
             {

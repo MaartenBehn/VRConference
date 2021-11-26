@@ -159,7 +159,7 @@ namespace Network
             packet.Write(fileSyncConfig.fileEntry.fileName);
             packet.Write(fileSyncConfig.currentPart);
             
-            Send(packet, fileSyncConfig.user, true, true);
+            Send(packet, fileSyncConfig.user, false, true);
         }
         
         public void FilePart(FileSyncConfig fileSyncConfig, byte[] data)
@@ -170,7 +170,7 @@ namespace Network
             packet.Write(data.Length);
             packet.Write(data);
             
-            Send(packet, fileSyncConfig.user, true, true);
+            Send(packet, fileSyncConfig.user, false, true);
         }
     }
 }

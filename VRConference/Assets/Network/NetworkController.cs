@@ -31,6 +31,7 @@ namespace Network
         
         public FeatureSettings featureSettings;
         public PublicInt networkFeatureState;
+        public PublicInt udpFeatureState;
         
         private void Awake()
         {
@@ -65,6 +66,7 @@ namespace Network
             });
             stopNetworkEvent.Register(() =>
             {
+                if (networkFeatureState.value != (int) FeatureState.online) { return; }
                 if (isServer.value)
                 {
                     server.StopServer();
@@ -91,6 +93,7 @@ namespace Network
             
             stopUDPEvent.Register(() =>
             {
+                if (udpFeatureState.value != (int) FeatureState.online) { return; }
                 if (isServer.value)
                 {
                     server.udpServer.Stop();
