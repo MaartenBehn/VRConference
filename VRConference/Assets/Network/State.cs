@@ -35,7 +35,7 @@
         userFilePart = 35,
         
         // 40 AudioSpeaker
-        audioSpeakerSetSongFile = 40,
+        audioSpeakerPlaySong = 40,
         
     }
 

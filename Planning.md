@@ -15,7 +15,8 @@
 - Ein schöner Startscreen
 - Eine schöne Welt
 - Server Auswahl system
-
+- Speaker und Mic Auswahl Menue
+- Lautstärke für Nutzer festlegen.
 ## Weitere Features
 - Desktop steam  
 - Power Points

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Engine.AudioSpeaker;
 using Engine.User;
 using Network.Both;
 using Unity.Mathematics;
@@ -28,6 +29,8 @@ namespace Network
                 { (byte)Packets.userFileSyncConfig, FileSyncConfig },
                 { (byte)Packets.userGetFilePart, GetFilePart },
                 { (byte)Packets.userFilePart, FilePart },
+                
+                { (byte)Packets.audioSpeakerPlaySong, SpeakerPlaySong },
             };
         }
         
@@ -168,6 +171,14 @@ namespace Network
             byte[] data = packet.ReadBytes(length);
 
             FileShare.FileShare.instance.HandleFilePart(filename, userID, part, data);
+        }
+        
+        public void SpeakerPlaySong(byte userID, Packet packet)
+        {
+            int id = packet.ReadInt32();
+            string name = packet.ReadString();
+
+            SpeakerController.instance.speakers[id].songFileName = name;
         }
     }
 }

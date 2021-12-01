@@ -172,5 +172,14 @@ namespace Network
             
             Send(packet, fileSyncConfig.user, false, true);
         }
+        
+        public void SpeakerPlaySong(int id, string name)
+        {
+            using Packet packet = new Packet((byte) Packets.audioSpeakerPlaySong, network.userId.value);
+            packet.Write(id);
+            packet.Write(name);
+            
+            SendToAllExceptOrigen(packet, false, false);
+        }
     }
 }

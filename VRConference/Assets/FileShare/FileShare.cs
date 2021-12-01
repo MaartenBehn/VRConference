@@ -16,6 +16,7 @@ namespace FileShare
         public string fileName;
         public List<byte> userHowHaveTheFile;
         public string localPath;
+        public bool local;
     }
     
     [Serializable]
@@ -70,7 +71,7 @@ namespace FileShare
             syncFilesEvent.Register(SyncFiles);
         }
 
-        private void SyncFiles()
+        public void SyncFiles()
         {
             if (savePath.value == "")
             {
@@ -94,9 +95,11 @@ namespace FileShare
                 FileEntry entry = fileEntries[i];
                 if (entry.fileName == name)
                 {
-                    if (path != "")
+                    entry.local = path != "";
+                    if (entry.local)
                     {
                         entry.localPath = path;
+                        
                     }
 
                     if (!entry.userHowHaveTheFile.Contains(userId))
@@ -265,6 +268,7 @@ namespace FileShare
                 fileSyncConfig.fileStream.Close();
                 syncingFile = false;
                 fileSyncConfig = null;
+                fileSyncConfig.fileEntry.local = true;
             }
             else
             {
