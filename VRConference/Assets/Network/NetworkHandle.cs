@@ -117,7 +117,7 @@ namespace Network
 
             foreach (FileShare.FileEntry fileEntry in fileEntries)
             {
-                if (fileEntry.localPath != "")
+                if (fileEntry.local)
                 {
                     fileNames.Add(fileEntry.fileName);
                 }

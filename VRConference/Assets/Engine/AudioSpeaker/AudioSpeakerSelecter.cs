@@ -17,7 +17,7 @@ namespace Engine.AudioSpeaker
 
             foreach (FileEntry fileEntry in FileShare.FileShare.instance.fileEntries)
             {
-                if (fileEntry.localPath != "")
+                if (fileEntry.local)
                 {
                     var option = new TMP_Dropdown.OptionData();
                     option.text = fileEntry.fileName;

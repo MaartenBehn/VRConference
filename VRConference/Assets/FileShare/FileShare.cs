@@ -95,11 +95,10 @@ namespace FileShare
                 FileEntry entry = fileEntries[i];
                 if (entry.fileName == name)
                 {
-                    entry.local = path != "";
-                    if (entry.local)
+                    if (path != "")
                     {
+                        entry.local = true;
                         entry.localPath = path;
-                        
                     }
 
                     if (!entry.userHowHaveTheFile.Contains(userId))
@@ -117,6 +116,7 @@ namespace FileShare
             {
                 FileEntry fileEntry = new FileEntry();
                 fileEntry.fileName = name;
+                fileEntry.local = path != "";
                 fileEntry.localPath = path;
                 fileEntry.userHowHaveTheFile = new List<byte>();
                 fileEntry.userHowHaveTheFile.Add(userId);
@@ -135,7 +135,7 @@ namespace FileShare
                 lastSyncTime = Time.time;
                 foreach (FileEntry fileEntry in fileEntries)
                 {
-                    if (fileEntry.localPath == "")
+                    if (!fileEntry.local)
                     {
                         SyncFile(fileEntry);
                         break;
@@ -147,7 +147,7 @@ namespace FileShare
         }
         public void SyncFile(FileEntry fileEntry)
         {
-            if (fileEntry.localPath != "" || fileEntry.userHowHaveTheFile.Count == 0) { return; }
+            if (fileEntry.local || fileEntry.userHowHaveTheFile.Count == 0) { return; }
             
             syncingFile = true;
             fileSyncConfig = new FileSyncConfig();
@@ -266,9 +266,9 @@ namespace FileShare
                 Debug.Log("FILE: Done");
                 fileSyncConfig.fileStream.Write(fileSyncConfig.data, 0, fileSyncConfig.data.Length);
                 fileSyncConfig.fileStream.Close();
+                fileSyncConfig.fileEntry.local = true;
                 syncingFile = false;
                 fileSyncConfig = null;
-                fileSyncConfig.fileEntry.local = true;
             }
             else
             {

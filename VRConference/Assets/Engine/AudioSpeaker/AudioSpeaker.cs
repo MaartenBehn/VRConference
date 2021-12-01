@@ -38,9 +38,8 @@ namespace Engine.AudioSpeaker
             if (songFileName == "") { return; }
 
             FileEntry entry = null;
-            bool local = false;
-            
-            
+
+
             foreach (FileEntry fileEntry in FileShare.FileShare.instance.fileEntries)
             {
                 if (fileEntry.fileName == songFileName)
@@ -54,11 +53,11 @@ namespace Engine.AudioSpeaker
             {
                 FileShare.FileShare.instance.SyncFiles();
             }
-            else if (entry != null && entry.local && !FileShare.FileShare.instance.syncingFile)
+            else if (entry != null && !entry.local && !FileShare.FileShare.instance.syncingFile)
             {
                 FileShare.FileShare.instance.SyncFile(entry);
             }
-            else if (entry != null && local && !audioSource.isPlaying)
+            else if (entry != null &&  entry.local && !audioSource.isPlaying)
             {
                 AudioClip clip = await LoadClip(entry.localPath);
                 audioSource.clip = clip;
