@@ -2,7 +2,7 @@
 
 
 # Name:
-Konferenz-Software zur presentation von 3D-Modellen in VR
+Konferenz-Software zur Presentation von 3D-Modellen in VR
 
 # Beschreibung:
 Dieses Projekt umfasst die Entwicklung einer Konferenz-Software zur presentation und visuellen Darstellung von 3D-Modellen.
