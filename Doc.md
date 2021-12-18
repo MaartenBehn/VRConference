@@ -14,10 +14,6 @@ Player: Der User den man selber ist.
 Host: Der User der Server ist.
 
 
-
-
-
-
 - Host:
     - starting
     - starts TCP Server

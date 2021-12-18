@@ -7,8 +7,8 @@
 - Man hört nur Clients in seiner Nähe.          Done
 - VR Clients.                                   
 - Win Clients First Person.                     Done
-- 3D auf Tisch landen.                               
-- File system Win zum Laden der Modelle.        Done 
+- 3D auf Tisch landen.                          
+- File system Win zum Laden der Modelle.        Done
 
 ## Damit wir es vorstellen können:
 - Camera Clients
@@ -27,22 +27,39 @@
 
 ## Milensteine:
 - Server, Client kram und Audio                 Done
-- Wegen Yesenia fragen
-- Projekt name und Projekt beschreibung
+- Wegen Yesenia fragen                          Done
+- Projekt name und Projekt beschreibung         Done
 - working without features                      Done
 - VR  
-    - Auswahl im Start menue
-    - VR Player spawnen
-    - VR Player sync
+    - Auswahl im Start menue                    
+    - VR Player spawnen                         
+    - VR Player sync                            
 - First Person
-    - Modell
-    - Sync                             
+    - Modell                                    
+    - Sync                                      
 - 3D Modelle laden 
-    - OBJ
-    - Tisch syncen 
-
-
+    - OBJ                                       
+    - Tisch syncen                              
 
 
 ## Links:
 https://github.com/adrenak/UniVoice
+
+
+## Timeline
+
+18.12 Heute
+
+
+23.12 Ferien Start
+
+
+1.1 Maarten Weg
+
+                
+9.1 Ferien Ende
+9.1 Jesenia fertig mit Grafiken
+
+14.1 Anfangen mit der Doku
+
+28.1 (Fr) Abgabe
