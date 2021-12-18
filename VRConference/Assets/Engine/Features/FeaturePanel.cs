@@ -1,14 +1,16 @@
-﻿using System;
-using Network.Both;
-using UnityEngine;
+﻿using UnityEngine;
 using Utility;
 
-namespace Engine
+namespace Engine.Features
 {
     public class FeaturePanel : MonoBehaviour
     {
         [SerializeField] private GameObject featureSybolPreFab;
 
+        // Player
+        private FeatureSymbol playerFeatureSymbol;
+        [SerializeField] private PublicInt playerFeatureState;
+        
         // Network
         private FeatureSymbol networkFeatureSymbol;
         [SerializeField] private PublicInt networkFeatureState;
@@ -23,6 +25,10 @@ namespace Engine
         
         private void Start()
         {
+            playerFeatureSymbol = Instantiate(featureSybolPreFab, transform).GetComponent<FeatureSymbol>();
+            playerFeatureSymbol.SetText("Player");
+            playerFeatureSymbol.SetFeatureState(playerFeatureState);
+            
             networkFeatureSymbol = Instantiate(featureSybolPreFab, transform).GetComponent<FeatureSymbol>();
             networkFeatureSymbol.SetText("Network");
             networkFeatureSymbol.SetFeatureState(networkFeatureState);

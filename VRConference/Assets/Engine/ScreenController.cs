@@ -1,8 +1,7 @@
-using System;
 using UnityEngine;
 using Utility;
 
-namespace UI
+namespace Engine
 {
     public class ScreenController : MonoBehaviour
     {

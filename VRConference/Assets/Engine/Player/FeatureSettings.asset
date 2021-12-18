@@ -39,6 +39,16 @@ MonoBehaviour:
     featureState: {fileID: 11400000, guid: ef86a588a6fb31e4682c99e901de5e73, type: 2}
     dependicies:
     - Network
+    - Player
+    TimeOutTime: 20
+    startTime: 0
+    essential: 0
+  - name: Player
+    active: 1
+    startEvent: {fileID: 11400000, guid: 15d068aab2642ae4b9abf69af0dd8dab, type: 2}
+    stopEvent: {fileID: 11400000, guid: a6a45119d340380488cdaaa820fdf9b0, type: 2}
+    featureState: {fileID: 11400000, guid: 7cfb274ef07604e418174b97e0d8f7e5, type: 2}
+    dependicies: []
     TimeOutTime: 20
     startTime: 0
     essential: 0
