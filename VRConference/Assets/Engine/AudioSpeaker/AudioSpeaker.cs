@@ -4,6 +4,7 @@ using FileShare;
 using Network;
 using UnityEngine;
 using UnityEngine.Networking;
+using Voice;
 
 namespace Engine.AudioSpeaker
 {
@@ -19,6 +20,8 @@ namespace Engine.AudioSpeaker
             speakerId = SpeakerController.instance.speakers.Count;
             SpeakerController.instance.speakers.Add(this);
             audioSource.loop = true;
+
+            VoiceConnection.SetAudioSourceSettings(audioSource);
         }
 
         public void SetSong(string fileName)

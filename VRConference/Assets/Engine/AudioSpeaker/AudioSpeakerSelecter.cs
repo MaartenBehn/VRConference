@@ -30,7 +30,10 @@ namespace Engine.AudioSpeaker
 
         public void Play()
         {
-            speaker.SetSong(dropdown.options[dropdown.value].text);
+            if (dropdown.options.Count > 0)
+            {
+                speaker.SetSong(dropdown.options[dropdown.value].text);
+            }
         }
     }
 }

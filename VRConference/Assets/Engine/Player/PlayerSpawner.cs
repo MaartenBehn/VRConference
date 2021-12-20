@@ -22,14 +22,7 @@ namespace Engine.Player
             playerStart.Register(() =>
             {
                 playerFaetureState.value = (int) FeatureState.starting;
-                if (!isVr)
-                {
-                    player = Instantiate(playerFirstPerson, transform);
-                }
-                else
-                {
-                    player = Instantiate(playerVr, transform);
-                }
+                player = Instantiate(isVr.value ? playerVr : playerFirstPerson, world.transform);
                 playerFaetureState.value = (int) FeatureState.online;
             });
 
@@ -47,6 +40,7 @@ namespace Engine.Player
         [SerializeField] private PublicEvent playerStart;
         [SerializeField] private PublicEvent playerStop;
         [SerializeField] private PublicInt playerFaetureState;
+        [SerializeField] private GameObject world;
 
         private GameObject player;
     }

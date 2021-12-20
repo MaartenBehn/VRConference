@@ -51,6 +51,8 @@ namespace FileShare
         
         [SerializeField] private PublicEvent syncFilesEvent;
 
+        [SerializeField] private string[] startUpFiles;
+        
         private void Awake()
         {
             if (instance == null)
@@ -69,7 +71,14 @@ namespace FileShare
             });
 
             syncFilesEvent.Register(SyncFiles);
+
+            foreach (string startUpFile in startUpFiles)
+            {
+                AddFileEntry(userId.value ,startUpFile, Application.dataPath + "/StreamingAssets/StartUpFiles/" + startUpFile +".mp3");
+            }
         }
+
+       
 
         public void SyncFiles()
         {

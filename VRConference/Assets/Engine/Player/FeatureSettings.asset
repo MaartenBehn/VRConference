@@ -51,4 +51,4 @@ MonoBehaviour:
     dependicies: []
     TimeOutTime: 20
     startTime: 0
-    essential: 0
+    essential: 1
