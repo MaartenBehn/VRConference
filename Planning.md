@@ -30,15 +30,16 @@
 - Wegen Yesenia fragen                          Done
 - Projekt name und Projekt beschreibung         Done
 - working without features                      Done
+
 - VR  
-    - Auswahl im Start menue                    
-    - VR Player spawnen                         
+    - Auswahl im Start menue                    Done      
+    - VR Player spawnen                         Done
     - VR Player sync                            
 - First Person
     - Modell                                    
-    - Sync                                      
+    - Sync                                      Done
 - 3D Modelle laden 
-    - OBJ                                       
+    - FBX                                       Done
     - Tisch syncen                              
 
 
@@ -54,7 +55,7 @@ https://github.com/adrenak/UniVoice
 23.12 Ferien Start
 
 
-1.1 Maarten Weg
+1.1 Maarten, Yesenia Weg
 
                 
 9.1 Ferien Ende
@@ -63,3 +64,12 @@ https://github.com/adrenak/UniVoice
 14.1 Anfangen mit der Doku
 
 28.1 (Fr) Abgabe
+
+
+## Doku Themen
+- Einleitung und Ideen erklärung Maarten
+- FBX Loader    Tim
+- VR            Tim
+- Network       Maarten
+- Voice         Maarten
+- UI

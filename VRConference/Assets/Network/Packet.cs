@@ -9,7 +9,7 @@ namespace Network.Both
     
     public class Packet : IDisposable
     {
-        private List<byte> buffer;
+        public List<byte> buffer;
         private byte[] readableBuffer;
         private int readPos;
 

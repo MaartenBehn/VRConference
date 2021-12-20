@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Engine;
 using Network.Both;
 using Network.Server.Code;
@@ -77,7 +78,7 @@ namespace Network.Server
 
             bool async = packet.ReadBool();
             int length = packet.ReadInt32();
-            if (length + 5 != data.Length)
+            if (length + 5 > data.Length)
             {
                 Debug.Log("SERVER: Packet size not correct.");
                 return;
@@ -87,6 +88,13 @@ namespace Network.Server
             byte userID = packet.ReadByte();
             
             packetHandlers[packetId](userID, packet);
+            
+            if (length + 5 < data.Length)
+            {
+                var list = data.ToList().GetRange( length + 5, data.Length - (length + 5));
+                HandelData(list.ToArray());
+                return;
+            }
         }
 
         public void Send(byte userId, Packet packet, bool useUDP, bool async)

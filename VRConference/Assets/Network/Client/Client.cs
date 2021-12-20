@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Network.Both;
 using UnityEngine;
 using Utility;
@@ -76,7 +77,7 @@ namespace Network.Client
             bool async = packet.ReadBool();
             // This checks if the data has the length it should have.
             int length = packet.ReadInt32();
-            if (length + 5 != data.Length)
+            if (length + 5 > data.Length)
             {
                 Debug.Log("CLIENT: Packet size not correct.");
                 return;
@@ -86,6 +87,13 @@ namespace Network.Client
             byte userID = packet.ReadByte();
             
             packetHandlers[packetId](userID, packet);
+            
+            if (length + 5 < data.Length)
+            {
+                var list = data.ToList().GetRange( length + 5, data.Length - (length + 5));
+                HandleData(list.ToArray());
+                return;
+            }
         }
         
         // Async
