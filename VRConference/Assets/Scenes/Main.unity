@@ -2192,7 +2192,7 @@ MonoBehaviour:
   loadingDone: {fileID: 11400000, guid: 2682efdee6ca3fc48be1ab305a77b640, type: 2}
   timeOutLength: 30
   loadingFailed: {fileID: 11400000, guid: cd6ba6590bb92e94786d191c3f0c5cd5, type: 2}
-  featureSettings: {fileID: 11400000, guid: 66d8548e6f84c93409c2cf5c9bc7211c, type: 2}
+  featureSettings: {fileID: 11400000, guid: 5224217ff2da438595e009cb2bb921c9, type: 2}
   isVr: {fileID: 11400000, guid: c163166035945c9469c475e6a56d005d, type: 2}
   cinemachineCam: {fileID: 1226831351}
   PcEventSystem: {fileID: 1918883835}
@@ -2389,7 +2389,7 @@ MonoBehaviour:
   clientPreFab: {fileID: 734461681300196483, guid: 7a791a00165f9bf449afb31581fa5d5c, type: 3}
   server: {fileID: 0}
   client: {fileID: 0}
-  featureSettings: {fileID: 11400000, guid: 66d8548e6f84c93409c2cf5c9bc7211c, type: 2}
+  featureSettings: {fileID: 11400000, guid: 5224217ff2da438595e009cb2bb921c9, type: 2}
   networkFeatureState: {fileID: 11400000, guid: f5661bbe5332f964cae269016ed6abc3, type: 2}
   udpFeatureState: {fileID: 11400000, guid: 33d45b7ea4b76154a923e7ff3a3bad68, type: 2}
   voiceId: {fileID: 11400000, guid: ba124b58568799a4f816bafaa892f829, type: 2}
@@ -7317,6 +7317,7 @@ MonoBehaviour:
   siganlServerPort: {fileID: 11400000, guid: 10756e24ea97fa74494553406425d6cf, type: 2}
   isFirstPerson: {fileID: 11400000, guid: e2f3cac74b72edb40a30f6b3c814b48a, type: 2}
   isVR: {fileID: 11400000, guid: c163166035945c9469c475e6a56d005d, type: 2}
+  featureSettings: {fileID: 11400000, guid: 5224217ff2da438595e009cb2bb921c9, type: 2}
 --- !u!1001 &1326689505
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7497,6 +7498,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   featureSybolPreFab: {fileID: 2468605317824551177, guid: a5ca71f1b613d0a4aa907daf04b4658a, type: 3}
   playerFeatureState: {fileID: 11400000, guid: 7cfb274ef07604e418174b97e0d8f7e5, type: 2}
+  vrFeatureState: {fileID: 11400000, guid: b8fc8d269df67d94a848940c27760bd4, type: 2}
+  firstFeatureState: {fileID: 11400000, guid: caf5be0e63351e847b422ae0e376d9be, type: 2}
   networkFeatureState: {fileID: 11400000, guid: f5661bbe5332f964cae269016ed6abc3, type: 2}
   udpFeatureState: {fileID: 11400000, guid: 33d45b7ea4b76154a923e7ff3a3bad68, type: 2}
   voiceFeatureState: {fileID: 11400000, guid: ef86a588a6fb31e4682c99e901de5e73, type: 2}
@@ -11406,8 +11409,9 @@ MonoBehaviour:
   playerStart: {fileID: 11400000, guid: 15d068aab2642ae4b9abf69af0dd8dab, type: 2}
   playerStop: {fileID: 11400000, guid: a6a45119d340380488cdaaa820fdf9b0, type: 2}
   playerFaetureState: {fileID: 11400000, guid: 7cfb274ef07604e418174b97e0d8f7e5, type: 2}
+  vrFaetureState: {fileID: 11400000, guid: b8fc8d269df67d94a848940c27760bd4, type: 2}
+  firstPersonFaetureState: {fileID: 11400000, guid: caf5be0e63351e847b422ae0e376d9be, type: 2}
   world: {fileID: 1597590006}
-  loadingDone: {fileID: 0}
   VR_Player: {fileID: 6803856049616641856, guid: 8f01bb8231052bf4e8ae280023df81ac, type: 3}
   VR_Teleporting: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
   VR_TeleportPoint: {fileID: 125956, guid: 73ac470d3d909d645a6c89a4664b6849, type: 3}

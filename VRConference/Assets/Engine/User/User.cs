@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
+using Utility;
 using Voice;
 
 namespace Engine.User
@@ -22,6 +23,8 @@ namespace Engine.User
 
         public byte voiceId;
         [HideInInspector] public AudioSource voiceAudioSource;
+
+        public bool isVr;
 
         private void Update()
         {

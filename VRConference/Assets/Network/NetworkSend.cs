@@ -88,7 +88,7 @@ namespace Network
             {
                 log += feature.name + " " + feature.active + "\n";
                 packet.Write(feature.name);
-                packet.Write(feature.active);
+                packet.Write(feature.featureState.value == (int) FeatureState.online);
             }
             
             Send(packet, toUser, false, false);

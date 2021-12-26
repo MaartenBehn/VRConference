@@ -92,7 +92,6 @@ namespace Network.Client
             {
                 var list = data.ToList().GetRange( length + 5, data.Length - (length + 5));
                 HandleData(list.ToArray());
-                return;
             }
         }
         

@@ -28,6 +28,7 @@ namespace Engine.Player
                 {
                     player = Instantiate(playerFirstPerson, world.transform);
                     playerFaetureState.value = (int) FeatureState.online;
+                    firstPersonFaetureState.value = (int) FeatureState.online;
                 }
                 else
                 {
@@ -53,6 +54,7 @@ namespace Engine.Player
             {
                 Debug.LogError("Initializing XR Failed. Check Editor or Player log for details.");
                 playerFaetureState.value = (int) FeatureState.failed;
+                vrFaetureState.value = (int) FeatureState.failed;
             }
             else
             {
@@ -73,17 +75,22 @@ namespace Engine.Player
                 test.transform.localScale = new Vector3(0.005f, 0.005f, 0.005f);
                 test.transform.GetChild(0).GetComponent<Canvas>().worldCamera = player.transform.GetChild(0).transform.GetChild(2).GetChild(4).GetComponent<Camera>();
                 playerFaetureState.value = (int) FeatureState.online;
+                vrFaetureState.value = (int) FeatureState.online;
             }
         }
 
         [SerializeField] private GameObject playerFirstPerson;
         [SerializeField] private PublicBool isVr;
+        
         [SerializeField] private PublicEvent playerStart;
         [SerializeField] private PublicEvent playerStop;
         [SerializeField] private PublicInt playerFaetureState;
+        [SerializeField] private PublicInt vrFaetureState;
+        [SerializeField] private PublicInt firstPersonFaetureState;
+        
+        
+        
         [SerializeField] private GameObject world;
-
-        [SerializeField] private PublicEvent loadingDone;
         
         public GameObject VR_Player;
         public GameObject VR_Teleporting;

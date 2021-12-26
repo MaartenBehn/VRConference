@@ -1,5 +1,6 @@
 using System.Threading;
 using Engine.Player;
+using Engine.Settings;
 using UnityEngine;
 using Utility;
 
@@ -41,6 +42,8 @@ public class GameLoader : MonoBehaviour
         isHost.value = b;
         userId.value = b ? (byte)0 : (byte)1;
         Debug.Log("Loading");
+        
+        SettingsPanel.instance.Get();
 
         for (var i = 0; i < featureSettings.features.Length; i++)
         {
@@ -60,7 +63,7 @@ public class GameLoader : MonoBehaviour
                         
                             featureSettings.features[i1].startTime = Time.time;
                             feature.startEvent.Raise();
-                        });
+                    });
                 }
                 else
                 {

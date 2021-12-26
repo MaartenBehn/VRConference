@@ -11,11 +11,19 @@ namespace Engine.Features
         private FeatureSymbol playerFeatureSymbol;
         [SerializeField] private PublicInt playerFeatureState;
         
+        // VR
+        private FeatureSymbol vrFeatureSymbol;
+        [SerializeField] private PublicInt vrFeatureState;
+        
+        // FirstPerson
+        private FeatureSymbol firstFeatureSymbol;
+        [SerializeField] private PublicInt firstFeatureState;
+        
         // Network
         private FeatureSymbol networkFeatureSymbol;
         [SerializeField] private PublicInt networkFeatureState;
         
-        // Network
+        // UDP
         private FeatureSymbol udpFeatureSymbol;
         [SerializeField] private PublicInt udpFeatureState;
 
@@ -29,6 +37,14 @@ namespace Engine.Features
             playerFeatureSymbol.SetText("Player");
             playerFeatureSymbol.SetFeatureState(playerFeatureState);
             
+            vrFeatureSymbol = Instantiate(featureSybolPreFab, transform).GetComponent<FeatureSymbol>();
+            vrFeatureSymbol.SetText("VR");
+            vrFeatureSymbol.SetFeatureState(vrFeatureState);
+            
+            firstFeatureSymbol = Instantiate(featureSybolPreFab, transform).GetComponent<FeatureSymbol>();
+            firstFeatureSymbol.SetText("FirstPerson");
+            firstFeatureSymbol.SetFeatureState(firstFeatureState);
+
             networkFeatureSymbol = Instantiate(featureSybolPreFab, transform).GetComponent<FeatureSymbol>();
             networkFeatureSymbol.SetText("Network");
             networkFeatureSymbol.SetFeatureState(networkFeatureState);

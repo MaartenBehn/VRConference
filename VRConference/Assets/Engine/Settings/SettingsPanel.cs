@@ -1,4 +1,5 @@
 ﻿using System;
+using Engine.Player;
 using TMPro;
 using UnityEngine;
 using Utility;
@@ -7,6 +8,19 @@ namespace Engine.Settings
 {
     public class SettingsPanel : MonoBehaviour
     {
+        public static SettingsPanel instance;
+        private void Awake()
+        {
+            if (instance == null)
+            {
+                instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+
         [SerializeField] private TMP_InputField serverIPField;
         [SerializeField] private TMP_InputField serverPortFieldTCP;
         [SerializeField] private TMP_InputField serverPortFieldUDP;
@@ -28,6 +42,8 @@ namespace Engine.Settings
         [SerializeField] private PublicInt siganlServerPort;
         [SerializeField] private PublicBool isFirstPerson;
         [SerializeField] private PublicBool isVR;
+
+        [SerializeField] private FeatureSettings featureSettings;
         
         private void OnEnable()
         {
@@ -71,15 +87,25 @@ namespace Engine.Settings
             isFirstPerson.value = false;
             isVR.value = false;
             
+            var vr = featureSettings.Get("VR");
+            var firstPerson = featureSettings.Get("FirstPerson");
+            
             switch (playerTypeDropdown.value)
             {
                 case 0:
-                    isFirstPerson.value = true;
+                    firstPerson.active = true;
+                    vr.active = false;
+                    isVR.value = false;
                     break;
                 case 1:
+                    firstPerson.active = false;
+                    vr.active = true;
                     isVR.value = true;
                     break;
             }
+            
+            featureSettings.Set("VR", vr);
+            featureSettings.Set("FirstPerson", firstPerson);
         }
     }
 }
