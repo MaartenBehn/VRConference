@@ -5,9 +5,9 @@
 - Die Clients können mit ein anderer reden.     Done
 - Die Clients können sich in der Welt bewegen.  Done
 - Man hört nur Clients in seiner Nähe.          Done
-- VR Clients.                                   
+- VR Clients.                                   Done                           
 - Win Clients First Person.                     Done
-- 3D auf Tisch landen.                          
+- 3D auf Tisch landen.                          Fast
 - File system Win zum Laden der Modelle.        Done
 
 ## Damit wir es vorstellen können:
@@ -34,13 +34,20 @@
 - VR  
     - Auswahl im Start menue                    Done      
     - VR Player spawnen                         Done
-    - VR Player sync                            
-- First Person
-    - Modell                                    
-    - Sync                                      Done
+    - VR Player login                           Done
+    - VR Player sync                                
+- First Person                              
+    - Sync                                      
 - 3D Modelle laden 
     - FBX                                       Done
     - Tisch syncen                              
+- Modell
+    - VR Player
+    - First Person
+
+- AudioSettings
+- UI von Yesenia
+
 
 
 ## Links:

@@ -24,8 +24,6 @@ namespace Engine.User
         public byte voiceId;
         [HideInInspector] public AudioSource voiceAudioSource;
 
-        public bool isVr;
-
         private void Update()
         {
             if (voiceAudioSource == null)

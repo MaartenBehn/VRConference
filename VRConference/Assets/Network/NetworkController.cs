@@ -103,13 +103,9 @@ namespace Network
                     client.udpClient.Disconnect();
                 }
             });
-
-            sendPosEvent.Register(networkSend.UserPos);
+            
         }
         
         public PublicByte voiceId;
-        public PublicEventFloat3 sendPosEvent;
-        
-        
     }
 }
