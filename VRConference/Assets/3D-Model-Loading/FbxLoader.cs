@@ -53,31 +53,28 @@ public class FbxLoader : MonoBehaviour
 
 
     public string FilePath = "";
-    public float scale = 0.05f;
-    public Button button;
-    public Button button1;
-    public Button button2;
+    public Button LoadModelButton;
+    public Button UnloadModelButton;
+
     // Start is called before the first frame update
     void Start()
     {
         StartFBX();
 
-        button.onClick.AddListener(LoadFbxFile);
-        button1.onClick.AddListener(ChangeScale);
-        button2.onClick.AddListener(ChangeScaleToNormal);
+        LoadModelButton.onClick.AddListener(LoadFbxFile);
+        UnloadModelButton.onClick.AddListener(()=>
+        {
+            if (rootNode != null)
+            {
+                Destroy(rootNode);
+            }
+        });
+
     }
 
     GameObject rootNode = null;
 
-    void ChangeScale()
-    {
-        rootNode.transform.localScale = new Vector3(scale, scale, scale);
-       
-    }
-    void ChangeScaleToNormal()
-    {
-        rootNode.transform.localScale = new Vector3(1f, 1f, 1f);
-    }
+
     void LoadFbxFile()
     {
         if (ImportFbxFile(FilePath))
@@ -107,10 +104,11 @@ public class FbxLoader : MonoBehaviour
 
         var unityMeshFilter = obj.AddComponent<MeshFilter>();
         unityMeshFilter.mesh = unityMesh;
-        obj.AddComponent<MeshCollider>();
-
+        
         var unityRenderer = obj.AddComponent<MeshRenderer>();
         unityRenderer.material = material;
+        unityRenderer.staticShadowCaster = false;
+        unityRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         //ProcessMaterial(id, unityRenderer.material);
         {
             // Assign the default material (hack!)
@@ -155,15 +153,13 @@ public class FbxLoader : MonoBehaviour
         if (ParentObj != null)
         {
             currentObj.transform.parent = ParentObj.transform;
+            
         }
         else
         {
             rootNode = currentObj;
+            rootNode.transform.parent = gameObject.transform.parent.parent.transform.GetChild(2).transform;
         }
-        currentObj.AddComponent<Interactable>();
-        currentObj.AddComponent<Throwable>().restoreOriginalParent = true;
-        currentObj.GetComponent<Rigidbody>().useGravity = false;
-        currentObj.GetComponent<Rigidbody>().isKinematic = true;
 
         ProcessTransform(id, currentObj);
 
@@ -185,11 +181,5 @@ public class FbxLoader : MonoBehaviour
         int[] Child = new int[size];
         Marshal.Copy(returnedPtr, Child, 0, size);
         return Child;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }
