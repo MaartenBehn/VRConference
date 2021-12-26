@@ -1,18 +1,14 @@
-﻿using System;
-using Adrenak.UniMic;
-using Unity.Mathematics;
+﻿using Adrenak.UniMic;
 using UnityEngine;
 using Utility;
 
-namespace Engine.User
+namespace Voice
 {
-    public class Player : MonoBehaviour
+    public class PlayerAudio : MonoBehaviour
     {
-        public static Player instance;
-        
-        [SerializeField] private float spawnBounds;
+        public static PlayerAudio instance;
 
-        [SerializeField] private PublicEventFloat3 updatePosEvent;
+        //[SerializeField] private PublicEventFloat3 updatePosEvent;
 
         [HideInInspector] public Mic mic;
         
@@ -42,7 +38,8 @@ namespace Engine.User
             voiceAudioSource.minDistance = voiceminDist.value;
             voiceAudioSource.maxDistance = voicemaxDist.value;
         }
-
+        
+        /*
         private float3 lastPos;
         private void FixedUpdate()
         {
@@ -52,7 +49,7 @@ namespace Engine.User
                 updatePosEvent.Raise(pos);
                 lastPos = pos;
             }
-            
         }
+        */
     }
 }
