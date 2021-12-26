@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.XR.Management;
 using Utility;
 
@@ -27,40 +28,10 @@ namespace Engine.Player
                 {
                     player = Instantiate(playerFirstPerson, world.transform);
                     playerFaetureState.value = (int) FeatureState.online;
-                    return;
-                    
                 }
                 else
                 {
-                    Debug.Log("Initializing XR...");
-                    XRGeneralSettings.Instance.Manager.InitializeLoader();
-
-
-                    if (XRGeneralSettings.Instance.Manager.activeLoader == null)
-                    {
-                        Debug.LogError("Initializing XR Failed. Check Editor or Player log for details.");
-                        playerFaetureState.value = (int) FeatureState.failed;
-                    }
-                    else
-                    {
-                        Debug.Log("Starting XR...");
-                        XRGeneralSettings.Instance.Manager.activeLoader.Start();
-                        XRGeneralSettings.Instance.Manager.StartSubsystems();
-            
-                        XRGeneralSettings.Instance.Manager.InitializeLoader();
-            
-                        //yield return new WaitForSecondsRealtime(5);
-
-
-                        var playertest = Instantiate(VR_Player, new Vector3(0, 0, 0), Quaternion.identity);
-                        Instantiate(VR_Teleporting, new Vector3(0, 0, 0), Quaternion.identity);
-                        Instantiate(VR_TeleportPoint, new Vector3(0, 0, 0), Quaternion.identity);
-                        Instantiate(VR_TeleportPoint, new Vector3(0, 0, 0), Quaternion.identity);
-                        var test = Instantiate(VR_Menu, new Vector3(0.02485144f, 1.229f, 5.52f), Quaternion.identity);
-                        test.transform.localScale = new Vector3(0.005f, 0.005f, 0.005f);
-                        test.transform.GetChild(0).GetComponent<Canvas>().worldCamera = playertest.transform.GetChild(0).transform.GetChild(2).GetChild(4).GetComponent<Camera>();
-                        playerFaetureState.value = (int) FeatureState.online;
-                    }
+                    StartCoroutine(StartXR());
                 }
             });
 
@@ -70,6 +41,39 @@ namespace Engine.Player
                 Destroy(player);
                 playerFaetureState.value = (int) FeatureState.offline;
             });
+        }
+        
+        IEnumerator StartXR()
+        {
+            Debug.Log("Initializing XR...");
+            yield return XRGeneralSettings.Instance.Manager.InitializeLoader();
+
+
+            if (XRGeneralSettings.Instance.Manager.activeLoader == null)
+            {
+                Debug.LogError("Initializing XR Failed. Check Editor or Player log for details.");
+                playerFaetureState.value = (int) FeatureState.failed;
+            }
+            else
+            {
+                Debug.Log("Starting XR...");
+                XRGeneralSettings.Instance.Manager.activeLoader.Start();
+                XRGeneralSettings.Instance.Manager.StartSubsystems();
+            
+                XRGeneralSettings.Instance.Manager.InitializeLoader();
+            
+                //yield return new WaitForSecondsRealtime(5);
+
+
+                var playertest = Instantiate(VR_Player, new Vector3(0, 0, 0), Quaternion.identity);
+                Instantiate(VR_Teleporting, new Vector3(0, 0, 0), Quaternion.identity);
+                Instantiate(VR_TeleportPoint, new Vector3(0, 0, 0), Quaternion.identity);
+                Instantiate(VR_TeleportPoint, new Vector3(0, 0, 0), Quaternion.identity);
+                var test = Instantiate(VR_Menu, new Vector3(0.02485144f, 1.229f, 5.52f), Quaternion.identity);
+                test.transform.localScale = new Vector3(0.005f, 0.005f, 0.005f);
+                test.transform.GetChild(0).GetComponent<Canvas>().worldCamera = playertest.transform.GetChild(0).transform.GetChild(2).GetChild(4).GetComponent<Camera>();
+                playerFaetureState.value = (int) FeatureState.online;
+            }
         }
 
         [SerializeField] private GameObject playerFirstPerson;
