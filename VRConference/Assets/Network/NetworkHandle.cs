@@ -21,7 +21,8 @@ namespace Network
             {
                 { (byte)Packets.featureSettings, FeatureSettings },
                 { (byte)Packets.userVoiceId, UserVoiceID },
-                { (byte)Packets.userPos, UserPos },
+                { (byte)Packets.userFirstPersonPos, UserFirstPersonPos },
+                { (byte)Packets.userVRPos, UserVRPos },
                 
                 { (byte)Packets.userGetListOfLocalFiles, GetListOfLocalFiles },
                 { (byte)Packets.userListOfLocalFiles, ListOfLocalFiles },
@@ -101,12 +102,32 @@ namespace Network
             Debug.LogFormat("NETWORK: User: {0} VoiceID: {1}", userID, vID);
         }
 
-        public void UserPos(byte userID, Packet packet)
+        public void UserFirstPersonPos(byte userID, Packet packet)
         {
             Threader.RunOnMainThread(() =>
             {
                 float3 pos = packet.ReadFloat3();
+                Quaternion direction = packet.ReadQuaternion();
+                
                 UserController.instance.users[userID].transform.position = pos;
+                UserController.instance.users[userID].transform.rotation = direction;
+            });
+        }
+        
+        public void UserVRPos(byte userID, Packet packet)
+        {
+            Threader.RunOnMainThread(() =>
+            {
+                float3 pos = packet.ReadFloat3();
+                Quaternion direction = packet.ReadQuaternion();
+                
+                float3 hand1Pos = packet.ReadFloat3();
+                Quaternion hand1Direction = packet.ReadQuaternion();
+                float3 hand2Pos = packet.ReadFloat3();
+                Quaternion hand2Direction = packet.ReadQuaternion();
+                
+                UserController.instance.users[userID].transform.position = pos;
+                UserController.instance.users[userID].transform.rotation = direction;
             });
         }
 

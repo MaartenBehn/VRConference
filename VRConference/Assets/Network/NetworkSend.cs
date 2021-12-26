@@ -103,10 +103,24 @@ namespace Network
             SendToAllExceptOrigen(packet, false, false);
         }
         
-        public void UserPos(float3 pos)
+        public void UserFirstPersonPos(Transform t)
         {
-            using Packet packet = new Packet((byte) Packets.userPos, network.userId.value);
-            packet.Write(pos);
+            using Packet packet = new Packet((byte) Packets.userFirstPersonPos, network.userId.value);
+            packet.Write(t.position);
+            packet.Write(t.rotation);
+            SendToAllExceptOrigen(packet, true, false);
+        }
+        
+        public void UserVRPos(Transform head, Transform hand1, Transform hand2)
+        {
+            using Packet packet = new Packet((byte) Packets.userVRPos, network.userId.value);
+            packet.Write(head.position);
+            packet.Write(head.rotation);
+            
+            packet.Write(hand1.position);
+            packet.Write(hand1.rotation);
+            packet.Write(hand2.position);
+            packet.Write(hand2.rotation);
             SendToAllExceptOrigen(packet, true, false);
         }
 

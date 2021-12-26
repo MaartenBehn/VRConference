@@ -23,7 +23,8 @@
         userVoiceId = 11, // byte = VoiceID
         
         // 20 Movement
-        userPos = 20, // Vec3
+        userFirstPersonPos = 20, // Vec3
+        userVRPos = 21, // Vec3
         
         // 30 FileShare
         userGetListOfLocalFiles = 30,

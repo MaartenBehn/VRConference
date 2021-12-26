@@ -77,9 +77,7 @@ namespace FileShare
                 AddFileEntry(userId.value ,startUpFile, Application.dataPath + "/StreamingAssets/StartUpFiles/" + startUpFile +".mp3");
             }
         }
-
-       
-
+        
         public void SyncFiles()
         {
             if (savePath.value == "")
