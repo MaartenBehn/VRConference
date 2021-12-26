@@ -11399,12 +11399,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerFirstPerson: {fileID: 8994392715783527374, guid: 4f9766767c49d014c83f437c054e146b, type: 3}
-  playerVr: {fileID: 8341484861335511148, guid: 54bba8453a859ad45ac8f844f9dad452, type: 3}
   isVr: {fileID: 11400000, guid: c163166035945c9469c475e6a56d005d, type: 2}
   playerStart: {fileID: 11400000, guid: 15d068aab2642ae4b9abf69af0dd8dab, type: 2}
   playerStop: {fileID: 11400000, guid: a6a45119d340380488cdaaa820fdf9b0, type: 2}
   playerFaetureState: {fileID: 11400000, guid: 7cfb274ef07604e418174b97e0d8f7e5, type: 2}
   world: {fileID: 1597590006}
+  VR_Player: {fileID: 6803856049616641856, guid: 8f01bb8231052bf4e8ae280023df81ac, type: 3}
+  VR_Teleporting: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+  VR_TeleportPoint: {fileID: 125956, guid: 73ac470d3d909d645a6c89a4664b6849, type: 3}
+  VR_Menu: {fileID: 1633874374048705009, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
 --- !u!1 &2142198712
 GameObject:
   m_ObjectHideFlags: 0
