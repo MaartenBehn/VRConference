@@ -9,7 +9,7 @@ public class ButtonTransitioner : MonoBehaviour,IPointerEnterHandler,IPointerExi
 
     public Color32 m_NormalColor = Color.white;
     public Color32 m_HoverColor = Color.gray;
-    public Color32 m_DownColor = Color.white;
+    public Color32 m_DownColor = Color.red;
 
     private Image m_image = null;
     private void Awake()
