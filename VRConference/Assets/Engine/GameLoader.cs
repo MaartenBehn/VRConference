@@ -56,6 +56,7 @@ public class GameLoader : MonoBehaviour
                 if (WaitForDependencies(feature))
                 {
                     Threader.RunOnMainThread(feature.startEvent.Raise);
+                    feature.startTime = Time.time;
                 }
                 else
                 {
