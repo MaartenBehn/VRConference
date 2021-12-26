@@ -65,13 +65,13 @@ namespace Engine.Player
                 //yield return new WaitForSecondsRealtime(5);
 
 
-                var playertest = Instantiate(VR_Player, new Vector3(0, 0, 0), Quaternion.identity);
+                player = Instantiate(VR_Player, new Vector3(0, 0, 0), Quaternion.identity);
                 Instantiate(VR_Teleporting, new Vector3(0, 0, 0), Quaternion.identity);
                 Instantiate(VR_TeleportPoint, new Vector3(0, 0, 0), Quaternion.identity);
                 Instantiate(VR_TeleportPoint, new Vector3(0, 0, 0), Quaternion.identity);
                 var test = Instantiate(VR_Menu, new Vector3(0.02485144f, 1.229f, 5.52f), Quaternion.identity);
                 test.transform.localScale = new Vector3(0.005f, 0.005f, 0.005f);
-                test.transform.GetChild(0).GetComponent<Canvas>().worldCamera = playertest.transform.GetChild(0).transform.GetChild(2).GetChild(4).GetComponent<Camera>();
+                test.transform.GetChild(0).GetComponent<Canvas>().worldCamera = player.transform.GetChild(0).transform.GetChild(2).GetChild(4).GetComponent<Camera>();
                 playerFaetureState.value = (int) FeatureState.online;
             }
         }
@@ -82,6 +82,8 @@ namespace Engine.Player
         [SerializeField] private PublicEvent playerStop;
         [SerializeField] private PublicInt playerFaetureState;
         [SerializeField] private GameObject world;
+
+        [SerializeField] private PublicEvent loadingDone;
         
         public GameObject VR_Player;
         public GameObject VR_Teleporting;

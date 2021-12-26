@@ -2193,6 +2193,9 @@ MonoBehaviour:
   timeOutLength: 30
   loadingFailed: {fileID: 11400000, guid: cd6ba6590bb92e94786d191c3f0c5cd5, type: 2}
   featureSettings: {fileID: 11400000, guid: 66d8548e6f84c93409c2cf5c9bc7211c, type: 2}
+  isVr: {fileID: 11400000, guid: c163166035945c9469c475e6a56d005d, type: 2}
+  cinemachineCam: {fileID: 1226831351}
+  PcEventSystem: {fileID: 1918883835}
 --- !u!4 &297315316
 Transform:
   m_ObjectHideFlags: 0
@@ -11404,6 +11407,7 @@ MonoBehaviour:
   playerStop: {fileID: 11400000, guid: a6a45119d340380488cdaaa820fdf9b0, type: 2}
   playerFaetureState: {fileID: 11400000, guid: 7cfb274ef07604e418174b97e0d8f7e5, type: 2}
   world: {fileID: 1597590006}
+  loadingDone: {fileID: 0}
   VR_Player: {fileID: 6803856049616641856, guid: 8f01bb8231052bf4e8ae280023df81ac, type: 3}
   VR_Teleporting: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
   VR_TeleportPoint: {fileID: 125956, guid: 73ac470d3d909d645a6c89a4664b6849, type: 3}

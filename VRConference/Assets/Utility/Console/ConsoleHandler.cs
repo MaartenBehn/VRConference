@@ -39,6 +39,11 @@ namespace Utility.Console
 
         void HandleLog (string logString, string stackTrace, LogType type)
         {
+            if (type == LogType.Warning)
+            {
+                return;
+            }
+            
             Threader.RunOnMainThread(() =>
             {
                 ConsoleMessage message = new ConsoleMessage();

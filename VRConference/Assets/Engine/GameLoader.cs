@@ -23,6 +23,7 @@ public class GameLoader : MonoBehaviour
 
         loadEvent.Register(Load);
         unloadEvent.Register(Unload);
+        loadingDone.Register(LoadingDone);
     }
 
     [SerializeField] private PublicEventBool loadEvent;
@@ -100,6 +101,12 @@ public class GameLoader : MonoBehaviour
         {
             feature.stopEvent.Raise();
         }
+        
+        if (isVr.value)
+        {
+            cinemachineCam.SetActive(true);
+            PcEventSystem.SetActive(true);
+        }
     }
     
     private void WaitForLoading()
@@ -153,5 +160,18 @@ public class GameLoader : MonoBehaviour
                 Thread.Sleep(1000);
             }
         });
+    }
+
+
+    [SerializeField] private PublicBool isVr;
+    [SerializeField] private GameObject cinemachineCam;
+    [SerializeField] private GameObject PcEventSystem;
+    private void LoadingDone()
+    {
+        if (isVr.value)
+        {
+            cinemachineCam.SetActive(false);
+            PcEventSystem.SetActive(false);
+        }
     }
 }
