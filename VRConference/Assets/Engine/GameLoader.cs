@@ -50,13 +50,16 @@ public class GameLoader : MonoBehaviour
                 continue;
             }
 
-            var i1 = i;
+            int i1 = i;
             Threader.RunAsync(() =>
             {
                 if (WaitForDependencies(feature))
                 {
-                    Threader.RunOnMainThread(feature.startEvent.Raise);
-                    feature.startTime = Time.time;
+                    Threader.RunOnMainThread(() => {
+                        
+                            featureSettings.features[i1].startTime = Time.time;
+                            feature.startEvent.Raise();
+                        });
                 }
                 else
                 {
@@ -115,7 +118,7 @@ public class GameLoader : MonoBehaviour
                     {
                         // Set feature to failed if still loading wehn over timeout time.
                         if (feature.featureState.value == (int) FeatureState.starting && 
-                            feature.startTime + feature.TimeOutTime >= Time.time)
+                            feature.startTime + feature.TimeOutTime < Time.time)
                         {
                             feature.featureState.value = (int) FeatureState.failed;
                         }

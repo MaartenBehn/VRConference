@@ -48,7 +48,7 @@ namespace Engine.Player
             Debug.Log("Initializing XR...");
             yield return XRGeneralSettings.Instance.Manager.InitializeLoader();
 
-            playerFaetureState.value = (int) FeatureState.online;
+            
             if (XRGeneralSettings.Instance.Manager.activeLoader == null)
             {
                 Debug.LogError("Initializing XR Failed. Check Editor or Player log for details.");
@@ -72,7 +72,7 @@ namespace Engine.Player
                 var test = Instantiate(VR_Menu, new Vector3(0.02485144f, 1.229f, 5.52f), Quaternion.identity);
                 test.transform.localScale = new Vector3(0.005f, 0.005f, 0.005f);
                 test.transform.GetChild(0).GetComponent<Canvas>().worldCamera = playertest.transform.GetChild(0).transform.GetChild(2).GetChild(4).GetComponent<Camera>();
-                
+                playerFaetureState.value = (int) FeatureState.online;
             }
         }
 
