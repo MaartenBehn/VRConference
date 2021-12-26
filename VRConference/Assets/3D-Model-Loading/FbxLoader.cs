@@ -70,6 +70,11 @@ public class FbxLoader : MonoBehaviour
             }
         });
 
+        if(Player.instance != null)
+        {
+            GetComponent<Canvas>().worldCamera = Player.instance.rightHand.transform.GetChild(4).GetComponent<Camera>(); ;
+        }
+
     }
 
     GameObject rootNode = null;
