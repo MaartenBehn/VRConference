@@ -16,6 +16,7 @@ public class Pointer : MonoBehaviour
     private void Awake()
     {
         m_LineRenderer = GetComponent<LineRenderer>();
+        m_LineRenderer.material.color = Color.white;
     }
 
 

@@ -5,7 +5,7 @@
       "app_key": "application.generated.unity.vrconference.exe",
       "launch_type": "url",
       "url": "steam://launch/",
-      "action_manifest_path": "C:\\Users\\timja\\Documents\\Dev\\Jugendforscht\\VRConference\\VRConference\\Assets\\StreamingAssets\\SteamVR\\actions.json",
+      "action_manifest_path": "C:\\Users\\timja\\Documents\\Dev\\Jugendforscht\\Neu18.12\\VRConference\\VRConference\\Assets\\StreamingAssets\\SteamVR\\actions.json",
       "strings": {
         "en_us": {
           "name": "VRConference [Testing]"
