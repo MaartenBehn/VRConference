@@ -87,6 +87,19 @@ Benötigte Datein:
 1 kleines png für den Hintergrund eines Eintrags in der Liste
 1 png mit nur dem Hintergrund
 
+## 3D Modell load Interface
 
+Dies ist eine Anzeige die an den Tisch plaziert wird. Auf ihr ist eine Liste aller hochgelandenen 3D Modellen. Aus dieser Liste kann man eins auswählen und dann auf einen Load Knopf drücken um das Objekt zu laden.
+
+Enthält Liste aller 3D Datein. Gerne mit angaben wie Datei größe, und Pfad.
+Enthält einen Knopf um das ausgewählte Modell zu laden.
+
+Benötigte Datein:
+1 png mit dem ganzen Panel
+1 kleines png pro jeden verschiedenen Knopf
+1 kleines png für den Hintergrund der Liste
+1 kleines png für den Hintergrund eines Eintrags in der Liste
+1 png mit nur dem Hintergrund
 
 *mit jeden verschiedenen Knopf meine ich nur wenn der Hitergrund anders ist oder du einen Knopf mit Symbol gemacht hast.
+
