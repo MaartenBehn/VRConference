@@ -130,6 +130,7 @@ public class GameLoader : MonoBehaviour
                         if (feature.featureState.value == (int) FeatureState.failed &&
                             feature.essential)
                         {
+                            Debug.Log("Essential feature " + feature.name + " failed.");
                             failed = true;
                         }
                     }
