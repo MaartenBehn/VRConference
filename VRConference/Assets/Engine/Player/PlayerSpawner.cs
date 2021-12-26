@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.XR.Management;
 using Utility;
@@ -39,7 +40,14 @@ namespace Engine.Player
             playerStop.Register(() =>
             {
                 playerFaetureState.value = (int) FeatureState.stopping;
+                
                 Destroy(player);
+                if (isVr.value)
+                {
+                    Destroy(teleport);
+                    Destroy(vrMeune);
+                }
+                
                 playerFaetureState.value = (int) FeatureState.offline;
             });
         }
@@ -68,12 +76,10 @@ namespace Engine.Player
 
 
                 player = Instantiate(VR_Player, new Vector3(0, 0, 0), Quaternion.identity);
-                Instantiate(VR_Teleporting, new Vector3(0, 0, 0), Quaternion.identity);
-                Instantiate(VR_TeleportPoint, new Vector3(0, 0, 0), Quaternion.identity);
-                Instantiate(VR_TeleportPoint, new Vector3(0, 0, 0), Quaternion.identity);
-                var test = Instantiate(VR_Menu, new Vector3(0.02485144f, 1.229f, 5.52f), Quaternion.identity);
-                test.transform.localScale = new Vector3(0.005f, 0.005f, 0.005f);
-                test.transform.GetChild(0).GetComponent<Canvas>().worldCamera = player.transform.GetChild(0).transform.GetChild(2).GetChild(4).GetComponent<Camera>();
+                teleport = Instantiate(VR_Teleporting, new Vector3(0, 0, 0), Quaternion.identity);
+                vrMeune = Instantiate(VR_Menu, new Vector3(0.02485144f, 1.229f, 5.52f), Quaternion.identity);
+                vrMeune.transform.localScale = new Vector3(0.005f, 0.005f, 0.005f);
+                vrMeune.transform.GetChild(0).GetComponent<Canvas>().worldCamera = player.transform.GetChild(0).transform.GetChild(2).GetChild(4).GetComponent<Camera>();
                 playerFaetureState.value = (int) FeatureState.online;
                 vrFaetureState.value = (int) FeatureState.online;
             }
@@ -89,7 +95,6 @@ namespace Engine.Player
         [SerializeField] private PublicInt firstPersonFaetureState;
         
         
-        
         [SerializeField] private GameObject world;
         
         public GameObject VR_Player;
@@ -99,6 +104,8 @@ namespace Engine.Player
         public GameObject VR_Menu;
 
         private GameObject player;
+        private GameObject teleport;
+        private GameObject vrMeune;
         
         private void OnDestroy()
         {
