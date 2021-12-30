@@ -109,8 +109,7 @@ namespace Network
                 float3 pos = packet.ReadFloat3();
                 Quaternion direction = packet.ReadQuaternion();
                 
-                UserController.instance.users[userID].transform.position = pos;
-                UserController.instance.users[userID].transform.rotation = direction;
+                UserController.instance.users[userID].SetPosition(pos, direction);
             });
         }
         
@@ -126,8 +125,7 @@ namespace Network
                 float3 hand2Pos = packet.ReadFloat3();
                 Quaternion hand2Direction = packet.ReadQuaternion();
                 
-                UserController.instance.users[userID].transform.position = pos;
-                UserController.instance.users[userID].transform.rotation = direction;
+                UserController.instance.users[userID].SetPosition(pos, direction);
             });
         }
 
