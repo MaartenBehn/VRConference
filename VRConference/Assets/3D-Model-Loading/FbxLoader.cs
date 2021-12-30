@@ -56,6 +56,11 @@ public class FbxLoader : MonoBehaviour
     public Button LoadModelButton;
     public Button UnloadModelButton;
 
+    public void SetPath(string path)
+    {
+        FilePath = path;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
