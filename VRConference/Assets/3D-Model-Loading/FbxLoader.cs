@@ -5,7 +5,8 @@ using System;
 using System.Runtime.InteropServices;
 using UnityEngine.UI;
 using Valve.VR.InteractionSystem;
-
+using FileShare;
+using TMPro;
 public class FbxLoader : MonoBehaviour
 {
 
@@ -51,11 +52,13 @@ public class FbxLoader : MonoBehaviour
     [DllImport(dll)]
     private static extern IntPtr GetMaterialData(int id);
 
+    private List<FileEntry> files;
 
     public string FilePath = "";
-    public Button LoadModelButton;
     public Button UnloadModelButton;
 
+    public GameObject ButtonListContent;
+    public Button ButtonPrefab;
     public void SetPath(string path)
     {
         FilePath = path;
@@ -64,9 +67,9 @@ public class FbxLoader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        files = new List<FileEntry>();
         StartFBX();
 
-        LoadModelButton.onClick.AddListener(LoadFbxFile);
         UnloadModelButton.onClick.AddListener(()=>
         {
             if (rootNode != null)
@@ -77,19 +80,42 @@ public class FbxLoader : MonoBehaviour
 
         if(Player.instance != null)
         {
-            GetComponent<Canvas>().worldCamera = Player.instance.rightHand.transform.GetChild(4).GetComponent<Camera>(); ;
+            GetComponent<Canvas>().worldCamera = Player.instance.rightHand.transform.GetChild(4).GetComponent<Camera>();
         }
 
     }
 
-    GameObject rootNode = null;
-
-
-    void LoadFbxFile()
+    private void Update()
     {
-        if (ImportFbxFile(FilePath))
+        foreach (FileEntry fileEntry in FileShare.FileShare.instance.fileEntries)
         {
-            ProcessNode(GetRootNodeId());
+            
+            if (fileEntry.local && fileEntry.localPath.Contains(".fbx"))
+            {
+
+                string filename = fileEntry.fileName;
+                if (!files.Contains(fileEntry))
+                {
+                    Debug.Log(fileEntry.localPath);
+                    var temp = Instantiate(ButtonPrefab, ButtonListContent.transform);
+                    temp.name = filename;
+                    temp.GetComponent<Button>().onClick.AddListener(()=>LoadFbxFile(fileEntry.localPath));
+                    temp.transform.GetChild(0).GetComponent<TMP_Text>().text = filename;
+                    files.Add(fileEntry);
+                }
+            }
+        }
+    }
+
+    GameObject rootNode = null;
+    public void LoadFbxFile(string path)
+    {
+        if (path.Contains(".fbx"))
+        {
+            if (ImportFbxFile(path))
+            {
+                ProcessNode(GetRootNodeId());
+            }
         }
     }
     public Material material;
@@ -168,7 +194,7 @@ public class FbxLoader : MonoBehaviour
         else
         {
             rootNode = currentObj;
-            rootNode.transform.parent = gameObject.transform.parent.parent.transform.GetChild(2).transform;
+            rootNode.transform.parent = gameObject.transform.parent.parent.transform.GetChild(1).transform;
         }
 
         ProcessTransform(id, currentObj);
