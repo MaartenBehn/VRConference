@@ -39,7 +39,6 @@ namespace FileShare
         [SerializeField] private PublicByte userId;
         
         [SerializeField] private PublicEventString uploadEvent;
-        [SerializeField] private PublicEvent syncEvent;
 
         [SerializeField] private bool autoSyncFiles;
         
@@ -52,6 +51,8 @@ namespace FileShare
         [SerializeField] private PublicEvent syncFilesEvent;
 
         [SerializeField] private string[] startUpFiles;
+
+        [SerializeField] private PublicEvent loadingDoneEvent;
         
         private void Awake()
         {
@@ -68,6 +69,7 @@ namespace FileShare
             {
                 var parts = path.Split(new char[] {'/','\\'});
                 AddFileEntry(userId.value, parts.Last(), path);
+                NetworkController.instance.networkSend.ListOfLocalFilesToAll(GetLocalFiles());
             });
 
             syncFilesEvent.Register(SyncFiles);
@@ -76,24 +78,36 @@ namespace FileShare
             {
                 AddFileEntry(userId.value ,startUpFile, Application.dataPath + "/StreamingAssets/StartUpFiles/" + startUpFile +".mp3");
             }
+
+            loadingDoneEvent.Register(SyncFiles);
         }
         
         public void SyncFiles()
         {
-            if (savePath.value == "")
-            {
-                FileBrowser.ShowSaveDialog(paths =>
-                {
-                    savePath.value = paths[0] + "\\";
-                    NetworkController.instance.networkSend.GetListOfLocalFiles();
-                }, () => { }, FileBrowser.PickMode.Folders);
-            }
-            else
+            if (savePath.value != "")
             {
                 NetworkController.instance.networkSend.GetListOfLocalFiles();
             }
+            else
+            {
+                Debug.Log("No Save Path!");
+            }
         }
-        
+
+        public string[] GetLocalFiles()
+        {
+            List<string> fileNames = new List<string>();
+            foreach (FileEntry fileEntry in fileEntries)
+            {
+                if (fileEntry.local)
+                {
+                    fileNames.Add(fileEntry.fileName);
+                }
+            }
+
+            return fileNames.ToArray();
+        }
+
         public void AddFileEntry(byte userId, string name, string path = "")
         {
             bool found = false;

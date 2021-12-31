@@ -27,7 +27,6 @@ public class MenuToUploadFile : MonoBehaviour
             FileBrowserObj.GetComponent<Canvas>().worldCamera = Player.instance.rightHand.transform.GetChild(4).GetComponent<Camera>();
             GetComponent<Canvas>().worldCamera = Player.instance.rightHand.transform.GetChild(4).GetComponent<Camera>();
         }
-        var fbxScript = FbxLoader.GetComponent<FbxLoader>();
         FileBrowser.ShowLoadDialog((string[] paths) =>
         {
             

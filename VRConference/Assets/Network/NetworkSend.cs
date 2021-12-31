@@ -146,6 +146,21 @@ namespace Network
             
             Debug.Log("NETWORK: ListOfLocalFiles");
         }
+        
+        public void ListOfLocalFilesToAll(string[] fileNames)
+        {
+            using Packet packet = new Packet((byte) Packets.userListOfLocalFiles, network.userId.value);
+            
+            packet.Write(fileNames.Length);
+            foreach (string filename in fileNames)
+            {
+                packet.Write(filename);
+            }
+            
+            SendToAllExceptOrigen(packet,false, false);
+            
+            Debug.Log("NETWORK: ListOfLocalFiles");
+        }
 
         public void GetFile(FileSyncConfig fileSyncConfig)
         {

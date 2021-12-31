@@ -154,9 +154,7 @@ public class FbxLoader : MonoBehaviour
             //UnityEngine.Object.DestroyImmediate(unityPrimitive);
         }
     }
-
-
-
+    
     void ProcessMaterial(int id,Material mat)
     {
         Shader shader = Shader.Find("Specular");

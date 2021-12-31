@@ -131,18 +131,7 @@ namespace Network
 
         public void GetListOfLocalFiles(byte userID, Packet packet)
         {
-            List<string> fileNames = new List<string>();
-            var fileEntries = FileShare.FileShare.instance.fileEntries;
-
-            foreach (FileShare.FileEntry fileEntry in fileEntries)
-            {
-                if (fileEntry.local)
-                {
-                    fileNames.Add(fileEntry.fileName);
-                }
-            }
-            
-            network.networkSend.ListOfLocalFiles(userID, fileNames.ToArray());
+            network.networkSend.ListOfLocalFiles(userID, FileShare.FileShare.instance.GetLocalFiles());
         }
         
         public void ListOfLocalFiles(byte userID, Packet packet)

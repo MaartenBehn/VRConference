@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8994392714698078216}
   - component: {fileID: 8994392714698078219}
+  - component: {fileID: 655518574788975097}
   m_Layer: 0
   m_Name: CM vcam1
   m_TagString: Untagged
@@ -61,7 +62,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7786666, y: 1}
+    m_SensorSize: {x: 1.7777778, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -70,6 +71,18 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 8994392714744708337}
+--- !u!114 &655518574788975097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8994392714698078217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5efaad47709b4242aef277148b13004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8994392714744708342
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,7 +190,6 @@ GameObject:
   - component: {fileID: 8994392715783527369}
   - component: {fileID: 8994392715783527383}
   - component: {fileID: 9192781880251426400}
-  - component: {fileID: -7673888036978546104}
   m_Layer: 0
   m_Name: FisrtPersonPlayer
   m_TagString: Untagged
@@ -265,15 +277,3 @@ MonoBehaviour:
   voicemaxDist: {fileID: 11400000, guid: 41090a1d79b2fb74d98a49c10a127fac, type: 2}
   voiceminDist: {fileID: 11400000, guid: 780dd517af914874dbee3e846aa55d50, type: 2}
   voicefeatureState: {fileID: 11400000, guid: ef86a588a6fb31e4682c99e901de5e73, type: 2}
---- !u!114 &-7673888036978546104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8994392715783527374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5efaad47709b4242aef277148b13004, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
