@@ -45,7 +45,7 @@ namespace Network.Client
                     client.networkFeatureState.value = (int) FeatureState.failed;
                 }
             });
-        }
+         }
          
          private void ConnectCallback(IAsyncResult result)
          {

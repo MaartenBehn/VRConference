@@ -77,15 +77,19 @@ namespace Network.Client
             bool async = packet.ReadBool();
             // This checks if the data has the length it should have.
             int length = packet.ReadInt32();
+            byte packetId = packet.ReadByte();
+            byte userID = packet.ReadByte();
             if (length + 5 > data.Length)
             {
                 Debug.Log("CLIENT: Packet size not correct.");
+                if (packetId == 30)
+                {
+                    Debug.Log("CLIENT: Filesharepacket not complete.");
+                }
+                
                 return;
             }
-            
-            byte packetId = packet.ReadByte();
-            byte userID = packet.ReadByte();
-            
+
             packetHandlers[packetId](userID, packet);
             
             if (length + 5 < data.Length)

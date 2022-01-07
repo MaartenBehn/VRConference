@@ -2236,7 +2236,7 @@ MonoBehaviour:
     length: 0
     user: 0
     data: 
-  partSize: 2024
+  partSize: 1024
 --- !u!1 &292745780
 GameObject:
   m_ObjectHideFlags: 0
