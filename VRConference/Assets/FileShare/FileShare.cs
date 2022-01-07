@@ -148,7 +148,7 @@ namespace FileShare
         public bool syncingFile;
         [HideInInspector] public FileSyncConfig fileSyncConfig;
         private float lastSyncTime;
-        [SerializeField] private int partSize = 2024;
+        [SerializeField] private int partSize = 1024;
         private void Update()
         {
             if (autoSyncFiles && !syncingFile && !(lastSyncTime + syncIntervall > Time.time))
