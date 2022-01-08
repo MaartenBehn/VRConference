@@ -130,6 +130,7 @@ namespace Voice
             audioSource.maxDistance = 50;
             audioSource.spread = 70;
             audioSource.rolloffMode = AudioRolloffMode.Custom;
+            audioSource.dopplerLevel = 0;
                 
             AnimationCurve curve = new AnimationCurve();
             curve.AddKey(0, 1);

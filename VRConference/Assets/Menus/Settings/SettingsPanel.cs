@@ -50,6 +50,7 @@ namespace Engine.Settings
         private void OnEnable()
         {
             Set();
+            SetSavePath();
         }
 
         private void OnDisable()
@@ -76,8 +77,6 @@ namespace Engine.Settings
             {
                 playerTypeDropdown.value = 1;
             }
-
-
         }
 
         public void Get()
@@ -116,7 +115,7 @@ namespace Engine.Settings
 
         public void SetSavePath()
         {
-            savePathIPField.text = Application.dataPath;
+            savePathIPField.text = Application.dataPath +"/";
         }
     }
 }

@@ -76,6 +76,7 @@ namespace Network.Client
                  int byteLength = stream.EndRead(result);
                  if (byteLength < State.HeaderSize)
                  {
+                     Debug.Log("Lost Connection");
                      Threader.RunOnMainThread(client.Disconnect);
                      return;
                  }
@@ -97,8 +98,9 @@ namespace Network.Client
                  
                  stream.BeginRead(receiveBuffer, 0, State.BufferSize, ReceiveCallback, null);
              }
-             catch
+             catch (Exception e)
              {
+                 Debug.Log(e);
                  Threader.RunOnMainThread(client.Disconnect);
              }
          }

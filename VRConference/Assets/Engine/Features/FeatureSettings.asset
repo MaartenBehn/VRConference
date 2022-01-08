@@ -20,7 +20,7 @@ MonoBehaviour:
     featureState: {fileID: 11400000, guid: f5661bbe5332f964cae269016ed6abc3, type: 2}
     dependicies: []
     TimeOutTime: 10
-    startTime: 0
+    startTime: 0.7283848
     essential: 1
   - name: UDP
     active: 1
@@ -30,7 +30,7 @@ MonoBehaviour:
     dependicies:
     - Network
     TimeOutTime: 20
-    startTime: 0
+    startTime: 0.9276734
     essential: 0
   - name: Voice
     active: 1
@@ -40,8 +40,8 @@ MonoBehaviour:
     dependicies:
     - Network
     - Player
-    TimeOutTime: 20
-    startTime: 0
+    TimeOutTime: 5
+    startTime: 0.9276734
     essential: 0
   - name: Player
     active: 1
@@ -50,7 +50,7 @@ MonoBehaviour:
     featureState: {fileID: 11400000, guid: 7cfb274ef07604e418174b97e0d8f7e5, type: 2}
     dependicies: []
     TimeOutTime: 20
-    startTime: 0
+    startTime: 0.7283848
     essential: 1
   - name: VR
     active: 0
@@ -62,11 +62,11 @@ MonoBehaviour:
     startTime: 0
     essential: 0
   - name: FirstPerson
-    active: 0
+    active: 1
     startEvent: {fileID: 11400000, guid: 9f319f73b1824814eb2ebe615c9ccc64, type: 2}
     stopEvent: {fileID: 11400000, guid: 1a17445619ea4284781157f842e754e0, type: 2}
     featureState: {fileID: 11400000, guid: caf5be0e63351e847b422ae0e376d9be, type: 2}
     dependicies: []
     TimeOutTime: 20
-    startTime: 0
+    startTime: 0.7283848
     essential: 0

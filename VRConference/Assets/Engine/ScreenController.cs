@@ -34,6 +34,8 @@ namespace Engine
             inGameScreen.SetActive(false);
             loadScreen.SetActive(false);
             startScreen.SetActive(true);
+            
+            Cursor.lockState = CursorLockMode.None;
         }
         
         private void SetLoadScreen()
@@ -41,6 +43,8 @@ namespace Engine
             inGameScreen.SetActive(false);
             startScreen.SetActive(false);
             loadScreen.SetActive(true);
+            
+            Cursor.lockState = CursorLockMode.None;
         }
 
         private void SetInGameScreen()
@@ -48,6 +52,8 @@ namespace Engine
             loadScreen.SetActive(false);
             startScreen.SetActive(false);
             inGameScreen.SetActive(true);
+            
+            
         }
     }
 }

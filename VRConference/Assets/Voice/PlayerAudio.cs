@@ -8,8 +8,6 @@ namespace Voice
     {
         public static PlayerAudio instance;
 
-        //[SerializeField] private PublicEventFloat3 updatePosEvent;
-
         [HideInInspector] public Mic mic;
         
         [HideInInspector] public AudioSource voiceAudioSource;
@@ -38,18 +36,5 @@ namespace Voice
             voiceAudioSource.minDistance = voiceminDist.value;
             voiceAudioSource.maxDistance = voicemaxDist.value;
         }
-        
-        /*
-        private float3 lastPos;
-        private void FixedUpdate()
-        {
-            float3 pos = transform.position;
-            if (lastPos.x != pos.x || lastPos.y != pos.y || lastPos.z != pos.z)
-            {
-                updatePosEvent.Raise(pos);
-                lastPos = pos;
-            }
-        }
-        */
     }
 }

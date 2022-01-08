@@ -55,6 +55,7 @@ namespace Network.Client
 
                  if (data.Length < State.HeaderSize)
                  {
+                     Debug.Log("Lost Connection");
                      Threader.RunOnMainThread(client.Disconnect);
                      return;
                  }

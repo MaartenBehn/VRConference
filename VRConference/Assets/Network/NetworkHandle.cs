@@ -32,6 +32,8 @@ namespace Network
                 { (byte)Packets.userFilePart, FilePart },
                 
                 { (byte)Packets.audioSpeakerPlaySong, SpeakerPlaySong },
+                
+                { (byte)Packets.userSyncFailed, SyncFailed },
             };
         }
         
@@ -179,6 +181,11 @@ namespace Network
             byte[] data = packet.ReadBytes(length);
 
             FileShare.FileShare.instance.HandleFilePart(filename, userID, part, data);
+        }
+        
+        public void SyncFailed(byte userID, Packet packet)
+        {
+            FileShare.FileShare.instance.SyncFailed();
         }
         
         public void SpeakerPlaySong(byte userID, Packet packet)

@@ -202,6 +202,12 @@ namespace Network
             Send(packet, fileSyncConfig.user, false, true);
         }
         
+        public void SyncFailed(byte toUser)
+        {
+            using Packet packet = new Packet((byte) Packets.userSyncFailed, network.userId.value);
+            Send(packet, toUser, false, false);
+        }
+        
         public void SpeakerPlaySong(int id, string name)
         {
             using Packet packet = new Packet((byte) Packets.audioSpeakerPlaySong, network.userId.value);

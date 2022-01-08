@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Engine;
 using Network.Both;
@@ -87,7 +88,14 @@ namespace Network.Server
             byte packetId = packet.ReadByte();
             byte userID = packet.ReadByte();
             
-            packetHandlers[packetId](userID, packet);
+            try
+            {
+                packetHandlers[packetId](userID, packet);
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e);
+            }
             
             if (length + 5 < data.Length)
             {

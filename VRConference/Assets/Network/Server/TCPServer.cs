@@ -111,8 +111,9 @@ namespace Network.Server.Code
 
                 user.stream.BeginRead(user.receiveBuffer, 0, State.BufferSize, ReceiveCallback, user);
             }
-            catch
+            catch (Exception e)
             {
+                Debug.Log(e);
                 Threader.RunOnMainThread(() =>
                 {
                     server.DisconnectClient(user.id);

@@ -35,6 +35,8 @@
         userGetFilePart= 34,
         userFilePart = 35,
         
+        userSyncFailed = 36,
+        
         // 40 AudioSpeaker
         audioSpeakerPlaySong = 40,
         

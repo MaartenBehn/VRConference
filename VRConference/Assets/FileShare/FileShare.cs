@@ -45,6 +45,7 @@ namespace FileShare
         public List<FileEntry> fileEntries;
 
         [SerializeField] private float syncIntervall = 5f;
+        [SerializeField] private float timeOutIntervall = 30f;
 
         [SerializeField] private PublicString savePath;
         
@@ -53,6 +54,8 @@ namespace FileShare
         [SerializeField] private string[] startUpFiles;
 
         [SerializeField] private PublicEvent loadingDoneEvent;
+        
+        [SerializeField] private PublicEventByte userLeftEvent;
         
         private void Awake()
         {
@@ -80,6 +83,19 @@ namespace FileShare
             }
 
             loadingDoneEvent.Register(SyncFiles);
+
+            userLeftEvent.Register((id) =>
+            {
+                if (syncingFile && fileSyncConfig.user == id)
+                {
+                    SyncFailed();
+                }
+
+                foreach (var fileEntry in fileEntries)
+                {
+                    fileEntry.userHowHaveTheFile.Remove(id);
+                }
+            });
         }
         
         public void SyncFiles()
@@ -143,32 +159,52 @@ namespace FileShare
                 fileEntry.userHowHaveTheFile.Add(userId);
                 fileEntries.Add(fileEntry);
             }
+            
+            
         }
 
         public bool syncingFile;
         [HideInInspector] public FileSyncConfig fileSyncConfig;
         private float lastSyncTime;
+        private float lastTimeOutTime;
         [SerializeField] private int partSize = 1024;
+        private int lastPart;
         private void Update()
         {
-            if (autoSyncFiles && !syncingFile && !(lastSyncTime + syncIntervall > Time.time))
+            if (autoSyncFiles && !syncingFile && lastSyncTime + syncIntervall < Time.time)
             {
-                lastSyncTime = Time.time;
                 foreach (FileEntry fileEntry in fileEntries)
                 {
                     if (!fileEntry.local)
                     {
                         SyncFile(fileEntry);
+                        lastTimeOutTime = Time.time;
                         break;
                     }
                 }
+                lastSyncTime = Time.time;
+            }
+            
+            if (lastTimeOutTime + timeOutIntervall < Time.time)
+            {
+                if (syncingFile && fileSyncConfig != null && fileSyncConfig.currentPart == lastPart)
+                {
+                    NetworkController.instance.networkSend.SyncFailed(fileSyncConfig.user);
+                    SyncFailed();
+                }
+                    
+                if (fileSyncConfig != null)
+                {
+                    lastPart = fileSyncConfig.currentPart;
+                }
+                lastTimeOutTime = Time.time;
             }
 
             PrintNetworkSpeed();
         }
         public void SyncFile(FileEntry fileEntry)
         {
-            if (fileEntry.local || fileEntry.userHowHaveTheFile.Count == 0) { return; }
+            if (fileEntry.local || fileEntry.userHowHaveTheFile.Count == 0 || savePath.value == "") { return; }
             
             syncingFile = true;
             fileSyncConfig = new FileSyncConfig();
@@ -180,8 +216,29 @@ namespace FileShare
             fileSyncConfig.user = fileEntry.userHowHaveTheFile.Contains(0) ? (byte) 0 : fileEntry.userHowHaveTheFile[0];
             NetworkController.instance.networkSend.GetFile(fileSyncConfig);
         }
+
+        public void SyncFailed()
+        {
+            Debug.Log("Sync failed");
+
+            if (!fileSyncConfig.fileEntry.local)
+            {
+                fileSyncConfig.fileEntry.localPath = "";
+            }
+            
+            syncingFile = false;
+            fileSyncConfig = null;
+        }
+        
         public void HandleGetFile(string name, byte fromUser)
         {
+            if (syncingFile)
+            {
+                NetworkController.instance.networkSend.SyncFailed(fromUser);
+                SyncFailed();
+                return;
+            }
+            
             syncingFile = true;
 
             fileSyncConfig = new FileSyncConfig();
@@ -195,7 +252,8 @@ namespace FileShare
             else
             {
                 Debug.Log("File Not Found " + name);
-                syncingFile = false;
+                NetworkController.instance.networkSend.SyncFailed(fileSyncConfig.user);
+                SyncFailed();
                 return;
             }
 
@@ -217,9 +275,10 @@ namespace FileShare
 
         public void HandleFileSyncConfig(string name, byte userId, int length, int parts)
         {
-            if (name != fileSyncConfig.fileEntry.fileName || userId != fileSyncConfig.user)
+            if (fileSyncConfig == null || name != fileSyncConfig.fileEntry.fileName || userId != fileSyncConfig.user)
             {
-                Debug.Log("FILE: Wrong User or name. Fix this!");
+                NetworkController.instance.networkSend.SyncFailed(fileSyncConfig.user);
+                SyncFailed();
                 return;
             }
             
@@ -233,11 +292,13 @@ namespace FileShare
         
         public void HandleGetFilePart(string name, byte userId, int part)
         {
-            if (name != fileSyncConfig.fileEntry.fileName || userId != fileSyncConfig.user)
+            if (fileSyncConfig == null || name != fileSyncConfig.fileEntry.fileName || userId != fileSyncConfig.user)
             {
-                Debug.Log("FILE: Wrong User or name. Fix this!");
+                NetworkController.instance.networkSend.SyncFailed(fileSyncConfig.user);
+                SyncFailed();
                 return;
             }
+
             fileSyncConfig.currentPart = part;
             int offset = partSize * part;
             byte[] data;
@@ -270,9 +331,10 @@ namespace FileShare
         
         public void HandleFilePart(string name, byte userId, int part, byte[] data)
         {
-            if (name != fileSyncConfig.fileEntry.fileName || userId != fileSyncConfig.user)
+            if (fileSyncConfig == null || name != fileSyncConfig.fileEntry.fileName || userId != fileSyncConfig.user)
             {
-                Debug.Log("FILE: Wrong User or name. Fix this!");
+                NetworkController.instance.networkSend.SyncFailed(fileSyncConfig.user);
+                SyncFailed();
                 return;
             }
 
@@ -314,6 +376,10 @@ namespace FileShare
             float speed = (delta  * partSize) / updateSpeed;
             float percent = ((float) fileSyncConfig.currentPart / fileSyncConfig.partAmmount) * 100f;
             float time = (fileSyncConfig.length - fileSyncConfig.currentPart * partSize) / speed;
+            if (float.IsPositiveInfinity(time))
+            {
+                time = 0;
+            }
             
             Debug.LogFormat("FILE: Stats: {0} byts/sec {1}% {2} sec remaining.", speed, percent, time);
         }

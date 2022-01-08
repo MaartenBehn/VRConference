@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Network.Both;
 using UnityEngine;
@@ -82,16 +83,19 @@ namespace Network.Client
             if (length + 5 > data.Length)
             {
                 Debug.Log("CLIENT: Packet size not correct.");
-                if (packetId == 30)
-                {
-                    Debug.Log("CLIENT: Filesharepacket not complete.");
-                }
-                
+
                 return;
             }
 
-            packetHandlers[packetId](userID, packet);
-            
+            try
+            {
+                packetHandlers[packetId](userID, packet);
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e);
+            }
+
             if (length + 5 < data.Length)
             {
                 var list = data.ToList().GetRange( length + 5, data.Length - (length + 5));
