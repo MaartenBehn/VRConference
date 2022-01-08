@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Utility;
 using Valve.VR;
 using Voice;
@@ -19,6 +20,7 @@ namespace FirstPerson
         [SerializeField] private PublicEvent doneEvent;
 
         [SerializeField] private TMP_Dropdown micDropdown;
+        [SerializeField] private Slider volumeSlider;
 
         private void Awake()
         {
@@ -26,6 +28,9 @@ namespace FirstPerson
             {
                 Set(true);
             });
+
+            volumeSlider.minValue = 0;
+            volumeSlider.maxValue = 1;
         }
 
         void Update()
@@ -55,6 +60,11 @@ namespace FirstPerson
             pause.value = value;
             Cursor.lockState = !pause.value ? CursorLockMode.Locked : CursorLockMode.None;
             pauseMeune.SetActive(pause.value);
+
+            if (value)
+            {
+                volumeSlider.value = AudioListener.volume;
+            }
         }
 
         public void SetMic()
@@ -68,6 +78,11 @@ namespace FirstPerson
             {
                 PlayerAudio.instance.mic.ChangeDevice(micDropdown.value);
             }
+        }
+        
+        public void SetVolume()
+        {
+            AudioListener.volume = volumeSlider.value;
         }
     }
 }
