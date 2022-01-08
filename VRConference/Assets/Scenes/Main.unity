@@ -5752,7 +5752,7 @@ MonoBehaviour:
   pauseMeune: {fileID: 1046474153}
   doneEvent: {fileID: 11400000, guid: 2682efdee6ca3fc48be1ab305a77b640, type: 2}
   micDropdown: {fileID: 318136805}
-  volumeSlider: {fileID: 0}
+  volumeSlider: {fileID: 957969306}
 --- !u!1 &807176411
 GameObject:
   m_ObjectHideFlags: 0
