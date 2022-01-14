@@ -91,7 +91,15 @@ namespace Network
                 packet.Write(feature.featureState.value == (int) FeatureState.online);
             }
             
-            Send(packet, toUser, false, false);
+            packet.PrepareForSend(false);
+            if (network.isServer.value)
+            {
+                network.server.tcpServer.SendData(toUser, packet.ToArray(), packet.Length());
+            }
+            else
+            {
+                network.client.tcpClient.SendData(packet.ToArray(), packet.Length());
+            }
             Debug.Log(log);
         }
         

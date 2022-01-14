@@ -108,10 +108,17 @@ namespace Network
         {
             Threader.RunOnMainThread(() =>
             {
-                float3 pos = packet.ReadFloat3();
-                Quaternion direction = packet.ReadQuaternion();
+                try
+                {
+                    float3 pos = packet.ReadFloat3();
+                    Quaternion direction = packet.ReadQuaternion();
                 
-                UserController.instance.users[userID].SetPosition(pos, direction);
+                    UserController.instance.users[userID].SetPosition(pos, direction);
+                }
+                catch
+                {
+                    Debug.LogFormat("Lost Position Data Package");
+                }
             });
         }
         
@@ -119,15 +126,22 @@ namespace Network
         {
             Threader.RunOnMainThread(() =>
             {
-                float3 pos = packet.ReadFloat3();
-                Quaternion direction = packet.ReadQuaternion();
+                try
+                {
+                    float3 pos = packet.ReadFloat3();
+                    Quaternion direction = packet.ReadQuaternion();
                 
-                float3 hand1Pos = packet.ReadFloat3();
-                Quaternion hand1Direction = packet.ReadQuaternion();
-                float3 hand2Pos = packet.ReadFloat3();
-                Quaternion hand2Direction = packet.ReadQuaternion();
+                    float3 hand1Pos = packet.ReadFloat3();
+                    Quaternion hand1Direction = packet.ReadQuaternion();
+                    float3 hand2Pos = packet.ReadFloat3();
+                    Quaternion hand2Direction = packet.ReadQuaternion();
                 
-                UserController.instance.users[userID].SetPosition(pos, direction);
+                    UserController.instance.users[userID].SetPosition(pos, direction);
+                }
+                catch 
+                {
+                    Debug.LogFormat("Lost Position Data Package");
+                }
             });
         }
 

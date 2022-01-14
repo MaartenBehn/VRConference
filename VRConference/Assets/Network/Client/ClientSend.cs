@@ -23,24 +23,23 @@ namespace Network.Client
         public void ClientStartUDP()
         {
             Debug.Log("CLIENT: start udp test");
-            using (Packet packet = new Packet((byte) Packets.clientStartUDP, client.clientId.value))
-            {
-                client.Send(packet, true, false);
-            }
-            
+            using Packet packet = new Packet((byte) Packets.clientStartUDP, client.clientId.value);
+            packet.PrepareForSend(false);
+            client.udpClient.SendData(packet.ToArray(), packet.Length());
+
             Threader.RunAsync(() =>
             {
                 Thread.Sleep(2000);
                 if (client.udpFeatureState.value == (int) FeatureState.online) return;
-
-                UserController.instance.users[0].features["UDP"] = false;
+                
+                client.udpFeatureState.value = (int) FeatureState.failed;
                 ClientUDPConnection();
             });
         }
         
         public void ClientUDPConnection()
         {
-            bool udpOnline = UserController.instance.users[0].features["UDP"];
+            bool udpOnline = client.udpFeatureState.value == (int) FeatureState.online;
             Debug.Log("CLIENT: UDP connection status: "+ udpOnline);
             
             using Packet packet = new Packet((byte) Packets.clientUDPConnection, client.clientId.value);

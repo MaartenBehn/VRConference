@@ -33,8 +33,9 @@ namespace Network.Server
                 if (id == userId) {continue;}
                 packet.Write(id);
             }
-
-            server.Send(userId, packet, false, false);
+            
+            packet.PrepareForSend(false);
+            server.tcpServer.SendData(userId, packet.ToArray(), packet.Length());
         }
             
         public void ServerUserJoined(byte userId, byte joinedUser)
@@ -53,13 +54,12 @@ namespace Network.Server
             server.Send(userId, packet, false, false);
         }
         
-        public void ServerUDPConnection(byte userId, bool received)
+        public void ServerUDPConnection(byte userId)
         {
             Debug.LogFormat("SERVER: [" +userId+ "] udp test message");
             using Packet packet = new Packet((byte) Packets.serverUDPConnection, 0);
-            packet.Write(received);
-
-            server.Send(userId, packet, received, false);
+            packet.PrepareForSend(false);
+            server.udpServer.SendData(userId, packet.ToArray(), packet.Length());
         }
 
         public void SendToAll(Packet packet, bool useUDP, bool async)

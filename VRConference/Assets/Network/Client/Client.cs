@@ -106,9 +106,14 @@ namespace Network.Client
         // Async
         public void Send(Packet packet, bool useUDP, bool async)
         {
-            packet.PrepareForSend(async);
+            var user = UserController.instance.users[0];
+            if (user == null || !user.HasFeature("Network"))
+            {
+                return;
+            }
             
-            if (!useUDP || udpFeatureState.value != (int) FeatureState.online)
+            packet.PrepareForSend(async);
+            if (!useUDP || udpFeatureState.value != (int) FeatureState.online || !user.HasFeature("UDP"))
             {
                 tcpClient.SendData(packet.ToArray(), packet.Length());
             }

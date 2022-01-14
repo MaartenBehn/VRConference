@@ -19,7 +19,7 @@ namespace Network.Server
         
         public void ClientStartUDP(byte userID, Packet packet)
         {
-            server.serverSend.ServerUDPConnection(userID, true);
+            server.serverSend.ServerUDPConnection(userID);
         }
         
         public void ClientUDPConnection(byte userID, Packet packet)

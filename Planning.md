@@ -35,14 +35,14 @@
     - Auswahl im Start menue                    Done      
     - VR Player spawnen                         Done
     - VR Player login                           Done
-    - VR Player sync                                
+    - VR Player sync                            Done              
 - First Person                              
-    - Sync                                      
+    - Sync                                      Done
 - 3D Modelle laden 
     - FBX                                       Done
     - Tisch syncen                              
 - Modell
-    - VR Player
+    - VR Player                                 
     - First Person
 
 - AudioSettings
@@ -74,9 +74,24 @@ https://github.com/adrenak/UniVoice
 
 
 ## Doku Themen
-- Einleitung und Ideen erklärung Maarten
-- FBX Loader    Tim
-- VR            Tim
-- Network       Maarten
-- Voice         Maarten
-- UI
+1.	Kurzfassung
+2.	Inhaltsverzeichnis
+3.	Einleitung
+4.	Vorgehensweise, Materialien und Methode
+5.	Ergebnisse
+6.	Ergebnisdiskussion
+7.	Zusammenfassung
+8.	Quellen- und Literaturverzeichnis
+9.	Unterstützungsleistungen
+
+
+- Einleitung und Ideen erklärung    Maarten
+- FBX Loader                        Tim
+- VR                                Tim
+- Network                           Maarten
+- Voice                             Maarten
+- Zusammenfassung                   Tim
+- Ergebnisdiskussion                Noch entscheiden.
+- Gramatik und Rechtschreibung      Yesenia
+
+- Dokumet fertig machen (Inhaltsverzeichnis, Quellen- und Literaturverzeichnis)

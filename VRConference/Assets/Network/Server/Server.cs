@@ -107,14 +107,20 @@ namespace Network.Server
 
         public void Send(byte userId, Packet packet, bool useUDP, bool async)
         {
+            var user = UserController.instance.users[userId];
+            if (user == null || !user.HasFeature("Network"))
+            {
+                return;
+            }
+            
             packet.PrepareForSend(async);
-            if (!useUDP)
+            if (!useUDP || udpFeatureState.value != (int) FeatureState.online || !user.HasFeature("UDP"))
             {
                 tcpServer.SendData(userId, packet.ToArray(), packet.Length());
             }
             else
             {
-                tcpServer.SendData(userId, packet.ToArray(), packet.Length());
+                udpServer.SendData(userId, packet.ToArray(), packet.Length());
             }
         }
         

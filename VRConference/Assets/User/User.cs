@@ -37,6 +37,11 @@ namespace Engine.User
             }
         }
 
+        public bool HasFeature(String name)
+        {
+            return features != null && features.ContainsKey(name) && features[name];
+        }
+
         void tryFindAudioScource()
         {
             GameObject g = GameObject.Find("UniVoice Peer #" + voiceId);

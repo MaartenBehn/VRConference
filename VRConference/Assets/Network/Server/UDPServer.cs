@@ -47,7 +47,7 @@ namespace Network.Server
                 {
                     if (user.ip != clientEndPoint.Address.ToString()) continue;
 
-                    if (!user.features["UDP"])
+                    if (!user.HasFeature("UDP"))
                     {
                         user.endPoint = clientEndPoint;
                     }

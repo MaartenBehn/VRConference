@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Engine.User;
 using Network.Both;
 using UnityEngine;
 using Utility;
@@ -22,16 +24,19 @@ namespace Network.Client
         public void ServerInit(byte userID, Packet packet)
         {
             Debug.Log("CLIENT: Server init");
-            
             client.clientId.value = packet.ReadByte();
-
+            
             int clientLength = packet.ReadInt32();
             for (int i = 0; i < clientLength; i++)
             {
                 byte userId = packet.ReadByte();
                 UserController.instance.UserJoined(userId);
-
-                client.networkSend.FeatureSettings(userId, true);
+            }
+            client.networkFeatureState.value = (int) FeatureState.online;
+            
+            foreach (KeyValuePair<byte,User> pair in UserController.instance.users)
+            {
+                client.networkSend.FeatureSettings(pair.Key, true);
             }
         }
         
@@ -55,18 +60,9 @@ namespace Network.Client
 
         public void ServerUDPConnection(byte userID, Packet packet)
         {
-            bool udpOnline = packet.ReadBool();
-            UserController.instance.users[0].features["UDP"] = udpOnline;
+            UserController.instance.users[0].features["UDP"] = true;
+            client.udpFeatureState.value = (int) FeatureState.online;
             client.clientSend.ClientUDPConnection();
-
-            if (udpOnline)
-            {
-                client.udpFeatureState.value = (int) FeatureState.online;
-            }
-            else
-            {
-                client.udpFeatureState.value = (int) FeatureState.failed;
-            }
         }
     }
 }
