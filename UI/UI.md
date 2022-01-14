@@ -4,6 +4,10 @@ ich würde das blau aus dem sketch behalten wenn du möchtest kann ich die auch 
 das design ist sinpel da es nicht der fokus ist die farbpalette würde ich auf weiss schwarz und eben ein blau begrenzen.
 die simple schriftart passt meiner meinung auch ganz gut
 
+Den options screen habe ich nicht noch mal extra das soll halt eine liste mit den namen und text feldern sein und
+das man nochmal sagen kann das man in vr teilnehmen möcht.
+ich würde auch sagen das wenn man einem meeting beitritt oder man es startet man in dem options screen landet.
+
 ## Allgemein:
 Alle Panel in HD (horizontal) und .png
 
