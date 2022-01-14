@@ -1,3 +1,9 @@
+## kommentar
+
+ich würde das blau aus dem sketch behalten wenn du möchtest kann ich die auch einf-rben und ersetzten.
+das design ist sinpel da es nicht der fokus ist die farbpalette würde ich auf weiss schwarz und eben ein blau begrenzen.
+die simple schriftart passt meiner meinung auch ganz gut
+
 ## Allgemein:
 Alle Panel in HD (horizontal) und .png
 
