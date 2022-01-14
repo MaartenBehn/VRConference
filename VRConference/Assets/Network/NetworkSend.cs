@@ -2,9 +2,7 @@
 using Engine;
 using Network.Both;
 using Network.FileShare;
-using Unity.Mathematics;
 using UnityEngine;
-using User;
 using Users;
 
 namespace Network
