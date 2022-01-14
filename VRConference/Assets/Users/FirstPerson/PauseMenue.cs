@@ -1,13 +1,11 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Utility;
-using Valve.VR;
 using Voice;
 
-namespace FirstPerson
+namespace Users.FirstPerson
 {
     public class PauseMenue : MonoBehaviour
     {

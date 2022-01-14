@@ -1,8 +1,7 @@
-using Cinemachine;
 using UnityEngine;
 using Utility;
 
-namespace Engine.FirstPerson
+namespace Users.FirstPerson
 {
     [RequireComponent(typeof(CharacterController))]
     public class FirstPersonController : MonoBehaviour
@@ -13,7 +12,7 @@ namespace Engine.FirstPerson
         public float gravity = 20.0f;
         public Transform playerCamera;
         public float lookSpeed = 2.0f;
-        public float lookXLimit = 45.0f;
+        public float lookXLimit = 90.0f;
 
         CharacterController characterController;
         Vector3 moveDirection = Vector3.zero;

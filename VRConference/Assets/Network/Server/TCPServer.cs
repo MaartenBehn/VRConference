@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using Engine.User;
+using Engine;
 using Network.Both;
 using UnityEngine;
+using Users;
 using Utility;
 
-namespace Network.Server.Code
+namespace Network.Server
 {
     public class TCPServer
     {
@@ -43,7 +43,7 @@ namespace Network.Server.Code
                 {
                     UserController.instance.UserJoined(i);
                     
-                    User user = UserController.instance.users[i];
+                    Users.User user = UserController.instance.users[i];
                     user.socket = tcpClient;
                     
                     ConnectClient(user);
@@ -54,7 +54,7 @@ namespace Network.Server.Code
             Debug.Log($"SERVER: {tcpClient.Client.RemoteEndPoint} failed to connect: Server full!");
         }
 
-        public void ConnectClient(User user)
+        public void ConnectClient(Users.User user)
         {
             if (server.networkFeatureState.value != (int) FeatureState.online) { return; }
             Debug.Log($"SERVER: Connecting Client " + user.id + "...");
@@ -81,7 +81,7 @@ namespace Network.Server.Code
         {
             if (server.networkFeatureState.value != (int) FeatureState.online && server.networkFeatureState.value != (int) FeatureState.starting) { return; }
 
-            User user = (User) result.AsyncState;
+            Users.User user = (Users.User) result.AsyncState;
             try
             {
                 int byteLength = user.stream.EndRead(result);
@@ -137,7 +137,7 @@ namespace Network.Server.Code
 
         public void DisconnectClient(byte userId)
         {
-            User user = UserController.instance.users[userId];
+            Users.User user = UserController.instance.users[userId];
             if (user.socket != null)
             {
                 user.socket.Close();

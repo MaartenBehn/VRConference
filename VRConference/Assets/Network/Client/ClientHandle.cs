@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Engine.User;
+using Engine;
 using Network.Both;
 using UnityEngine;
-using Utility;
+using User;
+using Users;
 
 namespace Network.Client
 {
@@ -34,10 +34,7 @@ namespace Network.Client
             }
             client.networkFeatureState.value = (int) FeatureState.online;
             
-            foreach (KeyValuePair<byte,User> pair in UserController.instance.users)
-            {
-                client.networkSend.FeatureSettings(pair.Key, true);
-            }
+            client.networkSend.FeatureSettingsToAllExceptOrigen(true);
         }
         
         public void ServerUserJoined(byte userID, Packet packet)

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using FileShare;
+using Network.FileShare;
 using TMPro;
 using UnityEngine;
 
@@ -15,7 +15,7 @@ namespace Engine.AudioSpeaker
         {
             var options = new List<TMP_Dropdown.OptionData>();
 
-            foreach (FileEntry fileEntry in FileShare.FileShare.instance.fileEntries)
+            foreach (FileEntry fileEntry in FileShare.instance.fileEntries)
             {
                 if (fileEntry.local)
                 {

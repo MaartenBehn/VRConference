@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Network;
-using SimpleFileBrowser;
 using UnityEngine;
 using Utility;
 
-namespace FileShare
+namespace Network.FileShare
 {
     
     [Serializable]

@@ -1,8 +1,11 @@
 ﻿using System;
-using FileShare;
+using Engine;
 using Network.Both;
+using Network.FileShare;
 using Unity.Mathematics;
 using UnityEngine;
+using User;
+using Users;
 
 namespace Network
 {
@@ -75,10 +78,18 @@ namespace Network
             }
         }
         
+        public void FeatureSettingsToAllExceptOrigen(bool getResponse)
+        {
+            foreach (byte id in UserController.instance.users.Keys)
+            {
+                FeatureSettings(id, getResponse);
+            }
+        }
+        
         public void FeatureSettings(byte toUser, bool getResponse)
         {
             String log = "NETWORK: Sending Feature Settings :\n";
-            log += "User " + toUser + "\n";
+            log += "To User " + toUser + "\n";
             
             using Packet packet = new Packet((byte) Packets.featureSettings, network.userId.value);
             packet.Write(getResponse);
@@ -86,7 +97,7 @@ namespace Network
             packet.Write(network.featureSettings.features.Length);
             foreach (var feature in network.featureSettings.features)
             {
-                log += feature.name + " " + feature.active + "\n";
+                log += feature.name + " " + (feature.featureState.value == (int) FeatureState.online) + "\n";
                 packet.Write(feature.name);
                 packet.Write(feature.featureState.value == (int) FeatureState.online);
             }

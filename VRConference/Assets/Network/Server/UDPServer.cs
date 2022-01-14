@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using Engine.User;
+using Engine;
 using UnityEngine;
+using Users;
 using Utility;
 
 namespace Network.Server
@@ -43,7 +44,7 @@ namespace Network.Server
                     return;
                 }
 
-                foreach (User user in UserController.instance.users.Values)
+                foreach (Users.User user in UserController.instance.users.Values)
                 {
                     if (user.ip != clientEndPoint.Address.ToString()) continue;
 
@@ -75,7 +76,7 @@ namespace Network.Server
         {
             if (server.udpFeatureState.value != (int) FeatureState.online && server.udpFeatureState.value != (int) FeatureState.starting) {return;}
             
-            User user = UserController.instance.users[userId];
+            Users.User user = UserController.instance.users[userId];
             
             try
             {
@@ -92,7 +93,7 @@ namespace Network.Server
 
         public void DisconnectClient(byte userId)
         {
-            User user = UserController.instance.users[userId];
+             Users.User user = UserController.instance.users[userId];
             user.endPoint = null;
         }
 

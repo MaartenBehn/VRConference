@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using FileShare;
 using Network;
+using Network.FileShare;
 using UnityEngine;
 using UnityEngine.Networking;
 using Voice;
@@ -43,7 +43,7 @@ namespace Engine.AudioSpeaker
             FileEntry entry = null;
 
 
-            foreach (FileEntry fileEntry in FileShare.FileShare.instance.fileEntries)
+            foreach (FileEntry fileEntry in FileShare.instance.fileEntries)
             {
                 if (fileEntry.fileName == songFileName)
                 {
@@ -52,13 +52,13 @@ namespace Engine.AudioSpeaker
                 }
             }
 
-            if (entry == null && !FileShare.FileShare.instance.syncingFile)
+            if (entry == null && !FileShare.instance.syncingFile)
             {
-                FileShare.FileShare.instance.SyncFiles();
+                FileShare.instance.SyncFiles();
             }
-            else if (entry != null && !entry.local && !FileShare.FileShare.instance.syncingFile)
+            else if (entry != null && !entry.local && !FileShare.instance.syncingFile)
             {
-                FileShare.FileShare.instance.SyncFile(entry);
+                FileShare.instance.SyncFile(entry);
             }
             else if (entry != null &&  entry.local && !audioSource.isPlaying)
             {

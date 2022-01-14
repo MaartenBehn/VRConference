@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Engine;
 using Engine.AudioSpeaker;
-using Engine.User;
 using Network.Both;
 using Unity.Mathematics;
 using UnityEngine;
+using Users;
 using Utility;
 
 namespace Network
@@ -44,7 +45,7 @@ namespace Network
         {
             String log = "NETWORK: Received Feature Settings from "+ userID +":\n";
             
-            User user = UserController.instance.users[userID];
+            var user = UserController.instance.users[userID];
 
             bool needToReply = packet.ReadBool();
             
@@ -58,6 +59,8 @@ namespace Network
                 user.features[name] = value;
             }
             
+            Debug.Log(log);
+            
             if (needToReply)
             {
                 network.networkSend.FeatureSettings(userID, false);
@@ -66,7 +69,7 @@ namespace Network
             if (network.networkFeatureState.value != (int) FeatureState.online)
             {
                 bool allLoaded = true;
-                foreach (User otherUser in UserController.instance.users.Values)
+                foreach (Users.User otherUser in UserController.instance.users.Values)
                 {
                     if (!otherUser.features.ContainsKey("Network"))
                     {
@@ -87,7 +90,7 @@ namespace Network
             byte vID = packet.ReadByte();
             bool reply = packet.ReadBool();
 
-            User user = UserController.instance.users[userID];
+            Users.User user = UserController.instance.users[userID];
             if (user == null)
             {
                 Debug.Log("NETWORK: User not existing");

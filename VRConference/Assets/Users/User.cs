@@ -6,7 +6,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using Voice;
 
-namespace Engine.User
+namespace Users
 {
     public class User : MonoBehaviour
     {

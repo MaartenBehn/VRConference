@@ -1,10 +1,10 @@
 ﻿using System.Collections;
-using System.Security.Cryptography;
+using Engine;
 using UnityEngine;
 using UnityEngine.XR.Management;
 using Utility;
 
-namespace Engine.Player
+namespace Users.Player
 {
     public class PlayerSpawner : MonoBehaviour
     {

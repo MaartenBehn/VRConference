@@ -2,7 +2,7 @@
 using UnityEngine;
 using Utility;
 
-namespace FileShare
+namespace Network.FileShare
 {
     public class FileSelecter : MonoBehaviour
     {

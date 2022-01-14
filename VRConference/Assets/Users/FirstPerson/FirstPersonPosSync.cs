@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace FirstPerson
+namespace Users.FirstPerson
 {
     public class FirstPersonPosSync : MonoBehaviour
     {
