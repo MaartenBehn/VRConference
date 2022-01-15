@@ -225,10 +225,9 @@ namespace Network
             Send(packet, toUser, false, false);
         }
         
-        public void SpeakerPlaySong(int id, string name)
+        public void SpeakerPlaySong(string name)
         {
             using Packet packet = new Packet((byte) Packets.audioSpeakerPlaySong, network.userId.value);
-            packet.Write(id);
             packet.Write(name);
             
             SendToAllExceptOrigen(packet, false, false);

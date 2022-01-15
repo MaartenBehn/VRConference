@@ -2,6 +2,7 @@
 using Engine.Player;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Utility;
 
 namespace Engine.Settings
@@ -20,8 +21,12 @@ namespace Engine.Settings
             {
                 Destroy(gameObject);
             }
+            SetVisable(false);
         }
 
+        [SerializeField] private GameObject mainPanel;
+        [SerializeField] private GameObject settingsPanel;
+        
         [SerializeField] private TMP_InputField serverIPField;
         [SerializeField] private TMP_InputField serverPortFieldTCP;
         [SerializeField] private TMP_InputField serverPortFieldUDP;
@@ -30,8 +35,8 @@ namespace Engine.Settings
 
         [SerializeField] private TMP_InputField signalServerIPField;
         [SerializeField] private TMP_InputField signalServerPortField;
-        [SerializeField] private TMP_Dropdown playerTypeDropdown;
-        [SerializeField] private TMP_InputField savePathIPField;
+        [SerializeField] private Toggle playerTypeToggle;
+        [SerializeField] private TMP_InputField savePathField;
 
         [SerializeField] private PublicString serverIP;
 
@@ -49,6 +54,7 @@ namespace Engine.Settings
 
         private void OnEnable()
         {
+            SetVisable(false);
             Set();
             SetSavePath();
         }
@@ -56,6 +62,12 @@ namespace Engine.Settings
         private void OnDisable()
         {
             Get();
+        }
+
+        public void SetVisable(bool visable)
+        {
+            mainPanel.SetActive(!visable);
+            settingsPanel.SetActive(visable);
         }
 
         private void Set()
@@ -67,16 +79,9 @@ namespace Engine.Settings
             clientPortFieldUDP.text = clientPortUDP.value.ToString();
             signalServerIPField.text = signalServerIP.value;
             signalServerPortField.text = siganlServerPort.value.ToString();
-            savePathIPField.text = savePath.value;
-
-            if (!isVR.value)
-            {
-                playerTypeDropdown.value = 0;
-            }
-            else if (isVR.value)
-            {
-                playerTypeDropdown.value = 1;
-            }
+            savePathField.text = savePath.value;
+            
+            playerTypeToggle.isOn = isVR.value;
         }
 
         public void Get()
@@ -88,25 +93,24 @@ namespace Engine.Settings
             clientPortUDP.value = Int32.Parse(clientPortFieldUDP.text);
             signalServerIP.value = signalServerIPField.text;
             siganlServerPort.value = Int32.Parse(signalServerPortField.text);
-            savePath.value = savePathIPField.text;
+            savePath.value = savePathField.text;
 
             isVR.value = false;
 
             var vr = featureSettings.Get("VR");
             var firstPerson = featureSettings.Get("FirstPerson");
 
-            switch (playerTypeDropdown.value)
+            if (playerTypeToggle.isOn)
             {
-                case 0:
-                    firstPerson.active = true;
-                    vr.active = false;
-                    isVR.value = false;
-                    break;
-                case 1:
-                    firstPerson.active = false;
-                    vr.active = true;
-                    isVR.value = true;
-                    break;
+                firstPerson.active = false;
+                vr.active = true;
+                isVR.value = true;
+            }
+            else
+            {
+                firstPerson.active = true;
+                vr.active = false;
+                isVR.value = false;
             }
 
             featureSettings.Set("VR", vr);
@@ -115,7 +119,7 @@ namespace Engine.Settings
 
         public void SetSavePath()
         {
-            savePathIPField.text = Application.dataPath +"/";
+            savePathField.text = Application.dataPath +"/";
         }
     }
 }

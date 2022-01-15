@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 3717787546329598498}
   - component: {fileID: 3717787546330917540}
   - component: {fileID: 3717787546331932862}
+  - component: {fileID: 9186659868049146595}
   m_Layer: 0
   m_Name: Satellite_low
   m_TagString: Untagged
@@ -114,6 +115,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &9186659868049146595
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3717787546329919002}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 8eb8edb82ed73cb418750550d784e536, type: 3}
 --- !u!1 &4884986216541950139
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,6 +174,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speakerId: 0
+  songFileName: 
+  currentSongFileName: 
   audioSource: {fileID: 4884986216541950141}
 --- !u!82 &4884986216541950141
 AudioSource:

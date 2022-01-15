@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Audio.AudioSpeaker;
 using Engine;
-using Engine.AudioSpeaker;
 using Network.Both;
 using Unity.Mathematics;
 using UnityEngine;
@@ -207,10 +207,9 @@ namespace Network
         
         public void SpeakerPlaySong(byte userID, Packet packet)
         {
-            int id = packet.ReadInt32();
             string name = packet.ReadString();
 
-            SpeakerController.instance.speakers[id].songFileName = name;
+            SpeakerController.instance.songFileName = name;
         }
     }
 }

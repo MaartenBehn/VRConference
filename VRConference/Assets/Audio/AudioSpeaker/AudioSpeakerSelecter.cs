@@ -3,11 +3,10 @@ using Network.FileShare;
 using TMPro;
 using UnityEngine;
 
-namespace Engine.AudioSpeaker
+namespace Audio.AudioSpeaker
 {
     public class AudioSpeakerSelecter : MonoBehaviour
     {
-        [SerializeField] private AudioSpeaker speaker;
 
         [SerializeField] private TMP_Dropdown dropdown;
 
@@ -24,7 +23,6 @@ namespace Engine.AudioSpeaker
                     options.Add(option);
                 }
             }
-
             dropdown.options = options;
         }
 
@@ -32,7 +30,7 @@ namespace Engine.AudioSpeaker
         {
             if (dropdown.options.Count > 0)
             {
-                speaker.SetSong(dropdown.options[dropdown.value].text);
+                SpeakerController.instance.SetSong(dropdown.options[dropdown.value].text);
             }
         }
     }
