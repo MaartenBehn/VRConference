@@ -49,8 +49,10 @@ namespace Users.FirstPerson
             effectsSlider.maxValue = maxVol;
             effectsSlider.minValue = minVol;
             
-            SetPause();
+            micMuteToggle.isOn = true;
+            SetMic();
             GetVolume();
+            SetPause();
         }
 
         void Update()
@@ -82,8 +84,6 @@ namespace Users.FirstPerson
 
                 micDropdown.options = options;
             }
-            
-            
         }
         
         public void SetInGame()
