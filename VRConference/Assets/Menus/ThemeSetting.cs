@@ -7,6 +7,8 @@ namespace Menus{
 		
 		public Color highlightColor;
 		public Color baseColor;
+		public Color backgroundColor;
+		public Color backgroundTintColor;
 		public Color32 textColor;
 	}
 }

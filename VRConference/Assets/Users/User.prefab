@@ -49,6 +49,7 @@ MonoBehaviour:
   ip: 
   voiceId: 0
   voiceAudioSource: {fileID: 0}
+  voiceGrounp: {fileID: -4632362466562715017, guid: ec12f7772c03e4c4c9e4c2f1643595ad, type: 2}
   modelRoot: {fileID: 9064482593008802085}
   modelHead: {fileID: 7626825878099647871}
   isVR: 0

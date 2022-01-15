@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: ThemeSetting
   m_EditorClassIdentifier: Assembly-CSharp:Menus:ThemeSettings
   highlightColor: {r: 1, g: 0.71488464, b: 0, a: 1}
-  baseColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
+  baseColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
+  backgroundColor: {r: 0.098039225, g: 0.098039225, b: 0.098039225, a: 1}
+  backgroundTintColor: {r: 0.098039225, g: 0.098039225, b: 0.098039225, a: 0.6745098}
   textColor:
     serializedVersion: 2
     rgba: 4293388263

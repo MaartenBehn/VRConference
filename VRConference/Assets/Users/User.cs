@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Audio;
 using Voice;
 
 namespace Users
@@ -23,6 +24,7 @@ namespace Users
 
         public byte voiceId;
         [HideInInspector] public AudioSource voiceAudioSource;
+        [SerializeField] public AudioMixerGroup voiceGrounp;
 
         public const float headHigth = 1.7f;
         [SerializeField] private GameObject modelRoot;
@@ -33,7 +35,7 @@ namespace Users
         {
             if (voiceAudioSource == null)
             {
-                tryFindAudioScource();
+                TryFindAudioScource();
             }
         }
 
@@ -42,12 +44,13 @@ namespace Users
             return features != null && features.ContainsKey(name) && features[name];
         }
 
-        void tryFindAudioScource()
+        void TryFindAudioScource()
         {
             GameObject g = GameObject.Find("UniVoice Peer #" + voiceId);
             if (g == null) return;
             voiceAudioSource = g.GetComponent<AudioSource>();
             voiceAudioSource.transform.SetParent(transform);
+            voiceAudioSource.outputAudioMixerGroup = voiceGrounp;
             
             VoiceConnection.SetAudioSourceSettings(voiceAudioSource);
         }

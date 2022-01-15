@@ -1,6 +1,6 @@
 using System.Threading;
 using Engine.Player;
-using Engine.Settings;
+using Menus;
 using UnityEngine;
 using Utility;
 
@@ -45,7 +45,7 @@ namespace Engine
             userId.value = b ? (byte)0 : (byte)1;
             Debug.Log("Loading");
         
-            SettingsPanel.instance.Get();
+            StartUIController.instance.Get();
 
             for (var i = 0; i < featureSettings.features.Length; i++)
             {

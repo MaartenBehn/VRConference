@@ -1,7 +1,8 @@
 ﻿using System;
 using UnityEngine;
+using Utility.Console;
 
-namespace Utility.Console
+namespace Engine.Console
 {
     public class Console : MonoBehaviour
     {
@@ -10,6 +11,7 @@ namespace Utility.Console
 
         private int id;
         void OnEnable () {
+            
             foreach (ConsoleHandler.ConsoleMessage message in ConsoleHandler.instance.messages)
             {
                 Spawn(message.message, message.startTime);

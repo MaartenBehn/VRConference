@@ -174,8 +174,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speakerId: 0
-  songFileName: 
-  currentSongFileName: 
   audioSource: {fileID: 4884986216541950141}
 --- !u!82 &4884986216541950141
 AudioSource:
@@ -186,7 +184,7 @@ AudioSource:
   m_GameObject: {fileID: 4884986216541950139}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243758081335279580, guid: ec12f7772c03e4c4c9e4c2f1643595ad, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1

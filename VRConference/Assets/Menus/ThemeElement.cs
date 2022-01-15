@@ -13,6 +13,8 @@ namespace Menus{
 		private TMP_Text text;
 		public bool imageHighlight = false;
 		public bool imageBase = false;
+		public bool imageBackground = false;
+		public bool imageBackgroundTint = false;
 		public bool isText = false;
 		
 		public virtual void Awake()
@@ -39,14 +41,24 @@ namespace Menus{
 					image = GetComponent<Image>();
 				}
 				image.color = themeSettings.highlightColor;
-			}
-			
-			if(imageBase){
+			}else if(imageBase){
 				if (image == null)
 				{
 					image = GetComponent<Image>();
 				}
 				image.color = themeSettings.baseColor;
+			}else if(imageBackground){
+				if (image == null)
+				{
+					image = GetComponent<Image>();
+				}
+				image.color = themeSettings.backgroundColor;
+			}else if(imageBackgroundTint){
+				if (image == null)
+				{
+					image = GetComponent<Image>();
+				}
+				image.color = themeSettings.backgroundTintColor;
 			}
 			
 			if (isText) {
