@@ -1,10 +1,10 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Network;
 using Network.FileShare;
 using UnityEngine;
-using UnityEngine.Networking;
+using Utility;
+
 
 namespace Audio.AudioSpeaker
 {
@@ -37,7 +37,7 @@ namespace Audio.AudioSpeaker
             NetworkController.instance.networkSend.SpeakerPlaySong(fileName);
         }
 
-        private async void Update()
+        private void Update()
         {
             if (songFileName != currentSongFileName && playing)
             {
@@ -64,50 +64,36 @@ namespace Audio.AudioSpeaker
 
             if (entry == null && !FileShare.instance.syncingFile)
             {
+                Debug.Log("SPEAKER: Song unknown");
                 FileShare.instance.SyncFiles();
             }
             else if (entry != null && !entry.local && !FileShare.instance.syncingFile)
             {
+                Debug.Log("SPEAKER: Downloading Song");
                 FileShare.instance.SyncFile(entry);
             }
-            else if (entry != null &&  entry.local && !playing)
+            else if (entry != null && entry.local && !playing)
             {
-                AudioClip clip = await LoadClip(entry.localPath);
-                currentSongFileName = songFileName;
-
                 playing = true;
-                foreach (AudioSpeaker audioSpeaker in speakers)
-                {
-                    audioSpeaker.PlayClip(clip);
-                }
+                currentSongFileName = songFileName;
+                
+                Debug.Log("SPEAKER: Loading Clip");
+                StartCoroutine(LoadSongCoroutine(entry.localPath));
             }
         }
-
-        async Task<AudioClip> LoadClip(string path)
+        
+        IEnumerator LoadSongCoroutine(string path)
         {
-            AudioClip clip = null;
-            using (UnityWebRequest uwr = UnityWebRequestMultimedia.GetAudioClip("file://" + path, AudioType.MPEG))
+            string url = string.Format("file://{0}", path); 
+            WWW www = new WWW(url);
+            yield return www;
+
+            var clip = www.GetAudioClip(false, false);
+            foreach (AudioSpeaker audioSpeaker in speakers)
             {
-                uwr.SendWebRequest();
-
-                // wrap tasks in try/catch, otherwise it'll fail silently
-                try
-                {
-                    while (!uwr.isDone) await Task.Delay(5);
-
-                    if (uwr.isNetworkError || uwr.isHttpError) Debug.Log($"{uwr.error}");
-                    else
-                    {
-                        clip = DownloadHandlerAudioClip.GetContent(uwr);
-                    }
-                }
-                catch (Exception err)
-                {
-                    Debug.Log($"{err.Message}, {err.StackTrace}");
-                }
+                audioSpeaker.PlayClip(clip);
             }
-
-            return clip;
+            Debug.Log("SPEAKER: Loading Done");
         }
     }
 }

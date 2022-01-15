@@ -33,5 +33,10 @@ namespace Audio.AudioSpeaker
                 SpeakerController.instance.SetSong(dropdown.options[dropdown.value].text);
             }
         }
+        
+        public void Pause()
+        {
+            SpeakerController.instance.SetSong("");
+        }
     }
 }

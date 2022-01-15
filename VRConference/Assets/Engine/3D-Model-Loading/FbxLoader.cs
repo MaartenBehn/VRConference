@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Network;
 using Network.FileShare;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Utility;
 
 namespace Engine._3D_Model_Loading
 {
@@ -53,6 +55,20 @@ namespace Engine._3D_Model_Loading
         [DllImport(dll)]
         private static extern IntPtr GetMaterialData(int id);
 
+        public static FbxLoader instance;
+
+        private void Awake()
+        {
+            if (instance == null)
+            {
+                instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+
         private List<FileEntry> files;
 
         public string FilePath = "";
@@ -73,10 +89,8 @@ namespace Engine._3D_Model_Loading
 
             UnloadModelButton.onClick.AddListener(()=>
             {
-                if (rootNode != null)
-                {
-                    Destroy(rootNode);
-                }
+                NetworkController.instance.networkSend.FBXUnloadFile();
+                UnloadFile();
             });
 
             if(Valve.VR.InteractionSystem.Player.instance != null)
@@ -85,26 +99,76 @@ namespace Engine._3D_Model_Loading
             }
 
         }
+        
+        public string fileName;
+        public string currentFileName;
 
-        private void Update()
+        public void SetFile(string name)
+        {
+            fileName = name;
+            NetworkController.instance.networkSend.FBXLoadFile(fileName);
+        }
+        
+        public void UnloadFile()
+        {
+            if (rootNode != null)
+            {
+                Destroy(rootNode);
+            }
+        }
+        
+        public void Update()
         {
             foreach (FileEntry fileEntry in FileShare.instance.fileEntries)
             {
             
                 if (fileEntry.local && fileEntry.localPath.Contains(".fbx"))
                 {
-
-                    string filename = fileEntry.fileName;
+                    string name = fileEntry.fileName;
                     if (!files.Contains(fileEntry))
                     {
                         Debug.Log(fileEntry.localPath);
                         var temp = Instantiate(ButtonPrefab, ButtonListContent.transform);
-                        temp.name = filename;
-                        temp.GetComponent<Button>().onClick.AddListener(()=>LoadFbxFile(fileEntry.localPath));
-                        temp.transform.GetChild(0).GetComponent<TMP_Text>().text = filename;
+                        temp.name = name;
+                        temp.GetComponent<Button>().onClick.AddListener(() =>
+                        {
+                            SetFile(temp.name);
+                        });
+                        temp.transform.GetChild(0).GetComponent<TMP_Text>().text = name;
                         files.Add(fileEntry);
                     }
                 }
+            }
+            
+            if (fileName == "") { return; }
+
+            FileEntry entry = null;
+            
+            foreach (FileEntry fileEntry in FileShare.instance.fileEntries)
+            {
+                if (fileEntry.fileName == fileName)
+                {
+                    entry = fileEntry;
+                    break;
+                }
+            }
+
+            if (entry == null && !FileShare.instance.syncingFile)
+            {
+                Debug.Log("FBX Loader: Fbx unknown");
+                FileShare.instance.SyncFiles();
+            }
+            else if (entry != null && !entry.local && !FileShare.instance.syncingFile)
+            {
+                Debug.Log("FBX Loader: Downloading FBX");
+                FileShare.instance.SyncFile(entry);
+            }
+            else if (entry != null && entry.local && currentFileName != fileName)
+            {
+                currentFileName = fileName;
+                
+                Debug.Log("FBX Loader: Loading File");
+                LoadFbxFile(entry.localPath);
             }
         }
 
@@ -113,10 +177,20 @@ namespace Engine._3D_Model_Loading
         {
             if (path.Contains(".fbx"))
             {
-                if (ImportFbxFile(path))
+                Threader.RunOnMainThread(() =>
                 {
-                    ProcessNode(GetRootNodeId());
-                }
+                    try
+                    {
+                        if (ImportFbxFile(path))
+                        {
+                            ProcessNode(GetRootNodeId());
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Log(e);
+                    }
+                });
             }
         }
         public Material material;

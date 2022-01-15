@@ -40,6 +40,10 @@
         // 40 AudioSpeaker
         audioSpeakerPlaySong = 40,
         
+        // 50 FBX Loader
+        fbxLoadFile = 50,
+        fbxUnloadFile = 51,
+        
     }
 
     public enum ContainerType

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Audio.AudioSpeaker;
 using Engine;
+using Engine._3D_Model_Loading;
 using Network.Both;
 using Unity.Mathematics;
 using UnityEngine;
@@ -35,6 +36,9 @@ namespace Network
                 { (byte)Packets.audioSpeakerPlaySong, SpeakerPlaySong },
                 
                 { (byte)Packets.userSyncFailed, SyncFailed },
+                
+                { (byte)Packets.fbxLoadFile, FBXLoadFile },
+                { (byte)Packets.fbxUnloadFile, FBXUnloadFile },
             };
         }
         
@@ -210,6 +214,18 @@ namespace Network
             string name = packet.ReadString();
 
             SpeakerController.instance.songFileName = name;
+        }
+        
+        public void FBXLoadFile(byte userID, Packet packet)
+        {
+            string name = packet.ReadString();
+
+            FbxLoader.instance.fileName = name;
+        }
+        
+        public void FBXUnloadFile(byte userID, Packet packet)
+        {
+            FbxLoader.instance.UnloadFile();
         }
     }
 }

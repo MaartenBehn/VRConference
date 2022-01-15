@@ -232,5 +232,19 @@ namespace Network
             
             SendToAllExceptOrigen(packet, false, false);
         }
+        
+        public void FBXLoadFile(string name)
+        {
+            using Packet packet = new Packet((byte) Packets.fbxLoadFile, network.userId.value);
+            packet.Write(name);
+            
+            SendToAllExceptOrigen(packet, false, false);
+        }
+        
+        public void FBXUnloadFile()
+        {
+            using Packet packet = new Packet((byte) Packets.fbxUnloadFile, network.userId.value);
+            SendToAllExceptOrigen(packet, false, false);
+        }
     }
 }
