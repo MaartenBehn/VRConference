@@ -40,14 +40,18 @@
     - Sync                                      Done
 - 3D Modelle laden 
     - FBX                                       Done
-    - Tisch syncen                              
+    - Tisch syncen                              Done
+    - FBX Materialien
 - Modell
     - VR Player                                 
-    - First Person
+    - First Person                              
 
-- AudioSettings
-- UI von Yesenia
+- AudioSettings                                 Done
+- UI von Yesenia                                Done
+- Yesenia Logo
 
+- UI Player List
+- UI Voice Control
 
 
 ## Links:
