@@ -203,10 +203,23 @@ namespace Engine._3D_Model_Loading
 
             Vector3[] vertcies = new Vector3[vertciesSize];
             int[] indices = new int[indicesSize];
-
-
+            
             GetVertciesOfID(id, vertcies, vertciesSize);
             GetIndceiseOfID(id, indices, indicesSize);
+            
+            /*
+            int[] doulbeSidedIndices = new int[indicesSize*2];
+            for (int i = 0; i < indices.Length; i++)
+            {
+                doulbeSidedIndices[i] = indices[i];
+            }
+            for (int i = indices.Length; i < doulbeSidedIndices.Length; i += 3)
+            {
+                doulbeSidedIndices[i] = indices[i - indices.Length + 2];
+                doulbeSidedIndices[i + 1] = indices[i - indices.Length + 1];
+                doulbeSidedIndices[i + 2] = indices[i - indices.Length];
+            }
+            */
 
             unityMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
             unityMesh.vertices = vertcies;
