@@ -174,10 +174,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2725338406224832615, guid: 87b0c054ccebca14485490a0e86e8c3d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 957fe3775758f6a41a9838bc46a20a0a, type: 2}
+    - target: {fileID: -2584651861402925008, guid: 87b0c054ccebca14485490a0e86e8c3d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 957fe3775758f6a41a9838bc46a20a0a, type: 2}
     - target: {fileID: 919132149155446097, guid: 87b0c054ccebca14485490a0e86e8c3d, type: 3}
       propertyPath: m_Name
       value: Yacht
       objectReference: {fileID: 0}
+    - target: {fileID: 3474834491993171731, guid: 87b0c054ccebca14485490a0e86e8c3d, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 957fe3775758f6a41a9838bc46a20a0a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 87b0c054ccebca14485490a0e86e8c3d, type: 3}
 --- !u!1 &1608811543
