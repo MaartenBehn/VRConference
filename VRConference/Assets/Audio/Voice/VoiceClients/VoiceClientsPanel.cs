@@ -1,32 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Adrenak.UniVoice;
 using Adrenak.UniVoice.InbuiltImplementations;
-using Adrenak.UniVoice.Samples;
 using Engine;
 using UnityEngine;
 using Utility;
+using Voice;
 
-
-namespace Voice.VoiceClients
+namespace Audio.Voice.VoiceClients
 {
     // Used code from https://github.com/adrenak/univoice sample
     public class VoiceClientsPanel : MonoBehaviour
     {
         ChatroomAgent agent;
-        Dictionary<short, PeerView> peerViews = new Dictionary<short, PeerView>();
+        Dictionary<short, UserEntry> peerViews = new Dictionary<short, UserEntry>();
         public Transform peerViewContainer;
-        public PeerView peerViewPreFab;
+        public UserEntry peerViewPreFab;
         [SerializeField] private PublicInt featureState;
+        [SerializeField] private PublicEvent loadingDone;
 
         private void Awake()
         {
-            if (featureState.value != (int) FeatureState.online) { return; }
-            
-            agent = VoiceConnection.instance.agent;
+            void setup()
+            {
+                agent = VoiceConnection.instance.agent;
 
-            UpdateList();
+                UpdateList();
+            }
+            
+            if (featureState.value != (int) FeatureState.online)
+            {
+                loadingDone.Register(setup);
+                return;
+            }
+            setup();
         }
 
         void UpdateList()
@@ -37,7 +44,7 @@ namespace Voice.VoiceClients
             }
             peerViews.Clear();
             
-            PeerView view = Instantiate(peerViewPreFab, peerViewContainer);
+            UserEntry view = Instantiate(peerViewPreFab, peerViewContainer);
             view.IncomingAudio = !agent.MuteOthers;
             view.OutgoingAudio = !agent.MuteSelf;
 
@@ -78,9 +85,9 @@ namespace Voice.VoiceClients
                 useres = agent.Network.PeerIDs.Count;
             }
             
-            foreach (KeyValuePair<short,PeerView> keyValuePair in peerViews)
+            foreach (KeyValuePair<short,UserEntry> keyValuePair in peerViews)
             {
-                PeerView view = keyValuePair.Value;
+                UserEntry view = keyValuePair.Value;
                 short key = keyValuePair.Key;
                 AudioSource audioSource = null;
                 
@@ -99,7 +106,7 @@ namespace Voice.VoiceClients
             }
         }
 
-        void updateSpectrum(PeerView view, AudioSource audioSource)
+        void updateSpectrum(UserEntry view, AudioSource audioSource)
         {
             /*
             * This is an inefficient way of showing a part of the 

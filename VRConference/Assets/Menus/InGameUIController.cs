@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using Utility;
 using Voice;
 
-namespace Users.FirstPerson
+namespace Menus
 {
     public class InGameUIController : MonoBehaviour
     {
@@ -22,6 +21,7 @@ namespace Users.FirstPerson
         [SerializeField] private GameObject inGamePanel;
 
         [SerializeField] private Toggle micMuteToggle;
+        [SerializeField] private Toggle speakerMuteToggle;
         [SerializeField] private TMP_Dropdown micDropdown;
 
         [SerializeField] private AudioMixer audioMixer;
@@ -124,11 +124,28 @@ namespace Users.FirstPerson
             {
                 VoiceConnection.instance.agent.MuteSelf = micMuteToggle.isOn;
             }
-            
+
             if (PlayerAudio.instance != null && PlayerAudio.instance.mic != null && PlayerAudio.instance.mic.CurrentDeviceIndex != micDropdown.value)
             {
                 PlayerAudio.instance.mic.ChangeDevice(micDropdown.value);
             }
+        }
+
+        private float oldVolume;
+        public void SetSpeaker()
+        {
+            float vol;
+            audioMixer.GetFloat("masterVol", out vol);
+            if (speakerMuteToggle.isOn && Math.Abs(vol +80) > 0.1)
+            {
+                oldVolume = vol;
+                audioMixer.SetFloat("masterVol", -80);
+            }else if (!speakerMuteToggle.isOn && Math.Abs(vol +80) < 0.1 && Math.Abs(oldVolume +80) > 0.1)
+            {
+                audioMixer.SetFloat("masterVol", oldVolume);
+                oldVolume = -80;
+            }
+
         }
 
         private const float minVol = 0.0001f;
@@ -166,7 +183,11 @@ namespace Users.FirstPerson
         
         public void SetVolume()
         {
-            audioMixer.SetFloat("masterVol", ToVolume(masterSlider.value));
+            if (!speakerMuteToggle.isOn)
+            {
+                audioMixer.SetFloat("masterVol", ToVolume(masterSlider.value));
+            }
+            
             audioMixer.SetFloat("musicVol", ToVolume(musicSlider.value));
             audioMixer.SetFloat("voiceVol", ToVolume(voiceSlider.value));
             audioMixer.SetFloat("effectsVol", ToVolume(effectsSlider.value));
@@ -176,7 +197,7 @@ namespace Users.FirstPerson
             masterVolPanel.text = GetVolString(vol);
 
             audioMixer.GetFloat("musicVol", out vol);
-            musicVolPanel.text =GetVolString(vol);
+            musicVolPanel.text = GetVolString(vol);
 
             audioMixer.GetFloat("voiceVol", out vol);
             voiceVolPanel.text = GetVolString(vol);
