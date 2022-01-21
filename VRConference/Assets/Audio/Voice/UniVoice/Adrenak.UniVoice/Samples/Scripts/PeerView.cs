@@ -26,12 +26,12 @@ namespace Adrenak.UniVoice.Samples {
 
         public bool IncomingAudio {
             get => speakerToggle.isOn;
-            set => speakerToggle.SetIsOnWithoutNotify(value);
+            set => speakerToggle.SetIsOnWithoutNotify(!value);
         }
 
         public bool OutgoingAudio {
             get => micToggle.isOn;
-            set => micToggle.SetIsOnWithoutNotify(value);
+            set => micToggle.SetIsOnWithoutNotify(!value);
         }
 
         List<Transform> bars = new List<Transform>();

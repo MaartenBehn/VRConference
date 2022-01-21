@@ -44,22 +44,9 @@ namespace Audio.Voice.VoiceClients
             }
             peerViews.Clear();
             
-            UserEntry view = Instantiate(peerViewPreFab, peerViewContainer);
-            view.IncomingAudio = !agent.MuteOthers;
-            view.OutgoingAudio = !agent.MuteSelf;
-
-            view.OnIncomingModified += value =>
-                agent.MuteOthers = !value;
-
-            view.OnOutgoingModified += value =>
-                agent.MuteSelf = !value;
-
-            view.SetPeerID(agent.Network.OwnID);
-            peerViews.Add(agent.Network.OwnID, view);
-
             foreach (var id in  agent.Network.PeerIDs)
             {
-                view = Instantiate(peerViewPreFab, peerViewContainer);
+                UserEntry view = Instantiate(peerViewPreFab, peerViewContainer);
                 view.IncomingAudio = !agent.PeerSettings[id].muteThem;
                 view.OutgoingAudio = !agent.PeerSettings[id].muteSelf;
 
