@@ -35,24 +35,29 @@
     - Auswahl im Start menue                    Done      
     - VR Player spawnen                         Done
     - VR Player login                           Done
-    - VR Player sync                            Done              
+    - VR Player sync                            Done
+    - UI                                        Tim
 - First Person                              
     - Sync                                      Done
+    - Weiter runterschauen                      Maarten
 - 3D Modelle laden 
     - FBX                                       Done
     - Tisch syncen                              Done
-    - FBX Materialien
+    - FBX Materialien                           Tim
+    - Große Modelle                             Maarten
+    - Load Lag                                  Tim
 - Modell
-    - VR Player                                 
-    - First Person                              
+    - VR Player                                 Maarten
+    - First Person                              Maarten
 
 - AudioSettings                                 Done
 - UI von Yesenia                                Done
 - Yesenia Logo
 
-- UI Player List
-- UI Voice Control
-
+- UI Player List                                Maarten
+- UI Voice Control                              Maarten
+- UI File List                                  Maarten
+- Lizenz freie Songs einfügen                   Maarten
 
 ## Links:
 https://github.com/adrenak/UniVoice
@@ -94,6 +99,7 @@ https://github.com/adrenak/UniVoice
 - VR                                Tim
 - Network                           Maarten
 - Voice                             Maarten
+- UI                                Yesenia
 - Zusammenfassung                   Tim
 - Ergebnisdiskussion                Noch entscheiden.
 - Gramatik und Rechtschreibung      Yesenia
