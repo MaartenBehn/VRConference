@@ -27,11 +27,11 @@ namespace Network.Server
 
             packet.Write(UserController.instance.users.Count);
             packet.Write((byte)0);
-            
-            foreach (byte id in UserController.instance.users.Keys)
+
+            foreach (var pair in UserController.instance.users)
             {
-                if (id == userId) {continue;}
-                packet.Write(id);
+                if (pair.Key == userId) {continue;}
+                packet.Write(pair.Key);
             }
             
             packet.PrepareForSend(false);

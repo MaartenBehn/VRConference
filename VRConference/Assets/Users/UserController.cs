@@ -8,7 +8,7 @@ namespace Users
     {
         public static UserController instance;
     
-        public Dictionary<byte, Users.User> users;
+        public Dictionary<byte, User> users;
 
         [SerializeField] private GameObject userPreFab;
         [SerializeField] private PublicEventByte userJoined;
@@ -45,6 +45,7 @@ namespace Users
         {
             User user = Instantiate(userPreFab, transform).GetComponent<User>();
             user.id = id;
+            user.name = "Nutzer " + id;
 
             users[id] = user;
         

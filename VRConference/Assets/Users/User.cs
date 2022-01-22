@@ -22,6 +22,8 @@ namespace Users
 
         public Dictionary<String, bool> features = new Dictionary<string, bool>();
 
+        public string name;
+
         public byte voiceId;
         [HideInInspector] public AudioSource voiceAudioSource;
         [SerializeField] public AudioMixerGroup voiceGrounp;
@@ -29,7 +31,6 @@ namespace Users
         public const float headHigth = 1.7f;
         [SerializeField] private GameObject modelRoot;
         [SerializeField] private GameObject modelHead;
-        public bool isVR;
 
         private void Update()
         {

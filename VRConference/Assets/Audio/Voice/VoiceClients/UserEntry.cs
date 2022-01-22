@@ -11,6 +11,7 @@ namespace Audio.Voice.VoiceClients
         public event Action<bool> OnIncomingModified;
         public event Action<bool> OnOutgoingModified;
 
+        public TMP_Text nameText;
         [SerializeField] TMP_Text idText;
         [SerializeField] Transform barContainer;
         [SerializeField] Transform barTemplate;
@@ -19,27 +20,30 @@ namespace Audio.Voice.VoiceClients
 
         public bool IncomingAudio {
             get => speakerToggle.isOn;
-            set => speakerToggle.SetIsOnWithoutNotify(!value);
+            set => speakerToggle.SetIsOnWithoutNotify(value);
         }
 
         public bool OutgoingAudio {
             get => micToggle.isOn;
-            set => micToggle.SetIsOnWithoutNotify(!value);
+            set => micToggle.SetIsOnWithoutNotify(value);
         }
 
         List<Transform> bars = new List<Transform>();
 
         void Start() {
             speakerToggle.onValueChanged.AddListener(value =>
-                OnIncomingModified?.Invoke(value));
+                OnIncomingModified?.Invoke(!value));
 
             micToggle.onValueChanged.AddListener(value =>
-                OnOutgoingModified?.Invoke(value));
+                OnOutgoingModified?.Invoke(!value));
         }
 
-        public void SetPeerID(short id) {
-            idText.text = id.ToString();
+        public void SetPeerID(short id)
+        {
+            idText.text = "Voce ID: " + id;
         }
+
+        [SerializeField] private float spectrumMultiplyer = 2;
 
         public void DisplaySpectrum(float[] spectrum) {
             InitBars(spectrum.Length);
@@ -47,7 +51,7 @@ namespace Audio.Voice.VoiceClients
             if (spectrum.Length != bars.Count) return;
 
             for (int i = 0; i < bars.Count; i++)
-                bars[i].localScale = new Vector3(1, Mathf.Clamp01(spectrum[i]), 1);
+                bars[i].localScale = new Vector3(1, Mathf.Clamp01(spectrum[i] * spectrumMultiplyer), 1);
         }
 
         void InitBars(int count) {

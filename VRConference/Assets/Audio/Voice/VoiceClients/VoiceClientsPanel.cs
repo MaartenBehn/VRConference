@@ -4,6 +4,7 @@ using Adrenak.UniVoice;
 using Adrenak.UniVoice.InbuiltImplementations;
 using Engine;
 using UnityEngine;
+using Users;
 using Utility;
 using Voice;
 
@@ -43,53 +44,51 @@ namespace Audio.Voice.VoiceClients
                 Destroy(peerViewContainer.transform.GetChild(i).gameObject);
             }
             peerViews.Clear();
-            
-            foreach (var id in  agent.Network.PeerIDs)
+
+            foreach (KeyValuePair<byte,User> keyValuePair in UserController.instance.users)
             {
-                UserEntry view = Instantiate(peerViewPreFab, peerViewContainer);
-                view.IncomingAudio = !agent.PeerSettings[id].muteThem;
-                view.OutgoingAudio = !agent.PeerSettings[id].muteSelf;
+                User user = keyValuePair.Value;
+                UserEntry entry = Instantiate(peerViewPreFab, peerViewContainer);
+                entry.nameText.text = user.name;
 
-                view.OnIncomingModified += value =>
-                    agent.PeerSettings[id].muteThem = !value;
+                if (user.voiceAudioSource != null)
+                {
+                    entry.IncomingAudio = agent.PeerSettings[user.voiceId].muteThem;
+                    entry.OutgoingAudio = agent.PeerSettings[user.voiceId].muteSelf;
 
-                view.OnOutgoingModified += value =>
-                    agent.PeerSettings[id].muteSelf = !value;
+                    entry.OnIncomingModified += value =>
+                        agent.PeerSettings[user.voiceId].muteThem = !value;
 
-                view.SetPeerID(id);
-                peerViews.Add(id, view);
+                    entry.OnOutgoingModified += value =>
+                        agent.PeerSettings[user.voiceId].muteSelf = !value;
+
+                    entry.SetPeerID(user.voiceId);
+                }
+                peerViews.Add(user.voiceId, entry);
             }
         }
         
         private int useres = 0;
+        private float lastListUpdate;
         private void Update()
         {
             if (featureState.value != (int) FeatureState.online) { return; }
             
-            if (useres != agent.Network.PeerIDs.Count)
+            if (useres != UserController.instance.users.Count || lastListUpdate + 2 < Time.time)
             {
+                lastListUpdate = Time.time;
                 UpdateList();
-                useres = agent.Network.PeerIDs.Count;
+                useres = UserController.instance.users.Count;
             }
-            
+
             foreach (KeyValuePair<short,UserEntry> keyValuePair in peerViews)
             {
                 UserEntry view = keyValuePair.Value;
                 short key = keyValuePair.Key;
-                AudioSource audioSource = null;
                 
-                if (key == agent.Network.OwnID)
-                {
-                    
-                }
-                else
-                {
-                    if (!agent.PeerOutputs.ContainsKey(key)) continue;
-                    audioSource = (agent.PeerOutputs[key]
-                        as InbuiltAudioOutput)?.AudioSource;
-                    updateSpectrum(view, audioSource);
-
-                }
+                if (!agent.PeerOutputs.ContainsKey(key)) continue;
+                AudioSource audioSource = (agent.PeerOutputs[key] as InbuiltAudioOutput)?.AudioSource;
+                updateSpectrum(view, audioSource);
             }
         }
 

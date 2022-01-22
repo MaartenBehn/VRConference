@@ -27,6 +27,8 @@ namespace Network.Server
         public NetworkSend networkSend;
         public NetworkHandle networkHandle;
 
+        public PublicString playerName;
+
         private void Awake()
         {
             tcpServer = new TCPServer(this);

@@ -33,6 +33,8 @@ namespace Network.Client
         public NetworkHandle networkHandle;
         
         [SerializeField] private PublicEvent unloadEvent;
+        
+        public PublicString playerName;
 
         private void Awake()
         {
