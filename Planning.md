@@ -52,10 +52,10 @@
 
 - AudioSettings                                 Done
 - UI von Yesenia                                Done
-- Yesenia Logo
+- Logo                                          Yesenia
 
-- UI Player List                                Maarten
-- UI Voice Control                              Maarten
+- UI Player List                                Done
+- UI Voice Control                              Done
 - UI File List                                  Maarten
 - Lizenz freie Songs einfügen                   Maarten
 
