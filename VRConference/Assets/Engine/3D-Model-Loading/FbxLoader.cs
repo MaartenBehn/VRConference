@@ -5,6 +5,7 @@ using Network;
 using Network.FileShare;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 using Utility;
 
@@ -302,14 +303,28 @@ namespace Engine._3D_Model_Loading
             unityRenderer.enabled = true;
             string materialName = Marshal.PtrToStringAnsi(GetObjectMaterialName(id));
             Material tempMaterial = material;
+
+            bool stop = false;
             foreach(var materialData in materialDatas)
             {
-                if (materialData.nodeNames.Contains(materialName))
+                foreach (var nodeName in materialData.nodeNames)
                 {
-                    tempMaterial = materialData.material;
+                    string matName = nodeName.Replace(" ", "");
+                    materialName = materialName.Replace(" ", "");
+                    if (matName == materialName)
+                    {
+                        tempMaterial = materialData.material;
+                        stop = true;
+                    }
+                }
+
+                if (stop)
+                {
                     break;
                 }
             }
+
+            unityRenderer.shadowCastingMode = ShadowCastingMode.Off;
 
             unityRenderer.material = tempMaterial;
             unityRenderer.staticShadowCaster = false;

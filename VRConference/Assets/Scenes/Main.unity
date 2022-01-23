@@ -338,11 +338,183 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
       propertyPath: materialDatas.Array.size
-      value: 1
+      value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[0].material
+      value: 
+      objectReference: {fileID: 2100000, guid: 25600d58bdfabe54abeae9be94f9f7ae, type: 2}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[1].material
+      value: 
+      objectReference: {fileID: 2100000, guid: bf7950174dd940940bafd4c7a081f6a8, type: 2}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[2].material
+      value: 
+      objectReference: {fileID: 2100000, guid: c325476cffad3ad4fb67a896e35db5b3, type: 2}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[3].material
+      value: 
+      objectReference: {fileID: 2100000, guid: a725db3f2c55fe6489922e49896e3997, type: 2}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[4].material
+      value: 
+      objectReference: {fileID: 2100000, guid: d6fb4c4ee204e8448886c75712bb187d, type: 2}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[5].material
+      value: 
+      objectReference: {fileID: 2100000, guid: cd3c90dccb625aa46b1940e03bc91922, type: 2}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[6].material
+      value: 
+      objectReference: {fileID: 2100000, guid: 18c5f6e0845f5f940a2c0f378f2fe377, type: 2}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[7].material
+      value: 
+      objectReference: {fileID: 2100000, guid: 931317885e3c81744b0d606f252cb55f, type: 2}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[8].material
+      value: 
+      objectReference: {fileID: 2100000, guid: 0e17df37c3273064784f6b4b7a075267, type: 2}
     - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
       propertyPath: materialData.Array.data[0].nodeNames.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[0].nodeNames.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[1].nodeNames.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[2].nodeNames.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[3].nodeNames.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[4].nodeNames.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[5].nodeNames.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[6].nodeNames.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[7].nodeNames.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[8].nodeNames.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[0].nodeNames.Array.data[0]
+      value: "cam Wei\xDF"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[0].nodeNames.Array.data[1]
+      value: "Chrom Wei\xDF"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[1].nodeNames.Array.data[0]
+      value: "Lack Wei\xDF Glanz"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[1].nodeNames.Array.data[1]
+      value: "Lack Wei\xDF 2"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[2].nodeNames.Array.data[0]
+      value: Interface Panel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[2].nodeNames.Array.data[1]
+      value: 'Fuge '
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[2].nodeNames.Array.data[2]
+      value: cgaxis_door_handle_01_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[3].nodeNames.Array.data[0]
+      value: Glas dunkel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[3].nodeNames.Array.data[1]
+      value: 'Fuge '
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[3].nodeNames.Array.data[2]
+      value: cgaxis_door_handle_01_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[4].nodeNames.Array.data[0]
+      value: Glass
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[4].nodeNames.Array.data[1]
+      value: "cam Glass Wei\xDF"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[4].nodeNames.Array.data[2]
+      value: cgaxis_door_handle_01_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[5].nodeNames.Array.data[0]
+      value: Chrom 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[5].nodeNames.Array.data[1]
+      value: Grau
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[5].nodeNames.Array.data[2]
+      value: Grau 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[6].nodeNames.Array.data[0]
+      value: Holz
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[6].nodeNames.Array.data[1]
+      value: 'Fuge '
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[6].nodeNames.Array.data[2]
+      value: cgaxis_door_handle_01_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[7].nodeNames.Array.data[0]
+      value: Teak
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[7].nodeNames.Array.data[1]
+      value: Teak 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[7].nodeNames.Array.data[2]
+      value: Helideck
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[8].nodeNames.Array.data[0]
+      value: "Gr\xFCn"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[8].nodeNames.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
+      propertyPath: materialDatas.Array.data[8].nodeNames.Array.data[2]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7405133904958984871, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
       propertyPath: m_AnchorMax.x
