@@ -43,12 +43,13 @@
 - 3D Modelle laden 
     - FBX                                       Done
     - Tisch syncen                              Done
-    - FBX Materialien                           Tim
-    - Große Modelle                             Maarten
-    - Load Lag                                  Tim
+    - FBX Materialien                           Done
+    - Große Modelle                             Done
+    - Load Lag                                  Done
+    - Materialen                                Tim
 - Modell
-    - VR Player                                 Maarten
-    - First Person                              Maarten
+    - VR Player                                 Done
+    - First Person                              Done
 
 - AudioSettings                                 Done
 - UI von Yesenia                                Done
@@ -58,6 +59,10 @@
 - UI Voice Control                              Done
 - UI File List                                  Maarten
 - Lizenz freie Songs einfügen                   Maarten
+- UI Console Raycaster                          Maarten
+- Programm schließen Button                     Maarten
+- File Selecter größer                          Tim
+
 
 ## Links:
 https://github.com/adrenak/UniVoice
