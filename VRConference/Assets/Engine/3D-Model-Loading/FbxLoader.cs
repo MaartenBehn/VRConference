@@ -316,7 +316,7 @@ namespace Engine._3D_Model_Loading
             var unityRenderer = obj.GetComponent<MeshRenderer>();
             var meshCollider = obj.GetComponent<MeshCollider>();
             meshCollider.sharedMesh = unityMesh;
-            meshCollider.enabled = true;
+            meshCollider.enabled = false;
             unityRenderer.enabled = true;
             string materialName = Marshal.PtrToStringAnsi(GetObjectMaterialName(id));
             Material tempMaterial = material;
