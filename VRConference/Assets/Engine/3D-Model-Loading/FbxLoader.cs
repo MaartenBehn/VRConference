@@ -115,6 +115,31 @@ namespace Engine._3D_Model_Loading
 
         }
 
+        public GameObject ModelanchorTable;
+        public GameObject ModelanchorWorld;
+
+        public float scale = 1.0f;
+        public void ScaleModelUP()
+        {
+            rootNode.transform.parent = ModelanchorWorld.transform;
+            rootNode.transform.localPosition = Vector3.zero;
+            rootNode.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        }
+
+        public void ScaleModelDown()
+        {
+            rootNode.transform.parent = ModelanchorTable.transform;
+            rootNode.transform.localPosition = Vector3.zero;
+            rootNode.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        }
+
+
+
+
+
+
+
+
         public string fileName;
         public string currentFileName;
 
@@ -271,8 +296,10 @@ namespace Engine._3D_Model_Loading
             unityMesh.RecalculateNormals();
             var unityMeshFilter = obj.GetComponent<MeshFilter>();
             unityMeshFilter.mesh = unityMesh;
-
             var unityRenderer = obj.GetComponent<MeshRenderer>();
+            var meshCollider = obj.GetComponent<MeshCollider>();
+            meshCollider.sharedMesh = unityMesh;
+            meshCollider.enabled = true;
             unityRenderer.enabled = true;
             string materialName = Marshal.PtrToStringAnsi(GetObjectMaterialName(id));
             Material tempMaterial = material;
@@ -331,7 +358,7 @@ namespace Engine._3D_Model_Loading
             else
             {
                 rootNode = currentObj;
-                rootNode.transform.parent = gameObject.transform.parent.parent.transform.GetChild(1).transform;
+                rootNode.transform.parent = ModelanchorTable.transform;
             }
 
             ProcessTransform(id, currentObj);
