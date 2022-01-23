@@ -329,10 +329,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 12744781}
     - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
-      propertyPath: ModelanchorTable
-      value: 
-      objectReference: {fileID: 1888767294}
-    - target: {fileID: 4687984798739602590, guid: 5db95ad79a58a9846ba6415286c2c7d0, type: 3}
       propertyPath: gameObjectPreFab
       value: 
       objectReference: {fileID: 5748643387161790518, guid: 1f560e15752fcbb4694fc0b69863f7bf, type: 3}
@@ -8044,8 +8040,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1888767294}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: 4.1399994, y: 6.67, z: 0}
-  m_LocalScale: {x: 0.074999996, y: 0.074999996, z: 0.074999996}
+  m_LocalPosition: {x: 8.33, y: 6.94, z: 0}
+  m_LocalScale: {x: 0.18, y: 0.18, z: 0.18}
   m_Children: []
   m_Father: {fileID: 1903832446}
   m_RootOrder: 3
