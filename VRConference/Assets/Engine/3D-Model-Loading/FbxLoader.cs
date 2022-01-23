@@ -124,6 +124,8 @@ namespace Engine._3D_Model_Loading
             rootNode.transform.parent = ModelanchorWorld.transform;
             rootNode.transform.localPosition = Vector3.zero;
             rootNode.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+
+            SetMeshCollider(rootNode, true);
         }
 
         public void ScaleModelDown()
@@ -131,9 +133,24 @@ namespace Engine._3D_Model_Loading
             rootNode.transform.parent = ModelanchorTable.transform;
             rootNode.transform.localPosition = Vector3.zero;
             rootNode.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+
+
+
+            SetMeshCollider(rootNode,false);
+
+
         }
 
+        void SetMeshCollider(GameObject obj,bool aktiv)
+        {
 
+            obj.GetComponent<MeshCollider>().enabled = aktiv;
+
+            for(int i = 0; i < obj.transform.childCount; i++)
+            {
+                SetMeshCollider(obj.transform.GetChild(i).gameObject, aktiv);
+            }
+        }
 
 
 
