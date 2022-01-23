@@ -82,13 +82,13 @@ namespace Engine._3D_Model_Loading
         public GameObject gameObjectPreFab;
 
         [Serializable]
-        struct MaterialData
+        public struct MaterialData
         {
-            Material material;
-            
+            public Material material;
+            public List<string> nodeNames;
         }
 
-        public Dictionary<string, string> dict;
+        public List<MaterialData> materialDatas;
 
         public void SetPath(string path)
         {
@@ -205,6 +205,8 @@ namespace Engine._3D_Model_Loading
                     Threader.RunAsync(() =>
                     {
                         ImportFbxFile(path);
+                        meshData.Clear();
+                        ProcessNodeData(GetRootNodeId());
                         importReady = true;
                     });
                 }
@@ -219,14 +221,20 @@ namespace Engine._3D_Model_Loading
 
         struct MeshData
         {
-            Vector3[] vertcies;
-            int[] indices;
+            public Vector3[] vertcies;
+            public int[] indices;
+
+            public MeshData(Vector3[] vertcies, int[] indices)
+            {
+                this.vertcies = vertcies;
+                this.indices = indices;
+            }
         }
 
-        void ProcessMesh(int id, GameObject obj)
-        {
-            var unityMesh = new Mesh();
+        private Dictionary<int, MeshData> meshData = new Dictionary<int,MeshData>();
 
+        void ReadDataOfNodes(int id)
+        {
             int vertciesSize = GetVertciesArraySize(id);
             int indicesSize = GetIndecieArraySize(id);
 
@@ -236,16 +244,47 @@ namespace Engine._3D_Model_Loading
             GetVertciesOfID(id, vertcies, vertciesSize);
             GetIndceiseOfID(id, indices, indicesSize);
 
+            meshData.Add(id, new MeshData(vertcies,indices));
+        }
+
+        void ProcessNodeData(int id)
+        {
+            if (HasNodeMesh(id))
+            {
+                ReadDataOfNodes(id);
+            }
+            
+            var childs = GetChieldArray(id);
+            for (int i = 0; i < childs.Length; i++)
+            {
+                ProcessNodeData(childs[i]);
+            }
+        }
+
+        void ProcessMesh(int id, GameObject obj)
+        {
+            var unityMesh = new Mesh();
             unityMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
-            unityMesh.vertices = vertcies;
-            unityMesh.triangles = indices;
+            unityMesh.vertices = meshData[id].vertcies;
+            unityMesh.triangles = meshData[id].indices;
             unityMesh.RecalculateNormals();
             var unityMeshFilter = obj.GetComponent<MeshFilter>();
             unityMeshFilter.mesh = unityMesh;
 
             var unityRenderer = obj.GetComponent<MeshRenderer>();
             unityRenderer.enabled = true;
-            unityRenderer.material = material;
+            string materialName = Marshal.PtrToStringAnsi(GetObjectMaterialName(id));
+            Material tempMaterial = material;
+            foreach(var materialData in materialDatas)
+            {
+                if (materialData.nodeNames.Contains(materialName))
+                {
+                    tempMaterial = materialData.material;
+                    break;
+                }
+            }
+
+            unityRenderer.material = tempMaterial;
             unityRenderer.staticShadowCaster = false;
             unityRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
   
@@ -281,6 +320,9 @@ namespace Engine._3D_Model_Loading
             }
 
             ProcessTransform(id, currentObj);
+
+            string materialName = Marshal.PtrToStringAnsi(GetObjectMaterialName(id));
+            Debug.Log(materialName);
 
             if (HasNodeMesh(id))
             {
