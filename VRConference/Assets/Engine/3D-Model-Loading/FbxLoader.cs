@@ -340,12 +340,10 @@ namespace Engine._3D_Model_Loading
                     break;
                 }
             }
-
-            unityRenderer.shadowCastingMode = ShadowCastingMode.Off;
-
+            
             unityRenderer.material = tempMaterial;
             unityRenderer.staticShadowCaster = false;
-            unityRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            unityRenderer.shadowCastingMode = ShadowCastingMode.Off;
   
         }
 
