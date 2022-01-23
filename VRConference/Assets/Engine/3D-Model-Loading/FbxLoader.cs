@@ -16,9 +16,8 @@ namespace Engine._3D_Model_Loading
 #if UNITY_IOS
     const string dll = "__Internal":
 #else
-        const string dll = "FbxReader";
+    const string dll = "FbxReader";
 #endif
-
 
         [DllImport(dll)]
         private static extern void StartFBX();
@@ -48,12 +47,15 @@ namespace Engine._3D_Model_Loading
         private static extern int GetIndecieArraySize(int id);
 
         [DllImport(dll)]
-        private static extern int GetVertciesOfID(int id, [In, Out] Vector3[] vecArray,int vecSize);
+        private static extern int GetVertciesOfID(int id, [In, Out] Vector3[] vecArray, int vecSize);
 
         [DllImport(dll)]
-        private static extern int GetIndceiseOfID(int id,[In,Out] int[] indeciArray, int vecSize);
+        private static extern int GetIndceiseOfID(int id, [In, Out] int[] indeciArray, int vecSize);
         [DllImport(dll)]
         private static extern IntPtr GetMaterialData(int id);
+
+        [DllImport(dll)]
+        private static extern IntPtr GetObjectMaterialName(int id);
 
         public static FbxLoader instance;
 
@@ -76,6 +78,18 @@ namespace Engine._3D_Model_Loading
 
         public GameObject ButtonListContent;
         public Button ButtonPrefab;
+
+        public GameObject gameObjectPreFab;
+
+        [Serializable]
+        struct MaterialData
+        {
+            Material material;
+            
+        }
+
+        public Dictionary<string, string> dict;
+
         public void SetPath(string path)
         {
             FilePath = path;
@@ -87,19 +101,19 @@ namespace Engine._3D_Model_Loading
             files = new List<FileEntry>();
             StartFBX();
 
-            UnloadModelButton.onClick.AddListener(()=>
+            UnloadModelButton.onClick.AddListener(() =>
             {
                 NetworkController.instance.networkSend.FBXUnloadFile();
                 UnloadFile();
             });
 
-            if(Valve.VR.InteractionSystem.Player.instance != null)
+            if (Valve.VR.InteractionSystem.Player.instance != null)
             {
                 GetComponent<Canvas>().worldCamera = Valve.VR.InteractionSystem.Player.instance.rightHand.transform.GetChild(4).GetComponent<Camera>();
             }
 
         }
-        
+
         public string fileName;
         public string currentFileName;
 
@@ -108,7 +122,7 @@ namespace Engine._3D_Model_Loading
             fileName = name;
             NetworkController.instance.networkSend.FBXLoadFile(fileName);
         }
-        
+
         public void UnloadFile()
         {
             if (rootNode != null)
@@ -116,12 +130,13 @@ namespace Engine._3D_Model_Loading
                 Destroy(rootNode);
             }
         }
-        
+
         public void Update()
         {
+
             foreach (FileEntry fileEntry in FileShare.instance.fileEntries)
             {
-            
+
                 if (fileEntry.local && fileEntry.localPath.Contains(".fbx"))
                 {
                     string name = fileEntry.fileName;
@@ -139,11 +154,11 @@ namespace Engine._3D_Model_Loading
                     }
                 }
             }
-            
+
             if (fileName == "") { return; }
 
             FileEntry entry = null;
-            
+
             foreach (FileEntry fileEntry in FileShare.instance.fileEntries)
             {
                 if (fileEntry.fileName == fileName)
@@ -166,35 +181,49 @@ namespace Engine._3D_Model_Loading
             else if (entry != null && entry.local && currentFileName != fileName)
             {
                 currentFileName = fileName;
-                
+
                 Debug.Log("FBX Loader: Loading File");
                 LoadFbxFile(entry.localPath);
+            }
+
+            if (importReady)
+            {
+                ProcessNode(GetRootNodeId());
+                importReady = false;
             }
         }
 
         GameObject rootNode = null;
+        bool importReady = false;
         public void LoadFbxFile(string path)
         {
             if (path.Contains(".fbx"))
             {
-                Threader.RunOnMainThread(() =>
+
+                try
                 {
-                    try
+                    Threader.RunAsync(() =>
                     {
-                        if (ImportFbxFile(path))
-                        {
-                            ProcessNode(GetRootNodeId());
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.Log(e);
-                    }
-                });
+                        ImportFbxFile(path);
+                        importReady = true;
+                    });
+                }
+                catch (Exception e)
+                {
+                    Debug.Log(e);
+                }
             }
         }
         public Material material;
-        void ProcessMesh(int id,GameObject obj)
+
+
+        struct MeshData
+        {
+            Vector3[] vertcies;
+            int[] indices;
+        }
+
+        void ProcessMesh(int id, GameObject obj)
         {
             var unityMesh = new Mesh();
 
@@ -203,56 +232,23 @@ namespace Engine._3D_Model_Loading
 
             Vector3[] vertcies = new Vector3[vertciesSize];
             int[] indices = new int[indicesSize];
-            
+
             GetVertciesOfID(id, vertcies, vertciesSize);
             GetIndceiseOfID(id, indices, indicesSize);
-            
-            /*
-            int[] doulbeSidedIndices = new int[indicesSize*2];
-            for (int i = 0; i < indices.Length; i++)
-            {
-                doulbeSidedIndices[i] = indices[i];
-            }
-            for (int i = indices.Length; i < doulbeSidedIndices.Length; i += 3)
-            {
-                doulbeSidedIndices[i] = indices[i - indices.Length + 2];
-                doulbeSidedIndices[i + 1] = indices[i - indices.Length + 1];
-                doulbeSidedIndices[i + 2] = indices[i - indices.Length];
-            }
-            */
 
             unityMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
             unityMesh.vertices = vertcies;
             unityMesh.triangles = indices;
             unityMesh.RecalculateNormals();
-
-            var unityMeshFilter = obj.AddComponent<MeshFilter>();
+            var unityMeshFilter = obj.GetComponent<MeshFilter>();
             unityMeshFilter.mesh = unityMesh;
-        
-            var unityRenderer = obj.AddComponent<MeshRenderer>();
+
+            var unityRenderer = obj.GetComponent<MeshRenderer>();
+            unityRenderer.enabled = true;
             unityRenderer.material = material;
             unityRenderer.staticShadowCaster = false;
             unityRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            //ProcessMaterial(id, unityRenderer.material);
-            {
-                // Assign the default material (hack!)
-                // var unityPrimitive = GameObject.CreatePrimitive(PrimitiveType.Quad);
-                // var unityMat = unityPrimitive.GetComponent<MeshRenderer>().sharedMaterial;
-                // unityRenderer.sharedMaterial = unityMat;
-                //UnityEngine.Object.DestroyImmediate(unityPrimitive);
-            }
-        }
-    
-        void ProcessMaterial(int id,Material mat)
-        {
-            Shader shader = Shader.Find("Specular");
-            Material material = new Material(shader);
-            int size = 3;
-            IntPtr returnedPtr = GetMaterialData(id);
-            float[] colorData = new float[size];
-            Marshal.Copy(returnedPtr, colorData, 0, size);
-
-            mat.color = new Color(colorData[0], colorData[1], colorData[2]);
+  
         }
 
         void ProcessTransform(int id, GameObject obj)
@@ -264,18 +260,19 @@ namespace Engine._3D_Model_Loading
 
             obj.transform.localPosition = new Vector3(tempData[0], tempData[1], tempData[2]);
             obj.transform.localRotation = new Quaternion(tempData[3], tempData[4], tempData[5], tempData[6]);
-            obj.transform.localScale= new Vector3(tempData[7], tempData[8], tempData[9]);
+            obj.transform.localScale = new Vector3(tempData[7], tempData[8], tempData[9]);
         }
 
         void ProcessNode(int id, GameObject ParentObj = null)
         {
 
-            GameObject currentObj = new GameObject(Marshal.PtrToStringAnsi(GetObjectName(id)));
+            GameObject currentObj = Instantiate(gameObjectPreFab);
+            currentObj.name = Marshal.PtrToStringAnsi(GetObjectName(id));
 
             if (ParentObj != null)
             {
                 currentObj.transform.parent = ParentObj.transform;
-            
+
             }
             else
             {
