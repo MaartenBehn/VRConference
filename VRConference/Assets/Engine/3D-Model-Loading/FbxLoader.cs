@@ -259,6 +259,8 @@ namespace Engine._3D_Model_Loading
         bool modelIsLoaded;
         public void LoadFbxFile(string path)
         {
+            UnloadFile();
+            
             if (path.Contains(".fbx"))
             {
 
