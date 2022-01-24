@@ -62,7 +62,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 1.7781351, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -248,7 +248,7 @@ MonoBehaviour:
   gravity: 20
   playerCamera: {fileID: 8994392714698078216}
   lookSpeed: 2
-  lookXLimit: 45
+  lookXLimit: 90
   canMove: 1
   pause: {fileID: 11400000, guid: 0d36e514436362a458b78212f67693b8, type: 2}
 --- !u!81 &8994392715783527383
