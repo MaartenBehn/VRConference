@@ -7,16 +7,16 @@
 - Man hört nur Clients in seiner Nähe.          Done
 - VR Clients.                                   Done                           
 - Win Clients First Person.                     Done
-- 3D auf Tisch landen.                          Fast
+- 3D auf Tisch landen.                          Done
 - File system Win zum Laden der Modelle.        Done
 
 ## Damit wir es vorstellen können:
 - Camera Clients
-- Ein schöner Startscreen
-- Eine schöne Welt
+- Ein schöner Startscreen                       Done
+- Eine schöne Welt                              Fast
 - Server Auswahl system
-- Speaker und Mic Auswahl Menue
-- Lautstärke für Nutzer festlegen.
+- Speaker und Mic Auswahl Menue                 Done
+- Lautstärke für Nutzer festlegen.              
 ## Weitere Features
 - Desktop steam  
 - Power Points
@@ -61,7 +61,8 @@
 - Lizenz freie Songs einfügen                   Maarten
 - UI Console Raycaster                          Maarten
 - Programm schließen Button                     Maarten
-- File Selecter größer                          Tim
+- File Selecter größer                          Done
+- Fileshare Multibel User bug                   
 
 
 ## Links:
@@ -83,6 +84,10 @@ https://github.com/adrenak/UniVoice
 9.1 Jesenia fertig mit Grafiken
 
 14.1 Anfangen mit der Doku
+
+26.1 (Mi) Programm fertig
+
+27.1 (Do) Doku fertig
 
 28.1 (Fr) Abgabe
 
