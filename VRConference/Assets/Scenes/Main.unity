@@ -2711,8 +2711,8 @@ GameObject:
   - component: {fileID: 709732472}
   - component: {fileID: 709732471}
   - component: {fileID: 709732470}
-  - component: {fileID: 709732469}
   - component: {fileID: 709732468}
+  - component: {fileID: 709732469}
   m_Layer: 0
   m_Name: TeleportArea
   m_TagString: Untagged
@@ -2728,7 +2728,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 709732466}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.01, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children: []
   m_Father: {fileID: 1597590007}
@@ -2747,7 +2747,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   locked: 0
-  markerActive: 1
+  markerActive: 0
 --- !u!114 &709732469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3579,6 +3579,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a63690ff9b58d245b45f47b49e07c0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsVrScript: 0
+  isVR: {fileID: 11400000, guid: c163166035945c9469c475e6a56d005d, type: 2}
   pause: {fileID: 11400000, guid: 0d36e514436362a458b78212f67693b8, type: 2}
   lockDelay: 1
   settingsPanel: {fileID: 200594899}
