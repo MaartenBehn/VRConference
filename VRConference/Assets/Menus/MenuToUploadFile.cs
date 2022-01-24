@@ -13,6 +13,7 @@ namespace Menus
 
         private GameObject FileBrowserObj;
         public GameObject FbxLoader;
+        
         [SerializeField] private PublicEventString uploadEvent;
 
         // Start is called before the first frame update
@@ -23,6 +24,7 @@ namespace Menus
             FileBrowserObj.GetComponent<RectTransform>().localPosition = Vector3.zero;
             FileBrowserObj.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0,0,0);
             FileBrowserObj.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
+            
             if (Player.instance != null)
             {
                 FileBrowserObj.GetComponent<Canvas>().worldCamera = Player.instance.rightHand.transform.GetChild(4).GetComponent<Camera>();
@@ -47,6 +49,10 @@ namespace Menus
         // Update is called once per frame
         void Update()
         {
+            if(Player.instance != null)
+            {
+                FileBrowserObj.transform.GetChild(3).gameObject.active = false;
+            }
             if (FileBrowserObj != null)
             {
                 if (FileBrowserObj.active == false)
