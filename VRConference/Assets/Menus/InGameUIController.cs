@@ -11,11 +11,14 @@ namespace Menus
 {
     public class InGameUIController : MonoBehaviour
     {
-    
+        [SerializeField] private bool IsVrScript = false;
+        [SerializeField] private PublicBool isVR;
         [SerializeField] private PublicBool pause;
         [SerializeField] private float lockDelay = 1;
         private float lastLockTime;
         
+
+
         [SerializeField] private GameObject settingsPanel;
         [SerializeField] private GameObject pausePanel;
         [SerializeField] private GameObject inGamePanel;
@@ -37,6 +40,11 @@ namespace Menus
 
         private void Awake()
         {
+            if (isVR.value && !IsVrScript)
+            {
+                gameObject.active = false;
+                return;
+            }
             masterSlider.maxValue = maxVol;
             masterSlider.minValue = minVol;
             
@@ -55,23 +63,27 @@ namespace Menus
             SetPause();
         }
 
+
+
         void Update()
         {
-            if (lastLockTime + lockDelay < Time.time && Input.GetKey(KeyCode.Escape))
+            if (!isVR.value)
             {
-                lastLockTime = Time.time;
-                pause.value = !pause.value;
-                
-                if (pause.value)
+                if (lastLockTime + lockDelay < Time.time && Input.GetKey(KeyCode.Escape))
                 {
-                    SetPause();
-                }
-                else
-                {
-                    SetInGame();
+                    lastLockTime = Time.time;
+                    pause.value = !pause.value;
+
+                    if (pause.value)
+                    {
+                        SetPause();
+                    }
+                    else
+                    {
+                        SetInGame();
+                    }
                 }
             }
-            
             if (PlayerAudio.instance != null && PlayerAudio.instance.mic != null)
             {
                 var options = new List<TMP_Dropdown.OptionData>();
@@ -98,12 +110,22 @@ namespace Menus
 
         public void SetPause()
         {
-            inGamePanel.SetActive(false);
-            pausePanel.SetActive(true);
-            settingsPanel.SetActive(false);
-            
-            pause.value = true;
-            Cursor.lockState = CursorLockMode.None;
+            if (!isVR.value)
+            {
+                inGamePanel.SetActive(false);
+                pausePanel.SetActive(true);
+                settingsPanel.SetActive(false);
+
+
+                pause.value = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+
+                pausePanel.SetActive(true);
+                settingsPanel.SetActive(false);
+            }
 
             if (VoiceConnection.instance != null && VoiceConnection.instance.agent != null)
             {

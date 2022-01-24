@@ -7,9 +7,9 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.7F95D817" = ""
+	"last_search.7F95D817" = "Event System"
 	"InspectorPreview.7F95D817" = "0"
-	"currentGroup.7F95D817" = "all"
+	"currentGroup.7F95D817" = "scene"
 	"last_search.83F126EB" = "PublicEvent"
 	"InspectorPreview.83F126EB" = "0"
 	"currentGroup.83F126EB" = "all"
@@ -52,6 +52,7 @@ providers = {
 	}
 }
 recentSearches = [
+	"Event System"
 ]
 searchItemFavorites = [
 ]

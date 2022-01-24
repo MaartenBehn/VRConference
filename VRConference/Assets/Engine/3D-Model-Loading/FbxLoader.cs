@@ -112,6 +112,8 @@ namespace Engine._3D_Model_Loading
             {
                 GetComponent<Canvas>().worldCamera = Valve.VR.InteractionSystem.Player.instance.rightHand.transform.GetChild(4).GetComponent<Camera>();
             }
+            ScaleUp.active = false;
+            ScaleDown.active = false;
 
         }
 
@@ -171,6 +173,7 @@ namespace Engine._3D_Model_Loading
             if (rootNode != null)
             {
                 Destroy(rootNode);
+                modelIsLoaded = false;
             }
         }
 
@@ -234,10 +237,26 @@ namespace Engine._3D_Model_Loading
                 ProcessNode(GetRootNodeId());
                 importReady = false;
             }
+            if (modelIsLoaded)
+            {
+                ScaleUp.active = true;
+                ScaleDown.active = true;
+            }
+            else
+            {
+                ScaleUp.active = true;
+                ScaleDown.active = true;
+            }
         }
 
         GameObject rootNode = null;
         bool importReady = false;
+
+        [SerializeField]
+        GameObject ScaleUp;
+        [SerializeField]
+        GameObject ScaleDown;
+        bool modelIsLoaded;
         public void LoadFbxFile(string path)
         {
             if (path.Contains(".fbx"))
@@ -251,6 +270,7 @@ namespace Engine._3D_Model_Loading
                         meshData.Clear();
                         ProcessNodeData(GetRootNodeId());
                         importReady = true;
+                        modelIsLoaded = true;
                     });
                 }
                 catch (Exception e)
@@ -378,8 +398,6 @@ namespace Engine._3D_Model_Loading
 
             ProcessTransform(id, currentObj);
 
-            string materialName = Marshal.PtrToStringAnsi(GetObjectMaterialName(id));
-            Debug.Log(materialName);
 
             if (HasNodeMesh(id))
             {

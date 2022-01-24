@@ -8,7 +8,8 @@ public class CheckVR : MonoBehaviour
 
     public PublicBool isVR;
 
-    private void Awake()
+
+    private void Start()
     {
         if (!isVR.value)
         {
