@@ -7,7 +7,6 @@ namespace Audio.AudioSpeaker
 {
     public class AudioSpeakerSelecter : MonoBehaviour
     {
-
         [SerializeField] private TMP_Dropdown dropdown;
 
         private void Update()
@@ -18,9 +17,13 @@ namespace Audio.AudioSpeaker
             {
                 if (fileEntry.local)
                 {
-                    var option = new TMP_Dropdown.OptionData();
-                    option.text = fileEntry.fileName;
-                    options.Add(option);
+                    var parts = fileEntry.fileName.Split('.');
+                    if (parts[1] == "mp3")
+                    {
+                        var option = new TMP_Dropdown.OptionData();
+                        option.text = fileEntry.fileName;
+                        options.Add(option);
+                    }
                 }
             }
             dropdown.options = options;

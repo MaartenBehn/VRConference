@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbacb2414dc974448827c731c3756377, type: 3}
   m_Name: ThemeSetting
   m_EditorClassIdentifier: Assembly-CSharp:Menus:ThemeSettings
-  highlightColor: {r: 1, g: 0.71488464, b: 0, a: 1}
-  baseColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
-  backgroundColor: {r: 0.098039225, g: 0.098039225, b: 0.098039225, a: 1}
-  backgroundTintColor: {r: 0.098039225, g: 0.098039225, b: 0.098039225, a: 0.6745098}
+  highlightColor: {r: 0.15686275, g: 0.54901963, b: 0.98823535, a: 1}
+  baseColor: {r: 0.6415094, g: 0.6415094, b: 0.6415094, a: 1}
+  backgroundColor: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
+  backgroundTintColor: {r: 0.098039225, g: 0.098039225, b: 0.098039225, a: 0.65882355}
   textColor:
     serializedVersion: 2
-    rgba: 4293388263
+    rgba: 4291809231

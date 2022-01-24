@@ -77,7 +77,7 @@ namespace Network.FileShare
 
             foreach (string startUpFile in startUpFiles)
             {
-                AddFileEntry(userId.value ,startUpFile, Application.dataPath + "/StreamingAssets/StartUpFiles/" + startUpFile +".mp3");
+                AddFileEntry(userId.value ,startUpFile, Application.dataPath + "/StreamingAssets/StartUpFiles/" + startUpFile);
             }
 
             loadingDoneEvent.Register(SyncFiles);
