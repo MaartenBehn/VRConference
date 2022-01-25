@@ -12,11 +12,14 @@ public class PlayerController : MonoBehaviour
     public SteamVR_Action_Boolean a_button;
     public float speed = 10;
 
- 
+    [SerializeField]
+    private PublicEvent stopVR;
 
     private void Start()
     {
         a_button.AddOnStateDownListener(Test, SteamVR_Input_Sources.Any);
+
+        stopVR.Register(() => Destroy(gameObject));
     }
 
     // Update is called once per frame
@@ -33,4 +36,9 @@ public class PlayerController : MonoBehaviour
         Destroy(go);
         Destroy(go2);
     }
+
+
+
+
+
 }
