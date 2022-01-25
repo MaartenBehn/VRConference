@@ -121,5 +121,10 @@ namespace Menus
         {
             savePathField.text = Application.dataPath +"/";
         }
+        
+        public void StopProgramm()
+        {
+            Application.Quit();
+        }
     }
 }

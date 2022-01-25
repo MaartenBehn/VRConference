@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8775083759498191248}
   - component: {fileID: 4063719916934610386}
   - component: {fileID: 3910937798999685773}
+  - component: {fileID: 6041490412728133668}
   m_Layer: 0
   m_Name: ConsoleMessage
   m_TagString: Untagged
@@ -66,8 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Log Message sefesfesfsefesfsefe efsfesfesefeesfesfesfeesfesefesfe dsgvsg
-    dsgdsxgv dsgdx dxgxdg dxgdxg xdfgxg xdggx '
+  m_text: Log Message
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -150,3 +150,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 4063719916934610386}
   liveTime: 0
+  startTime: 0
+--- !u!223 &6041490412728133668
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4923746297122682887}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0

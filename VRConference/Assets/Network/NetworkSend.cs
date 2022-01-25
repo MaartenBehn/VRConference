@@ -246,5 +246,12 @@ namespace Network
             using Packet packet = new Packet((byte) Packets.fbxUnloadFile, network.userId.value);
             SendToAllExceptOrigen(packet, false, false);
         }
+        
+        public void ScaleModel(bool big)
+        {
+            using Packet packet = new Packet((byte) Packets.scaleModel, network.userId.value);
+            packet.Write(big);
+            SendToAllExceptOrigen(packet, false, false);
+        }
     }
 }

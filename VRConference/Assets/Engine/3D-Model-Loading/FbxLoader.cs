@@ -121,6 +121,13 @@ namespace Engine._3D_Model_Loading
         public GameObject ModelanchorWorld;
 
         public float scale = 1.0f;
+        
+        public void SendScaleModelUP()
+        {
+            NetworkController.instance.networkSend.ScaleModel(true);
+            ScaleModelUP();
+        }
+        
         public void ScaleModelUP()
         {
             rootNode.transform.parent = ModelanchorWorld.transform;
@@ -129,18 +136,20 @@ namespace Engine._3D_Model_Loading
 
             SetMeshCollider(rootNode, true);
         }
+        
+        public void SendScaleModelDown()
+        {
+            NetworkController.instance.networkSend.ScaleModel(false);
+            ScaleModelDown();
+        }
 
         public void ScaleModelDown()
         {
             rootNode.transform.parent = ModelanchorTable.transform;
             rootNode.transform.localPosition = Vector3.zero;
             rootNode.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-
-
-
+            
             SetMeshCollider(rootNode,false);
-
-
         }
 
         void SetMeshCollider(GameObject obj,bool aktiv)
@@ -153,12 +162,7 @@ namespace Engine._3D_Model_Loading
                 SetMeshCollider(obj.transform.GetChild(i).gameObject, aktiv);
             }
         }
-
-
-
-
-
-
+        
         public string fileName;
         public string currentFileName;
 

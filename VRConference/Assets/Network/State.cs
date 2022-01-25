@@ -43,6 +43,7 @@
         // 50 FBX Loader
         fbxLoadFile = 50,
         fbxUnloadFile = 51,
+        scaleModel = 52, // byte 0 = small, 1 = big
         
     }
 

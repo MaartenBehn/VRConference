@@ -62,9 +62,7 @@ namespace Menus
             GetVolume();
             SetPause();
         }
-
-
-
+        
         void Update()
         {
             if (!isVR.value)

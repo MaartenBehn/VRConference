@@ -39,6 +39,7 @@ namespace Network
                 
                 { (byte)Packets.fbxLoadFile, FBXLoadFile },
                 { (byte)Packets.fbxUnloadFile, FBXUnloadFile },
+                { (byte)Packets.scaleModel, ScaleModel },
             };
         }
         
@@ -226,6 +227,20 @@ namespace Network
         public void FBXUnloadFile(byte userID, Packet packet)
         {
             FbxLoader.instance.UnloadFile();
+        }
+        
+        public void ScaleModel(byte userID, Packet packet)
+        {
+            bool big = packet.ReadBool();
+            
+            if (big)
+            {
+                FbxLoader.instance.ScaleModelUP();
+            }
+            else
+            {
+                FbxLoader.instance.ScaleModelDown();
+            }
         }
     }
 }
