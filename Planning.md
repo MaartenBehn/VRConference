@@ -36,17 +36,17 @@
     - VR Player spawnen                         Done
     - VR Player login                           Done
     - VR Player sync                            Done
-    - UI                                        Tim
+    - UI                                        Done
 - First Person                              
     - Sync                                      Done
-    - Weiter runterschauen                      Maarten
+    - Weiter runterschauen                      Done
 - 3D Modelle laden 
     - FBX                                       Done
     - Tisch syncen                              Done
     - FBX Materialien                           Done
     - Große Modelle                             Done
     - Load Lag                                  Done
-    - Materialen                                Tim
+    - Materialen                                Done
 - Modell
     - VR Player                                 Done
     - First Person                              Done
@@ -57,10 +57,10 @@
 
 - UI Player List                                Done
 - UI Voice Control                              Done
-- UI File List                                  Maarten
-- Lizenz freie Songs einfügen                   Maarten
-- UI Console Raycaster                          Maarten
-- Programm schließen Button                     Maarten
+- UI File List                                  Done
+- Lizenz freie Songs einfügen                   Done
+- UI Console Raycaster                          Done
+- Programm schließen Button                     Done
 - File Selecter größer                          Done
 - Fileshare Multibel User bug                   
 
