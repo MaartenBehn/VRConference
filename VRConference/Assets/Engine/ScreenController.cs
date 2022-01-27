@@ -52,8 +52,6 @@ namespace Engine
             loadScreen.SetActive(false);
             startScreen.SetActive(false);
             inGameScreen.SetActive(true);
-            
-            
         }
     }
 }

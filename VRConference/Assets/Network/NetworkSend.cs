@@ -1,6 +1,5 @@
 ﻿using System;
 using Engine;
-using Network.Both;
 using Network.FileShare;
 using UnityEngine;
 using Users;

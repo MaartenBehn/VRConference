@@ -4,7 +4,7 @@ using System.Text;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Network.Both
+namespace Network
 {
     
     public class Packet : IDisposable

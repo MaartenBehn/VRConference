@@ -25,18 +25,8 @@ namespace Menus
                 foreach (FileEntry fileEntry in FileShare.instance.fileEntries)
                 {
                     FileListEntry entry = Instantiate(entryPreFab, transform).GetComponent<FileListEntry>();
-                    entry.name.text = fileEntry.fileName + " ";
-                    for (var i = 0; i < fileEntry.userHowHaveTheFile.Count; i++)
-                    {
-                        byte b = fileEntry.userHowHaveTheFile[i];
-                        entry.name.text += b;
-
-                        if (i < fileEntry.userHowHaveTheFile.Count -1 )
-                        {
-                            entry.name.text += ", ";
-                        }
-                    }
-
+                    entry.name.text = fileEntry.fileName;
+                    
                     if (fileEntry.local)
                     {
                         entry.path.text = fileEntry.localPath;

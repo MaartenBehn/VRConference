@@ -1,5 +1,4 @@
-﻿using Network.Both;
-using UnityEngine;
+﻿using UnityEngine;
 using Users;
 
 namespace Network.Server

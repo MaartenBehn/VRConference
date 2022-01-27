@@ -1,11 +1,11 @@
-﻿namespace Network.Both
+﻿namespace Network
 {
     public enum Packets
     {
         // 1 - 3 Base
         debugMessage = 1,
         
-        serverInit = 2, // user Id, int 
+        serverInit = 2, 
         serverUserJoined = 3,
         serverUserLeft = 4,
 
@@ -17,14 +17,14 @@
         clientUDPConnection = 8,
 
         // Container Packages
-        clientContainerPacket = 9, // byte = ContainerType, bool = use UDP, (byte[] userIDs)
+        clientContainerPacket = 9,
         
         // 10 Engine
-        userVoiceId = 11, // byte = VoiceID
+        userVoiceId = 11, 
         
         // 20 Movement
-        userFirstPersonPos = 20, // Vec3
-        userVRPos = 21, // Vec3
+        userFirstPersonPos = 20, 
+        userVRPos = 21, 
         
         // 30 FileShare
         userGetListOfLocalFiles = 30,
@@ -43,7 +43,7 @@
         // 50 FBX Loader
         fbxLoadFile = 50,
         fbxUnloadFile = 51,
-        scaleModel = 52, // byte 0 = small, 1 = big
+        scaleModel = 52,
         
     }
 

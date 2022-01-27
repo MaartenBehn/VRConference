@@ -6,6 +6,8 @@ using Utility;
 
 namespace Engine
 {
+    
+    // The states a feature like network or VR can be in
     public enum FeatureState
     {
         offline = 0,
@@ -39,6 +41,7 @@ namespace Engine
         [SerializeField] private PublicEvent loadingFailed;
         public FeatureSettings featureSettings;
     
+        // Load initializes all Systems 
         private void Load(bool b)
         {
             isHost.value = b;
@@ -46,7 +49,7 @@ namespace Engine
             Debug.Log("Loading");
         
             StartUIController.instance.Get();
-
+            
             for (var i = 0; i < featureSettings.features.Length; i++)
             {
                 FeatureSettings.Feature feature = featureSettings.features[i];
@@ -56,6 +59,7 @@ namespace Engine
                     continue;
                 }
 
+                // Features will be started on differnet thread to avoid any lag.
                 int i1 = i;
                 Threader.RunAsync(() =>
                 {
@@ -77,6 +81,7 @@ namespace Engine
             WaitForLoading();
         }
     
+        // WaitForDependencies runs till all feature that are marked as a dependency are done 
         private bool WaitForDependencies(FeatureSettings.Feature feature)
         {
             bool waiting = true;
@@ -99,6 +104,7 @@ namespace Engine
             return true;
         }
     
+        // Unload stop all features and systems so the game can return into the start screen.
         private void Unload()
         {
             Debug.Log("Unloading");
@@ -114,6 +120,7 @@ namespace Engine
             }
         }
     
+        // WaitForLoading wait for a feture to load in an different thread.
         private void WaitForLoading()
         {
             Threader.RunAsync(() =>

@@ -44,7 +44,7 @@ namespace Network.Server
                     return;
                 }
 
-                foreach (Users.User user in UserController.instance.users.Values)
+                foreach (User user in UserController.instance.users.Values)
                 {
                     if (user.ip != clientEndPoint.Address.ToString()) continue;
 
@@ -76,7 +76,7 @@ namespace Network.Server
         {
             if (server.udpFeatureState.value != (int) FeatureState.online && server.udpFeatureState.value != (int) FeatureState.starting) {return;}
             
-            Users.User user = UserController.instance.users[userId];
+            User user = UserController.instance.users[userId];
             
             try
             {
@@ -93,7 +93,7 @@ namespace Network.Server
 
         public void DisconnectClient(byte userId)
         {
-             Users.User user = UserController.instance.users[userId];
+             User user = UserController.instance.users[userId];
             user.endPoint = null;
         }
 
