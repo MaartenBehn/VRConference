@@ -16,7 +16,8 @@
 - Eine schöne Welt                              Fast
 - Server Auswahl system
 - Speaker und Mic Auswahl Menue                 Done
-- Lautstärke für Nutzer festlegen.              
+- Lautstärke für Nutzer festlegen.
+-               
 ## Weitere Features
 - Desktop steam  
 - Power Points
@@ -53,7 +54,7 @@
 
 - AudioSettings                                 Done
 - UI von Yesenia                                Done
-- Logo                                          Yesenia
+- Logo                                          Done
 
 - UI Player List                                Done
 - UI Voice Control                              Done
@@ -61,9 +62,7 @@
 - Lizenz freie Songs einfügen                   Done
 - UI Console Raycaster                          Done
 - Programm schließen Button                     Done
-- File Selecter größer                          Done
-- Fileshare Multibel User bug                   
-
+- File Selecter größer                          Done             
 
 ## Links:
 https://github.com/adrenak/UniVoice
@@ -115,3 +114,12 @@ https://github.com/adrenak/UniVoice
 - Gramatik und Rechtschreibung      Yesenia
 
 - Dokumet fertig machen (Inhaltsverzeichnis, Quellen- und Literaturverzeichnis)
+
+# Präsi:
+- 1 min Video
+- Die Programm Idee                                                     Maarten
+- Zu ähnlichen Produckten                                               Maarten
+- Programm Funktionen                                                   Tim / Yesenia
+- VR Index                                                              Tim
+- Programm vorführen                                                    Alle
+- Technische Programm funktionen -> Fast alles selbst programmiert      Alle

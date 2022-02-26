@@ -157,8 +157,6 @@ namespace Network.FileShare
                 fileEntry.userHowHaveTheFile.Add(userId);
                 fileEntries.Add(fileEntry);
             }
-            
-            
         }
 
         public bool syncingFile;
@@ -197,7 +195,7 @@ namespace Network.FileShare
                 }
                 lastTimeOutTime = Time.time;
             }
-
+            
             PrintNetworkSpeed();
         }
         public void SyncFile(FileEntry fileEntry)
