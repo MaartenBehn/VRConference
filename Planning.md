@@ -116,10 +116,11 @@ https://github.com/adrenak/UniVoice
 - Dokumet fertig machen (Inhaltsverzeichnis, Quellen- und Literaturverzeichnis)
 
 # Präsi:
-- 1 min Video
+- max 1 min Video
+
 - Die Programm Idee                                                     Maarten
 - Zu ähnlichen Produckten                                               Maarten
-- Programm Funktionen                                                   Tim / Yesenia
 - VR Index                                                              Tim
+- Programm Funktionen                                                   Tim / Yesenia
 - Programm vorführen                                                    Alle
 - Technische Programm funktionen -> Fast alles selbst programmiert      Alle
