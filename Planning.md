@@ -124,3 +124,16 @@ https://github.com/adrenak/UniVoice
 - Programm Funktionen                                                   Tim / Yesenia
 - Programm vorführen                                                    Alle
 - Technische Programm funktionen -> Fast alles selbst programmiert      Alle
+
+
+## Nächste Runde:
+- Verständlichkeit
+- Inhalt ist komplett ausreichend
+
+Ausarbeitung:
+- Diagramm                              Maarten
+- Vergleichbare Technologien            Maarten
+- UI mehr                               Yesenia
+- Anwendbarkeit in anderen Bereichen.   Tim
+
+Video? bzw wenn wir in bremen sind dann nicht.
