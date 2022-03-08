@@ -124,3 +124,35 @@ https://github.com/adrenak/UniVoice
 - Programm Funktionen                                                   Tim / Yesenia
 - Programm vorführen                                                    Alle
 - Technische Programm funktionen -> Fast alles selbst programmiert      Alle
+
+
+## Video:
+Programm vorstellen:
+- Programm öffnen
+- Einstellungen zeigen und Ip eintragen.
+- Server aktivieren
+- Client verbinden
+- 3D Modelle zeigen und auswählen
+- 3D Modelle laden
+- Auf dem Tisch zeigen
+- Groß machen
+- Auf dem großen Schiff herum laufen
+
+UI und Audio:
+- Zeigen wie das Audio funktioniert
+- Zwei Nutzer lokal verbinden
+- Audio aktivieren
+- Zeigen wie das der Pegel beim anderen Nutzer ausschlägt.
+- Die live Einstluungen zeigen
+
+VR Brille:
+- Welche Bestandteile hat sie?
+- Wie Funktioniert die VR Brille?
+- Wie ist die Steuerung in der VR-Brille?
+
+Rübersenden von Datein zeigen:
+- Zwei Nutzer lokal verbinden.
+- Datei dynamisch reinlanden
+- Eine Datei von einem zum anderen senden.
+- Datei anzeigen
+- Verschiedene Modelle Zeigen (Schiff, Haus, Technische Anwendung)
