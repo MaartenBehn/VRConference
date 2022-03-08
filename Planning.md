@@ -127,7 +127,7 @@ https://github.com/adrenak/UniVoice
 
 
 ## Video:
-Programm vorstellen:
+Programm vorstellen (Maarten, Tim):
 - Programm öffnen
 - Einstellungen zeigen und Ip eintragen.
 - Server aktivieren
@@ -138,19 +138,19 @@ Programm vorstellen:
 - Groß machen
 - Auf dem großen Schiff herum laufen
 
-UI und Audio:
+UI und Audio (Maarten):
 - Zeigen wie das Audio funktioniert
 - Zwei Nutzer lokal verbinden
 - Audio aktivieren
 - Zeigen wie das der Pegel beim anderen Nutzer ausschlägt.
 - Die live Einstluungen zeigen
 
-VR Brille:
+VR Brille (Tim):
 - Welche Bestandteile hat sie?
 - Wie Funktioniert die VR Brille?
 - Wie ist die Steuerung in der VR-Brille?
 
-Rübersenden von Datein zeigen:
+Rübersenden von Datein zeigen (Maarten):
 - Zwei Nutzer lokal verbinden.
 - Datei dynamisch reinlanden
 - Eine Datei von einem zum anderen senden.
