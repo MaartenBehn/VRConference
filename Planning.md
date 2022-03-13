@@ -133,7 +133,7 @@ https://github.com/adrenak/UniVoice
 
 Ausarbeitung:
 - Diagramm                              Maarten
-- Vergleichbare Technologien            Maarten
+- Vergleichbare Technologien            Maarten Done
 - UI mehr                               Yesenia
 - Anwendbarkeit in anderen Bereichen.   Tim
 
@@ -169,4 +169,11 @@ Rübersenden von Datein zeigen (Maarten):
 - Eine Datei von einem zum anderen senden.
 - Datei anzeigen
 - Verschiedene Modelle Zeigen (Schiff, Haus, Technische Anwendung)
+
+
+Engine   -> Unity -> Rendering Physik
+Audio    -> VoiceSystem / Musik
+Netzwerk -> TCP / UDP Stack
+Nutzer   -> FirstPerson / VR
+
 
