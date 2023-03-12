@@ -1,7 +1,7 @@
 
 ![Screenshot_20230313_001530](https://user-images.githubusercontent.com/46872913/224580046-384cc311-fb73-40ec-8efe-d151578c4223.png)
 
-Dieses Prjekt in Rahmen von JugendForscht 2022 entwickelt.  
+Dieses Projekt wurde im Rahmen von JugendForscht 2022 entwickelt.  
 [Schrifliche Arbeit](https://github.com/MaartenBehn/VRConference/blob/main/Doku/Konferenz-Software%20zur%20Pr%C3%A4sentation%20von%203D-Modellen%20in%20VR.pdf)
 
 ## Screenshots
