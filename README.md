@@ -9,14 +9,13 @@ Dieses Projekt wurde im Rahmen von JugendForscht 2022 entwickelt.
 
 ![Screenshot_20230313_001515](https://user-images.githubusercontent.com/46872913/224580049-6fa61d08-ea4e-464f-ba21-df4fd85f09ec.png)
 
-## Beschreibung:
-- Dieses Projekt umfasst die Entwicklung einer Konferenz-Software zur presentation und visuellen Darstellung von 3D-Modellen.
-- Das Programm bietet die Möglichkeit das sich Nutzer in einem viruellen Raum treffen. Sie können sich dort gegenseitig hören und sehen. 
-- Hochgelandene 3D-Modelle können hier presentiert werden.
-- Mann kann sowohl über VR sowie über einen PC mit einem normalen Bildschirm einer Koferenz beitreten.
-- Der Ersteller der Konferenz startet einen Server und tritt daher als Host bei. Alle anderen Nutzer verbinden sich dierekt mit dem Host.
-- Es ist möglich die ganze Konferenz ohne Verbindung zum Internet in einen lokalen Netzwerk durchzuführen.
-- Es wird kein weiteres Gerät, auf dem ein Server läuft, benötigt.
+## Kurzfassung
+Dieses Projekt umfasst die Entwicklung einer Konferenz-Software zur Prasentation und visuellen Darstellung von 3D-Modellen.
+Das Programm bietet die Moglichkeit, dass sich Nutzer in einer virtuellen Umgebung treffen. Sie kdnnen sich dort gegenseitig horen und sehen. Hochgeladene 3D-Modelle
+konnen hier prasentiert werden.
+Man kann sowohl tber VR Brille sowie Uber einen PC mit einem normalen Bildschirm einer Konferenz beitreten. Der Ersteller der Konferenz startet einen Server und tritt daher als Host bei. Alle anderen Nutzer verbinden sich direkt mit dem Host.
+Es ist moglich, die ganze Konferenz ohne Verbindung zum Internet in einem lokalen Netzwerk durchzuflhren. Es wird kein weiteres zentrales Gerat, auf dem ein Server
+lauft, benotigt.
 
 ## Gruppen Mitglieder
 - Maarten Behn
