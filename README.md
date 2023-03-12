@@ -1,9 +1,13 @@
 
 # VRConference
-Dieses Prjekt in Rahmen von JugendForscht 2022 entwickelt.
+Dieses Prjekt in Rahmen von JugendForscht 2022 entwickelt.  
+[Schrifliche Arbeit](https://github.com/MaartenBehn/VRConference/blob/main/Doku/Konferenz-Software%20zur%20Pr%C3%A4sentation%20von%203D-Modellen%20in%20VR.pdf)
 
-## Name:
-Konferenz-Software zur Presentation von 3D-Modellen in VR
+![Screenshot_20230313_001530](https://user-images.githubusercontent.com/46872913/224580046-384cc311-fb73-40ec-8efe-d151578c4223.png)
+
+![Screenshot_20230313_001502](https://user-images.githubusercontent.com/46872913/224580054-9bfb0e6c-c486-4e1c-8a73-f1a5f796ce95.png)
+
+![Screenshot_20230313_001515](https://user-images.githubusercontent.com/46872913/224580049-6fa61d08-ea4e-464f-ba21-df4fd85f09ec.png)
 
 ## Beschreibung:
 - Dieses Projekt umfasst die Entwicklung einer Konferenz-Software zur presentation und visuellen Darstellung von 3D-Modellen.
